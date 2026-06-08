@@ -1,0 +1,29 @@
+# Python
+__pycache__/
+*.py[cod]
+.pytest_cache/
+*.sqlite3
+.venv/
+
+# Node
+node_modules/
+.next/
+dist/
+
+# Env
+.env
+*.env.local
+
+# OS
+Thumbs.db
+ehthumbs.db
+.DS_Store
+
+# Misc
+staticfiles/
+media/
+npm-debug.log
+yarn-error.log
+pnpm-debug.log
+*.log
+logs_diagnostico.txt
