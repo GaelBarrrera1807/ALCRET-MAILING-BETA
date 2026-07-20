@@ -1,4 +1,5 @@
-FROM python:3.12-slim AS base
+# ── Builder stage ────────────────────────────────────────────────────
+FROM python:3.12-slim AS builder
 
 ENV PYTHONDONTWRITEBYTECODE=1 \
     PYTHONUNBUFFERED=1
@@ -15,6 +16,23 @@ COPY requirements.txt /tmp/requirements.txt
 
 RUN python -m pip install --upgrade pip==25.1 \
     && pip install --no-cache-dir -r /tmp/requirements.txt
+
+# ── Runtime stage ───────────────────────────────────────────────────
+FROM python:3.12-slim AS runtime
+
+ENV PYTHONDONTWRITEBYTECODE=1 \
+    PYTHONUNBUFFERED=1 \
+    PYTHONPATH=/app
+
+WORKDIR /app
+
+RUN apt-get update \
+    && apt-get install -y --no-install-recommends \
+        libpq5 \
+    && rm -rf /var/lib/apt/lists/*
+
+COPY --from=builder /usr/local/lib/python3.12/site-packages /usr/local/lib/python3.12/site-packages
+COPY --from=builder /usr/local/bin /usr/local/bin
 
 COPY . .
 

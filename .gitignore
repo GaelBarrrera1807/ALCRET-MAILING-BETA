@@ -15,16 +15,30 @@ dist/
 .env.staging
 *.env.local
 
+# Temp / artifacts
+*.save
+test_upload.py
+
 # OS
 Thumbs.db
 ehthumbs.db
 .DS_Store
 
-# Misc
+# Generated / build output
 staticfiles/
 media/
+graphify-out/
+.next/
+
+# Debug & logs
+*.log
+logs_diagnostico.txt
 npm-debug.log
 yarn-error.log
 pnpm-debug.log
-*.log
-logs_diagnostico.txt
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo

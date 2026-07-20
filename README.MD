@@ -1,309 +1,178 @@
-# Industrial Prospecting AI Platform
+<div align="center">
 
-Plataforma SaaS de prospección industrial B2B orientada a la automatización de búsqueda, clasificación y análisis de clientes potenciales para venta de remolques y equipos industriales.
+# 🏭 Industrial Prospecting AI Platform
 
----
+**Plataforma SaaS de prospección industrial B2B con inteligencia artificial y scraping automatizado**
 
-# Objetivo del Proyecto
+[![Django](https://img.shields.io/badge/Django-6.0-092E20?logo=django&logoColor=white)](https://www.djangoproject.com/)
+[![DRF](https://img.shields.io/badge/DRF-3.15-A30000?logo=django&logoColor=white)](https://www.django-rest-framework.org/)
+[![Next.js](https://img.shields.io/badge/Next.js-16-000000?logo=nextdotjs&logoColor=white)](https://nextjs.org/)
+[![PostgreSQL](https://img.shields.io/badge/PostgreSQL-16-4169E1?logo=postgresql&logoColor=white)](https://www.postgresql.org/)
+[![Celery](https://img.shields.io/badge/Celery-5.4-37814A?logo=celery&logoColor=white)](https://docs.celeryq.dev/)
+[![Redis](https://img.shields.io/badge/Redis-7-DC382D?logo=redis&logoColor=white)](https://redis.io/)
+[![Docker](https://img.shields.io/badge/Docker-2496ED?logo=docker&logoColor=white)](https://www.docker.com/)
+[![Amazon SES](https://img.shields.io/badge/Amazon_SES-FF9900?logo=amazonsimpleemailservice&logoColor=white)](https://aws.amazon.com/ses/)
+[![Cerebras](https://img.shields.io/badge/Cerebras-LLM-FF6F00?logo=openai&logoColor=white)](https://cerebras.ai/)
+[![License](https://img.shields.io/badge/License-Proprietary-red)]()
 
-Automatizar el proceso de prospección comercial mediante inteligencia artificial para:
-
-- Analizar empresas automáticamente
-- Detectar posibles compradores
-- Clasificar leads por prioridad
-- Recomendar productos industriales
-- Encontrar contactos potenciales
-- Generar reportes PDF
-- Almacenar resultados en base de datos
-
----
-
-# Productos Comercializados
-
-La empresa comercializa los siguientes productos industriales:
-
-- Dolly
-- Cajas secas
-- Plataformas
-- Plataforma multimodal
-- Portacontenedores
-- Porta contenedor extensible
-- Volteos
-- Tolvas
-- Tanques
-- Sobre chasis
-- Equipos especiales
+</div>
 
 ---
 
-# Sectores Objetivo
+## 📋 Visión General
 
-Los sectores con mayor prioridad comercial son:
+Sistema inteligente que automatiza el proceso completo de prospección comercial B2B para la venta de remolques y equipos industriales. La plataforma consume directorios empresariales (CSV, Excel, Google Maps), los limpia, clasifica con IA, enriquece con datos de contacto y gestiona campañas de email marketing vía Amazon SES — todo desde una interfaz web moderna.
 
-- Transporte de carga general
-- Construcción
-- Agrícola
-- Alimentos
-- Petrolera
-- Petroquímica
-- Refresquera
-- Portuaria
-
----
-
-# Problema a Resolver
-
-Actualmente el proceso de prospección comercial es manual:
-
-1. Buscar empresas
-2. Revisar si son clientes potenciales
-3. Buscar contactos
-4. Clasificar prioridades
-5. Generar reportes
-
-Este proceso consume mucho tiempo y dificulta escalar operaciones comerciales.
-
-La plataforma busca automatizar este flujo utilizando inteligencia artificial.
-
----
-
-# Funcionalidades Principales
-
-## 1. Carga Masiva de Directorios
-
-El usuario podrá subir:
-
-- CSV
-- Excel
-- Directorios empresariales
-- Bases de datos de empresas
-- Scraping de Google Maps
-- Directorios industriales
-
----
-
-## 2. Limpieza y Normalización
-
-El sistema deberá:
-
-- Eliminar duplicados
-- Limpiar teléfonos
-- Validar dominios
-- Normalizar datos
-- Estandarizar nombres
-
----
-
-## 3. Clasificación Inteligente con IA
-
-La IA analizará:
-
-- Giro empresarial
-- Descripción del negocio
-- Sitio web
-- Actividad industrial
-- Logística
-- Infraestructura
-- Operaciones
-
-Y determinará:
-
-- Probabilidad de compra
-- Sector detectado
-- Productos recomendados
-- Prioridad comercial
-
----
-
-## 4. Sistema de Scoring
-
-Cada empresa recibirá un score de 1-100.
-
-Factores importantes:
-
-- Transporte pesado
-- Flotillas
-- Logística multimodal
-- Operaciones industriales
-- Puertos
-- Contenedores
-- Construcción
-- Maquinaria
-- Hidrocarburos
-- Operaciones agrícolas
-
----
-
-## 5. Enriquecimiento de Datos
-
-El sistema podrá:
-
-- Buscar sitios web
-- Obtener dominios
-- Extraer teléfonos
-- Detectar redes sociales
-- Obtener ubicación
-
----
-
-## 6. Generación de Reportes
-
-El sistema generará:
-
-- PDF de leads
-- Reportes de scoring
-- Métricas comerciales
-- Estadísticas de procesamiento
-
----
-
-# Arquitectura Tecnológica
-
-## Backend
-
-- Django
-- Django REST Framework
-- Celery
-- Redis
-- PostgreSQL
-
----
-
-## Frontend
-
-- Next.js
-- TailwindCSS
-
----
-
-## Inteligencia Artificial
-
-- Cerebras API
-- Modelos LLM compatibles OpenAI SDK
-
----
-
-## Infraestructura
-
-- Docker
-- Railway / VPS
-- Nginx
-- Gunicorn
-
----
-
-# Arquitectura General del Sistema
-
-```text
-Usuario sube CSV
-↓
-Sistema limpia datos
-↓
-Worker procesa empresas
-↓
-IA analiza compañías
-↓
-Sistema asigna score
-↓
-Resultados se guardan en PostgreSQL
-↓
-Se generan reportes PDF
+```mermaid
+flowchart LR
+    A[Carga CSV / Excel] --> B[Pipeline de Preprocesamiento]
+    B --> C[Clasificación con IA - Cerebras]
+    C --> D[Generación de Leads]
+    D --> E[Campañas Email - Amazon SES]
+    C --> F[Enriquecimiento - Snov.io / Apify]
+    F --> D
 ```
 
 ---
 
-# Arquitectura Django
+## 🚀 Despliegue Rápido
+
+```bash
+# 1. Clonar
+git clone https://github.com/GaelBarrrera1807/ALCRET-MAILING-BETA.git
+cd ALCRET-MAILING-BETA
+
+# 2. Configurar variables de entorno
+cp .env.example .env
+# Editar .env con tus credenciales (DB, API keys, etc.)
+
+# 3. Levantar con Docker (producción)
+docker compose -f docker-compose.prod.yml --env-file .env up -d
+
+# 4. Crear superusuario
+docker compose -f docker-compose.prod.yml exec web python manage.py createsuperuser
+```
+
+> ⚠ **Requisitos:** Docker 24+, Docker Compose 2.20+, 4 GB RAM disponibles.
+
+---
+
+## 📁 Estructura del Proyecto
+
+```
+/
+├── backend/                    # Django 6.0 + DRF
+│   ├── apps/                   # Módulos de la aplicación
+│   │   ├── users/              # Autenticación y multiempresa
+│   │   ├── core/               # Modelos base (Company, Sector, Product)
+│   │   ├── leads/              # Gestión de leads y scoring
+│   │   ├── ai_engine/          # Análisis con IA (Cerebras)
+│   │   ├── scraping/           # Web scraping y Google Maps
+│   │   ├── preprocessing/      # Pipeline de limpieza y clasificación
+│   │   ├── mailer/             # Email marketing (Amazon SES)
+│   │   ├── analytics/          # Métricas y estadísticas
+│   │   ├── companies/          # ⚠ Stub de compatibilidad
+│   │   └── reports/            # Generación de reportes PDF
+│   ├── config/                 # Configuración de Django
+│   ├── Dockerfile              # Multi-stage (builder + runtime)
+│   └── entrypoint.sh           # Entrypoint con Gunicorn
+│
+├── frontend/                   # Next.js 16 + React 19 + Tailwind CSS
+│   └── src/
+│       ├── app/                # Páginas (dashboard, companies, leads, mailer)
+│       ├── components/         # Componentes reutilizables
+│       └── lib/                # API client y tipos
+│
+├── docker-compose.yml          # Desarrollo (con hot-reload)
+├── docker-compose.prod.yml     # Producción (Gunicorn + Celery)
+└── .env.example                # Plantilla de variables de entorno
+```
+
+---
+
+## 🧠 Funcionalidades Principales
+
+### 1. Carga Masiva de Directorios
+Subida de archivos **CSV**, **Excel** y scraping directo desde **Google Maps**.
+
+### 2. Pipeline de Preprocesamiento
+Limpieza, normalización, deduplicación, filtrado por reglas de industria/producto y scoring automático.
+
+### 3. Clasificación Inteligente con IA
+Motor basado en **Cerebras LLM** que analiza descripción, giro empresarial, sitio web y determina:
+- Score de probabilidad de compra (1–100)
+- Sector industrial detectado
+- Productos recomendados
+- Prioridad comercial (baja / media / alta / urgente)
+
+### 4. Enriquecimiento de Datos
+Búsqueda automática de contactos vía **Snov.io** y **Apify** (LinkedIn, redes sociales, sitios web).
+
+### 5. Email Marketing (Amazon SES)
+- Plantillas HTML con variables dinámicas (`{{ company }}`, `{{ first_name }}`)
+- Campañas segmentadas por sector y prioridad
+- Tracking de aperturas, clics, rebotes y bajas vía SNS webhooks
+
+### 6. Generación de Reportes
+Reportes PDF con leads, scoring, métricas comerciales y estadísticas de procesamiento.
+
+---
+
+## 🗄️ Arquitectura Django
 
 ```text
 apps/
 │
 ├── users/          → Organización multiempresa + usuarios
-├── core/           → Company, CompanyContact, Sector, Product (tablas históricas `companies_*`)
+├── core/           → Company, CompanyContact, Sector, Product (tablas `companies_*`)
 ├── leads/          → Lead + LeadNote (scoring, prioridad, estado comercial)
 ├── ai_engine/      → Análisis con IA (Cerebras), AnalysisRequest/Result, PromptTemplate
 ├── scraping/       → ScrapingJob + ScrapedData (web, phone, social, Google Maps)
 ├── preprocessing/  → PreprocessingJob + PreprocessingRule (limpieza, filtrado, scoring)
-├── mailer/         → EmailTemplate, EmailRecipient, EmailCampaign, CampaignSend, EmailEvent (Amazon SES)
+├── mailer/         → EmailTemplate, EmailRecipient, EmailCampaign, CampaignSend, EmailEvent
 ├── analytics/      → DashboardMetric + ProcessingStats
-├── companies/      → ⚠️ Stub de compatibilidad (re-exporta modelos desde core)
-└── reports/        → Reportes PDF (módulo aislado)
+└── reports/        → Reportes PDF
 ```
 
----
+### Descripción de Módulos
 
-# Descripción de Módulos
+#### users
+Autenticación JWT, roles, multiempresa (Organization como tenant raíz).
 
-## users
+#### core
+- **Company**: datos de contacto, scoring, geolocalización, índices compuestos
+- **CompanyContact**: contactos por empresa
+- **Sector / Product**: catálogo industrial con relación M2M
 
-- Autenticación
-- Roles
-- Multiempresa (Organization como tenant raíz)
-- Permisos
+#### leads
+- **Lead**: lead con scoring, prioridad, estado comercial (O2O opcional con Company)
+- **LeadNote**: notas de seguimiento
 
----
+#### ai_engine
+- **AnalysisRequest → AnalysisResult**: solicitud y resultado de análisis IA (O2O)
+- **PromptTemplate**: plantillas configurables (system prompt, temperature, model)
 
-## core
+#### scraping
+- **ScrapingJob**: registro de scraping (website, phone, social, enrichment, MAPS_DISCOVERY)
+- **ScrapedData**: datos scrapeados vinculados a Company
+- Única relación directa: `Company.scraping_job` (FK)
 
-- Company: empresa con datos de contacto, scoring, geolocalización, índices compuestos
-- CompanyContact: contactos de empresa
-- Sector: sectores industriales (relacionado con Company vía FK)
-- Product: productos con relación M2M a Sector
-- Nota: tablas físicas `companies_*` por compatibilidad histórica
+#### preprocessing
+- **PreprocessingJob**: pipeline de limpieza → clasificación → scoring → filtrado
+- **PreprocessingRule**: reglas de industria/producto/exclusión con keywords y peso
 
----
+#### mailer
+- **EmailTemplate**: plantillas con variables `{{ }}` y tipos (cold_outreach, marketing, etc.)
+- **EmailRecipient**: destinatarios vinculados a Lead (sin FK directa a Company)
+- **EmailCampaign**: campañas con programación y tracking
+- **CampaignSend**: envío individual con `ses_message_id` para webhooks SES
+- **EmailEvent**: tracking (open, click, bounce, complaint, unsubscribe)
 
-## leads
+#### analytics
+- **DashboardMetric**: métricas del dashboard por organización y fecha
+- **ProcessingStats**: estadísticas resumidas de procesamiento
 
-- Lead: lead con scoring, prioridad, estado comercial, O2O opcional con Company
-- LeadNote: notas de seguimiento por lead
-- Scoring y clasificación por prioridad (baja/media/alta/urgente)
-
----
-
-## ai_engine
-
-- Análisis con IA (Cerebras / LLMs compatibles OpenAI SDK)
-- AnalysisRequest → solicitud, AnalysisResult → resultado (O2O)
-- PromptTemplate: plantillas configurables (system prompt, temperature, model)
-
----
-
-## scraping
-
-- ScrapingJob: registro de trabajo (website, phone, social, enrichment, MAPS_DISCOVERY)
-- ScrapedData: datos scrapeados vinculados a Company
-- Company.scraping_job (FK) como única relación directa
-
----
-
-## preprocessing
-
-- PreprocessingJob: procesamiento de archivos CSV/Excel con pipeline configurable
-- PreprocessingRule: reglas de industria/producto/exclusión con keywords y peso
-- Pipeline: limpieza → clasificación → scoring → filtrado
-
----
-
-## mailer
-
-- EmailTemplate: plantillas con variables {{ }}, tipos (cold_outreach, marketing, etc.)
-- EmailRecipient: destinatarios, vinculados a Lead (sin FK directa a Company)
-- EmailCampaign: campañas con programación y tracking de métricas
-- CampaignSend: envío individual con ses_message_id para SES webhooks
-- EmailEvent: eventos de tracking (open, click, bounce, complaint, unsubscribe)
-
----
-
-## analytics
-
-- DashboardMetric: métricas del dashboard por organización y fecha
-- ProcessingStats: estadísticas resumidas de procesamiento
-
----
-
-# Arquitectura de Base de Datos (ERD)
-
-Diagrama Entidad-Relación de los modelos activos (excluye stubs `companies` y `reports`):
+### Diagrama Entidad-Relación (ERD)
 
 ```mermaid
 erDiagram
@@ -615,82 +484,51 @@ erDiagram
 
 ---
 
-# Reglas de Clasificación IA
+## 🔧 Arquitectura Tecnológica
 
-La IA deberá asignar score alto a empresas que mencionen:
+### Backend
+| Tecnología | Uso |
+|---|---|
+| **Django 6.0 + DRF 3.15** | API REST con JWT, filtros, paginación |
+| **Celery 5.4 + Redis 7** | Tareas asíncronas (análisis IA, scraping, envío de emails) |
+| **PostgreSQL 16** | Base de datos principal |
+| **Gunicorn** | Servidor WSGI para producción |
+| **Amazon S3** | Almacenamiento de archivos estáticos y media (opcional) |
 
-- Transporte pesado
-- Logística
-- Contenedores
-- Flotillas
-- Carga industrial
-- Operaciones portuarias
-- Construcción
-- Hidrocarburos
-- Petroquímica
-- Maquinaria pesada
-- Operaciones agrícolas
+### Frontend
+| Tecnología | Uso |
+|---|---|
+| **Next.js 16 + React 19** | SSR, App Router, Server Components |
+| **Tailwind CSS v4** | Estilos utilitarios |
+| **TypeScript** | Tipado estático |
 
-La IA deberá asignar score bajo a:
-
-- Retail pequeño
-- Negocios administrativos
-- Comercios locales pequeños
-- Empresas sin actividad logística
-
----
-
-# Reglas de Recomendación de Productos
-
-## Transporte
-
-Productos recomendados:
-- Cajas secas
-- Plataformas
-- Portacontenedores
-- Dolly
+### Inteligencia Artificial
+| Servicio | Propósito |
+|---|---|
+| **Cerebras API** | Clasificación de empresas y recomendación de productos |
+| **Snov.io API** | Enriquecimiento de contactos por dominio |
+| **Apify API** | Scraping de LinkedIn, Google Maps y redes sociales |
 
 ---
 
-## Construcción
+## 📊 Reglas de Clasificación IA
 
-Productos recomendados:
-- Volteos
-- Plataformas
-- Equipos especiales
+**Score alto** si la empresa menciona:
+transporte pesado, logística, contenedores, flotillas, carga industrial, operaciones portuarias, construcción, hidrocarburos, petroquímica, maquinaria pesada, operaciones agrícolas.
 
----
+**Score bajo** si es: retail pequeño, negocios administrativos, comercios locales, empresas sin actividad logística.
 
-## Petrolera / Petroquímica
+### Recomendación de Productos por Sector
 
-Productos recomendados:
-- Tanques
-- Plataformas
-- Equipos especiales
+| Sector | Productos |
+|---|---|
+| Transporte | Cajas secas, Plataformas, Portacontenedores, Dolly |
+| Construcción | Volteos, Plataformas, Equipos especiales |
+| Petrolera / Petroquímica | Tanques, Plataformas, Equipos especiales |
+| Agrícola | Tolvas, Plataformas, Volteos |
+| Portuaria | Portacontenedores, Plataforma multimodal, Porta contenedor extensible |
 
----
-
-## Agrícola
-
-Productos recomendados:
-- Tolvas
-- Plataformas
-- Volteos
-
----
-
-## Portuaria
-
-Productos recomendados:
-- Portacontenedores
-- Plataforma multimodal
-- Porta contenedor extensible
-
----
-
-# Formato de Respuesta IA
-
-La IA deberá responder SIEMPRE en formato JSON:
+### Formato de Respuesta IA
 
 ```json
 {
@@ -706,96 +544,69 @@ La IA deberá responder SIEMPRE en formato JSON:
 
 ---
 
-# Ejemplos de Clasificación
+## 🐳 Despliegue con Docker
 
-## Empresa Buena
+### Desarrollo
 
-Nombre:
-Transportes del Golfo
+```bash
+docker compose up -d
+# Backend: http://localhost:8000
+# Frontend: http://localhost:3000
+# MailHog:  http://localhost:8025
+```
 
-Descripción:
-Empresa especializada en logística pesada, carga multimodal y transporte portuario.
+### Producción (AWS EC2)
 
-Resultado esperado:
+```bash
+# Variables de entorno
+cp .env.example .env.prod
+# Editar .env.prod con credenciales reales
 
-- Score alto
-- Cliente potencial
-- Recomendar plataformas
-- Recomendar portacontenedores
+# Construir y levantar
+docker compose -f docker-compose.prod.yml --env-file .env.prod up -d
 
----
+# Migrar base de datos
+docker compose -f docker-compose.prod.yml exec web python manage.py migrate
 
-## Empresa Mala
+# Crear superusuario
+docker compose -f docker-compose.prod.yml exec web python manage.py createsuperuser
 
-Nombre:
-Cafetería Centro
+# Ver logs
+docker compose -f docker-compose.prod.yml logs -f web celery_worker
+```
 
-Descripción:
-Venta de café y alimentos.
-
-Resultado esperado:
-
-- Score bajo
-- No cliente potencial
-- Sin productos recomendados
-
----
-
-# Base de Datos
-
-El sistema deberá almacenar:
-
-- Empresas procesadas
-- Score IA
-- Productos recomendados
-- Sectores detectados
-- Historial de análisis
-- PDFs generados
-- Resultados de procesamiento
+> 💡 Para usar S3, añade `USE_S3=true` y configura `AWS_ACCESS_KEY_ID`, `AWS_SECRET_ACCESS_KEY`, `AWS_STORAGE_BUCKET_NAME` en `.env.prod`.
 
 ---
 
-# Variables de Entorno
+## 🔐 Variables de Entorno
+
+Todas las variables requeridas están documentadas en [`.env.example`](env.example):
 
 ```env
-DEBUG=True
-
-SECRET_KEY=
-
-DB_NAME=
-DB_USER=
-DB_PASSWORD=
-DB_HOST=
-DB_PORT=
-
-REDIS_URL=
-
-CEREBRAS_API_KEY=
+# ⚠ REQUERIDO para producción
+DJANGO_SECRET_KEY=<generar clave segura>
+DJANGO_ALLOWED_HOSTS=<tus-dominios>
+DB_PASSWORD=<contraseña-segura>
+REDIS_PASSWORD=<contraseña-segura>
+CEREBRAS_API_KEY=<tu-api-key>
+APIFY_API_KEY=<tu-api-key>
+SNOV_CLIENT_ID=<tu-client-id>
+SNOV_CLIENT_SECRET=<tu-client-secret>
 ```
 
 ---
 
-# Integración Cerebras
+## 📄 Licencia
 
-La aplicación utilizará Cerebras como motor principal de IA.
-
-La IA será utilizada para:
-
-- Clasificación de empresas
-- Análisis semántico
-- Recomendación de productos
-- Generación de scoring
-- Priorización comercial
+**Uso interno / proprietary.** Este software es propiedad de la empresa y no está autorizado para distribución pública.
 
 ---
 
-# Objetivo Final
+## 🤝 Contribución
 
-Construir una plataforma inteligente de prospección industrial capaz de:
-
-- Reducir trabajo manual
-- Mejorar calidad de leads
-- Automatizar clasificación empresarial
-- Generar reportes automáticamente
-- Escalar operaciones comerciales
-- Optimizar prospección B2B industrial
+1. Haz fork del repositorio
+2. Crea una rama (`git checkout -b feature/nueva-funcionalidad`)
+3. Haz commit de tus cambios
+4. Push a la rama (`git push origin feature/nueva-funcionalidad`)
+5. Abre un Pull Request
