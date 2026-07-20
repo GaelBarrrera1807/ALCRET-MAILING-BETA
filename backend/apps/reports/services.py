@@ -81,7 +81,7 @@ class ReportService:
         return ContentFile(pdf_content)
 
     def generate_scoring_report(self, filters=None):
-        from apps.companies.models import Company
+        from apps.core.models import Company
 
         org_filter = {}
         if filters and filters.get('organization_id'):
@@ -190,7 +190,7 @@ class ReportService:
         return self._write_csv(headers, rows)
 
     def generate_scoring_csv(self, filters=None):
-        from apps.companies.models import Company
+        from apps.core.models import Company
 
         org_filter = {}
         if filters and filters.get('organization_id'):

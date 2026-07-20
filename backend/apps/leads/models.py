@@ -5,8 +5,12 @@ from apps.core.models import BaseModel
 
 class Lead(BaseModel):
     company = models.OneToOneField(
-        'companies.Company', on_delete=models.CASCADE,
-        related_name='lead'
+        'core.Company', on_delete=models.CASCADE,
+        related_name='lead', null=True, blank=True
+    )
+    contact = models.ForeignKey(
+        'core.CompanyContact', on_delete=models.SET_NULL,
+        null=True, blank=True, related_name='leads'
     )
     organization = models.ForeignKey(
         'users.Organization', on_delete=models.CASCADE,
@@ -49,6 +53,10 @@ class Lead(BaseModel):
     last_contact = models.DateTimeField(null=True, blank=True)
     next_follow_up = models.DateTimeField(null=True, blank=True)
     notes = models.TextField(blank=True, default='')
+    auto_created = models.BooleanField(
+        default=False,
+        help_text='Indica si el lead fue creado automáticamente por el pipeline'
+    )
 
     class Meta:
         verbose_name = 'Lead'
@@ -61,7 +69,8 @@ class Lead(BaseModel):
         ]
 
     def __str__(self):
-        return f'{self.company.name} - {self.score}'
+        name = self.company.name if self.company else 'Sin empresa'
+        return f'{name} - {self.score}'
 
 
 class LeadNote(BaseModel):

@@ -4,6 +4,7 @@ import { useState, FormEvent } from 'react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import { useAuth } from '@/contexts/AuthContext'
+import { ApiError } from '@/lib/api'
 
 export default function LoginPage() {
   const [username, setUsername] = useState('')
@@ -21,7 +22,10 @@ export default function LoginPage() {
       await login(username, password)
       router.push('/dashboard')
     } catch (err: unknown) {
-      if (err instanceof Error) {
+      if (err instanceof ApiError) {
+        const detail = (err.data as { detail?: string })?.detail
+        setError(detail || err.message || 'Error al iniciar sesión')
+      } else if (err instanceof Error) {
         setError(err.message || 'Error al iniciar sesión')
       } else {
         setError('Error al iniciar sesión')

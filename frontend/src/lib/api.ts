@@ -1,4 +1,4 @@
-const API_BASE = process.env.NEXT_PUBLIC_API_BASE_URL || 'http://localhost:8000/api'
+const API_BASE = process.env.NEXT_PUBLIC_API_BASE_URL || ''
 export { API_BASE }
 
 interface RequestOptions {
@@ -69,9 +69,16 @@ async function request<T>(endpoint: string, options: RequestOptions = {}): Promi
     headers['Authorization'] = `Bearer ${access}`
   }
 
-  const url = new URL(`${API_BASE}${endpoint}`)
-  if (options.params) {
-    Object.entries(options.params).forEach(([k, v]) => url.searchParams.set(k, v))
+  let fetchUrl: string
+  if (API_BASE && API_BASE.startsWith('http')) {
+    const url = new URL(`${API_BASE}${endpoint}`)
+    if (options.params) {
+      Object.entries(options.params).forEach(([k, v]) => url.searchParams.set(k, v))
+    }
+    fetchUrl = url.toString()
+  } else {
+    const query = options.params ? '?' + new URLSearchParams(options.params).toString() : ''
+    fetchUrl = `/api${endpoint}${query}`
   }
 
   const config: RequestInit = {
@@ -83,7 +90,7 @@ async function request<T>(endpoint: string, options: RequestOptions = {}): Promi
     config.body = options.isFormData ? (options.body as FormData) : JSON.stringify(options.body)
   }
 
-  const response = await fetch(url.toString(), config)
+  const response = await fetch(fetchUrl, config)
 
   if (response.status === 401) {
     const refreshed = await refreshToken()
@@ -111,7 +118,8 @@ async function refreshToken(): Promise<boolean> {
   if (!refresh) return false
 
   try {
-    const res = await fetch(`${API_BASE}/auth/token/refresh/`, {
+    const base = API_BASE && API_BASE.startsWith('http') ? API_BASE : '/api'
+    const res = await fetch(`${base}/auth/token/refresh/`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ refresh }),
@@ -149,12 +157,17 @@ export const api = {
     request<T>(endpoint, { method: 'POST', body: formData, isFormData: true }),
 
   login: async (username: string, password: string) => {
-    const res = await fetch(`${API_BASE}/auth/login/`, {
+    const base = API_BASE && API_BASE.startsWith('http') ? API_BASE : '/api'
+    const res = await fetch(`${base}/auth/login/`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ username, password }),
     })
-    if (!res.ok) throw new ApiError(res.status, await res.json().catch(() => null))
+    if (!res.ok) {
+      const errorData = await res.json().catch(() => null)
+      console.error('[Login Error]', res.status, errorData)
+      throw new ApiError(res.status, errorData)
+    }
     const data = await res.json()
     storeTokens(data.access, data.refresh)
     return data

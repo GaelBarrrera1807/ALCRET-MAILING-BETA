@@ -2,6 +2,7 @@ import logging
 import re
 
 from apps.preprocessing.data import EXCLUDE_KEYWORDS, WEIGHTS
+from apps.preprocessing.data.products import FINANCIAL_KEYWORDS, PRODUCT_KEYWORDS
 from apps.preprocessing.services.cleaner import DataCleaner, keyword_match
 
 logger = logging.getLogger(__name__)
@@ -42,6 +43,8 @@ class RelevanceScorer:
                 'fleet_score': 0,
                 'size_score': 0,
                 'bonus_score': 0,
+                'bonus_comercial': 0,
+                'lead_intent_type': '',
                 'details': 'Contiene palabras de exclusion',
             }
         if industry_results is None:
@@ -53,7 +56,11 @@ class RelevanceScorer:
         size_score = self._calc_company_size_score(combined)
         bonus_score = self._calc_bonus(combined)
         description_bonus = self._calc_description_bonus(description)
-        raw_score = industry_score + fleet_score + size_score + bonus_score + description_bonus
+        bonus_comercial, lead_intent_type = self._calc_commercial_intent(
+            combined, industry_results
+        )
+        raw_score = (industry_score + fleet_score + size_score
+                      + bonus_score + description_bonus + bonus_comercial)
         final_score = min(self.weights['score_max'], max(0, raw_score))
         priority = self._determine_priority(final_score)
         return {
@@ -64,12 +71,15 @@ class RelevanceScorer:
             'fleet_score': fleet_score,
             'size_score': size_score,
             'bonus_score': bonus_score + description_bonus,
+            'bonus_comercial': bonus_comercial,
+            'lead_intent_type': lead_intent_type,
             'details': {
                 'industry_score': industry_score,
                 'fleet_score': fleet_score,
                 'size_score': size_score,
                 'bonus_score': bonus_score,
                 'description_bonus': description_bonus,
+                'bonus_comercial': bonus_comercial,
                 'raw_score': raw_score,
             },
         }
@@ -155,6 +165,19 @@ class RelevanceScorer:
         if len(desc_text) >= min_chars:
             return points
         return 0
+
+    def _calc_commercial_intent(self, combined, industry_results):
+        has_financial = any(
+            keyword_match(combined, kw) for kw in FINANCIAL_KEYWORDS
+        )
+        is_transporte = any(
+            key == 'transporte_carga' for key in (industry_results or {})
+        )
+        if has_financial:
+            return self.weights.get('bonus_commercial', 15), 'SQL'
+        if is_transporte:
+            return 0, 'MQL'
+        return 0, ''
 
     def _determine_priority(self, score):
         threshold_high = self.weights.get('threshold_high_priority', 60)

@@ -1,9 +1,46 @@
+import difflib
 import logging
 
 from apps.preprocessing.data import INDUSTRY_KEYWORDS
-from apps.preprocessing.services.cleaner import DataCleaner, keyword_match
+from apps.preprocessing.services.cleaner import DataCleaner
 
 logger = logging.getLogger(__name__)
+
+FUZZY_THRESHOLD = 0.85
+
+
+def _word_similarity(a, b):
+    return difflib.SequenceMatcher(None, a, b).ratio()
+
+
+def _fuzzy_match_keyword(keyword, text):
+    tokens = text.split()
+    keyword_words = keyword.split()
+
+    if not tokens or not keyword_words:
+        return False
+
+    if len(keyword_words) == 1:
+        k = keyword_words[0]
+        best = max(_word_similarity(k, t) for t in tokens)
+        return best >= FUZZY_THRESHOLD
+
+    n = len(keyword_words)
+    if len(tokens) < n:
+        return False
+
+    best = 0.0
+    for i in range(len(tokens) - n + 1):
+        window = tokens[i:i + n]
+        ratios = [
+            _word_similarity(kw, tw)
+            for kw, tw in zip(keyword_words, window)
+        ]
+        avg = sum(ratios) / n
+        if avg > best:
+            best = avg
+
+    return best >= FUZZY_THRESHOLD
 
 
 class IndustryClassifier:
@@ -43,17 +80,17 @@ class IndustryClassifier:
     def _score_industry(self, text, config):
         score = 0
         for kw in config.get('keywords_high', []):
-            if keyword_match(text, kw):
+            if _fuzzy_match_keyword(kw, text):
                 score += 10
         for kw in config.get('keywords_medium', []):
-            if keyword_match(text, kw):
+            if _fuzzy_match_keyword(kw, text):
                 score += 5
         return score
 
     def _score_from_keywords(self, text, keywords, weight):
         score = 0
         for kw in keywords:
-            if keyword_match(text, kw.lower()):
+            if _fuzzy_match_keyword(kw.lower(), text):
                 score += weight
         return score
 

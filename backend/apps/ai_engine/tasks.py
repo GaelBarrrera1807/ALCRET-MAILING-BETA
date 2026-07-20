@@ -8,7 +8,7 @@ logger = logging.getLogger(__name__)
 
 @shared_task(bind=True, max_retries=3, default_retry_delay=10)
 def analyze_company(self, company_id):
-    from apps.companies.models import Company
+    from apps.core.models import Company
     from apps.ai_engine.models import AnalysisRequest, AnalysisResult
     from apps.ai_engine.services import CerebrasClient
 

@@ -24,6 +24,9 @@ RUN addgroup --system --gid 1001 appgroup \
     && adduser --system --uid 1001 --gid 1001 appuser \
     && chown -R appuser:appgroup /app
 
+RUN mkdir -p /app/media/mailer /app/media/static \
+    && chown -R appuser:appgroup /app/media
+
 USER appuser
 
 EXPOSE 8000

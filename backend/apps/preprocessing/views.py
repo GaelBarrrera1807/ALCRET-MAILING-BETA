@@ -37,6 +37,7 @@ class PreprocessingJobViewSet(viewsets.ReadOnlyModelViewSet):
         file = serializer.validated_data['file']
         threshold = serializer.validated_data.get('threshold', 30)
         use_ai_fallback = serializer.validated_data.get('use_ai_fallback', False)
+        auto_enrich_sql = serializer.validated_data.get('auto_enrich_sql', False)
         content = file.read()
         encoded = base64.b64encode(content).decode('ascii')
         job = PreprocessingJob.objects.create(
@@ -44,11 +45,13 @@ class PreprocessingJobViewSet(viewsets.ReadOnlyModelViewSet):
             original_filename=file.name,
             status=PreprocessingJob.Status.PROCESSING,
             scoring_threshold=threshold,
+            auto_enrich_sql=auto_enrich_sql,
         )
         task = run_preprocessing.delay(
             file.name, encoded,
             threshold=threshold,
             use_ai_fallback=use_ai_fallback,
+            auto_enrich_sql=auto_enrich_sql,
             job_id=str(job.id),
         )
         return Response({

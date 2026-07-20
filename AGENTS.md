@@ -5,10 +5,10 @@
 ### Modelos
 - `users.User` - Usuario con herencia de AbstractUser + organización
 - `users.Organization` - Tenant multiempresa
-- `companies.Sector` - Sectores industriales
-- `companies.Product` - Productos con relación a sectores
-- `companies.Company` - Empresa con datos de contacto y scoring
-- `companies.CompanyContact` - Contactos de empresa
+- `core.Sector` → `companies_sector` — Sectores industriales (antes en `companies`)
+- `core.Product` → `companies_product` — Productos con relación a sectores
+- `core.Company` → `companies_company` — Empresa con datos de contacto y scoring
+- `core.CompanyContact` → `companies_companycontact` — Contactos de empresa
 - `leads.Lead` - Lead con scoring, prioridad y estado comercial
 - `leads.LeadNote` - Notas de seguimiento de leads
 - `ai_engine.AnalysisRequest` - Solicitud de análisis a IA
@@ -20,6 +20,14 @@
 - `analytics.ProcessingStats` - Estadísticas de procesamiento
 - `reports.Report` - Reportes generados
 - `reports.ReportTemplate` - Plantillas de reportes
+
+> **Refactor 2026-07**: Los modelos `Sector`, `Product`, `Company` y `CompanyContact` se movieron de
+> `apps/companies/models.py` a `apps/core/models.py` con `Meta.db_table = 'companies_*'`
+> para apuntar a las tablas existentes. La app `companies` opera como stub de compatibilidad:
+> solo models (re-export desde core), views/serializers/urls, migrations y admin. Esto protege
+> el grafo de migraciones existentes (otras apps dependen de `('companies', '000X')`) y
+> mantiene todos los endpoints del frontend intactos. **Nuevo código debe importar directamente
+> de `apps.core.models`**, no de `apps.companies.models`.
 
 ### API Endpoints
 - `POST /api/auth/login/` - JWT login

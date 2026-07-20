@@ -95,10 +95,9 @@ class TestIndustryClassifier(TestCase):
         self.assertIn('construccion', results)
 
     def test_no_match(self):
-        text = 'Tienda de abarrotes y miscelanea'
+        text = 'Servicios de consultoria fiscal y contable'
         results = self.classifier.classify(text)
-        for key, info in results.items():
-            self.assertEqual(info['score'], 0)
+        self.assertEqual(len(results), 0)
 
     def test_best_industry(self):
         text = 'Empresa de transporte de carga, logistica y almacen'
@@ -232,3 +231,140 @@ class TestExportService(TestCase):
         path = self.exporter.export_csv([])
         self.assertTrue(os.path.exists(path))
         os.unlink(path)
+
+
+class TestFase3Scenarios(TestCase):
+    """Escenarios CRISP-ML(Q) Fase 3: SQL/Borderline/Exclusion."""
+
+    # ── 2a) Caso Ideal: SQL / Alta Prioridad ──────────────────────────
+    def test_sql_alta_prioridad_arrendamiento_flotas(self):
+        """
+        Empresa de transporte pesado que menciona 'arrendamiento financiero
+        de flotas' debe obtener score > 60, prioridad 'alta' y
+        lead_intent_type = 'SQL'.
+        """
+        scorer = RelevanceScorer()
+        result = scorer.score(
+            'Transportes Pesados del Valle SA',
+            'Empresa de transporte de carga pesada dedicada al '
+            'arrendamiento financiero de flotas de tractocamiones '
+            'y semirremolques para logistica industrial',
+        )
+        self.assertGreater(
+            result['score'], 60,
+            'El score debe superar 60 para ser prioridad alta',
+        )
+        self.assertEqual(
+            result['priority'], 'alta',
+            'Prioridad debe ser alta para score > 60',
+        )
+        self.assertEqual(
+            result['lead_intent_type'], 'SQL',
+            'lead_intent_type debe ser SQL al detectar intencion financiera',
+        )
+        self.assertFalse(
+            result['is_excluded'],
+            'No debe estar excluido',
+        )
+
+    # ── 2b) Caso Borderline: Rescate Lexico Difuso ────────────────────
+    def test_borderline_fuzzy_classifier_rescue_typos(self):
+        """
+        El clasificador difuso (Fase 2) debe rescatar texto con typos
+        mayores como 'trasportes' y 'rremoleques'.
+        """
+        classifier = IndustryClassifier()
+        text = 'empresa de trasportes y rremoleques para carga pesada'
+        results = classifier.classify(text)
+        self.assertIn(
+            'transporte_carga', results,
+            'El clasificador difuso debe detectar transporte_carga '
+            'pese a los typos',
+        )
+        self.assertGreater(
+            results['transporte_carga']['score'], 0,
+            'El score de la industria debe ser > 0',
+        )
+
+    def test_borderline_fuzzy_pipeline_rescue_typos(self):
+        """
+        El pipeline completo debe rescatar un registro con typos
+        superando el threshold de 30.
+        """
+        csv_content = (
+            b'nombre,giro\n'
+            b'Empresa de Trasportes y Rremoleques,'
+            b'Servicios de trasporte y rremoleques para carga pesada\n'
+        )
+        pipeline = PreprocessingPipeline(threshold=30)
+        result = pipeline.process('test_typos.csv', csv_content)
+
+        self.assertIsNone(
+            result.error,
+            'Pipeline no debe reportar error',
+        )
+        self.assertEqual(
+            result.total_records, 1,
+            'Debe haber 1 registro procesado',
+        )
+        self.assertGreaterEqual(
+            result.relevant_records, 1,
+            'El registro con typos debe ser relevante (score >= 30)',
+        )
+
+        record = result.records[0]
+        score = record['_preprocess_score']
+        self.assertGreaterEqual(
+            score, 30,
+            f'El score del registro rescatado ({score}) debe ser >= 30',
+        )
+
+        if result.cleaned_file_path and os.path.exists(result.cleaned_file_path):
+            os.unlink(result.cleaned_file_path)
+
+    # ── 2c) Caso de Exclusion Directa ─────────────────────────────────
+    def test_exclusion_directa_cafeteria(self):
+        """
+        Registro con 'cafeteria gourmet' debe ser excluido de forma
+        fulminante: score=0, is_excluded=True.
+        """
+        scorer = RelevanceScorer()
+        result = scorer.score(
+            'Cafeteria Gourmet SA',
+            'Cafeteria gourmet y reposteria fina',
+        )
+        self.assertEqual(
+            result['score'], 0,
+            'El score debe ser 0 por exclusion',
+        )
+        self.assertTrue(
+            result['is_excluded'],
+            'is_excluded debe ser True',
+        )
+        self.assertEqual(
+            result['priority'], 'descartado',
+            'La prioridad debe ser descartado',
+        )
+
+    def test_exclusion_directa_jardin_ninos(self):
+        """
+        Registro con 'jardin de ninos' debe ser excluido de forma
+        fulminante: score=0, is_excluded=True.
+        """
+        scorer = RelevanceScorer()
+        result = scorer.score(
+            'Jardin de Ninos Arcoiris',
+            'Guarderia y jardin de ninos educacion inicial',
+        )
+        self.assertEqual(
+            result['score'], 0,
+            'El score debe ser 0 por exclusion',
+        )
+        self.assertTrue(
+            result['is_excluded'],
+            'is_excluded debe ser True',
+        )
+        self.assertEqual(
+            result['priority'], 'descartado',
+            'La prioridad debe ser descartado',
+        )

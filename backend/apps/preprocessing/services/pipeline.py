@@ -2,7 +2,7 @@ import logging
 import time
 from unidecode import unidecode
 
-from apps.preprocessing.data import WEIGHTS
+from apps.preprocessing.data.weights import FIELD_KEYWORDS, WEIGHTS
 from apps.preprocessing.services.reader import FileReader
 from apps.preprocessing.services.cleaner import DataCleaner
 from apps.preprocessing.services.classifier import IndustryClassifier
@@ -57,20 +57,6 @@ def _is_related_industry(industry_name):
         return False
     norm = unidecode(industry_name.lower().strip())
     return norm in RELATED_SECTORS_NORM
-
-
-FIELD_KEYWORDS = {
-    'name': [
-        'nombre', 'razon social', 'denominacion',
-        'denominacion', 'empresa', 'compania',
-        'titular', 'cliente', 'proveedor', 'prospecto',
-        'name', 'company', 'business',
-    ],
-    'description': [
-        'descripcion', 'giro', 'actividad',
-        'description', 'detalle', 'rubro', 'giro comercial',
-    ],
-}
 
 
 def _match_column(col_name, keywords):
@@ -254,12 +240,21 @@ class PreprocessingPipeline:
                             for i, r in enumerate(evaluate)
                         ]
                         ai_results = batch_classify_borderline(batch)
+                        ai_reasons = {
+                            r['index']: r.get('justificacion_ia', '')
+                            for r in ai_results
+                        }
                         ai_confirmed = {
                             r['index'] for r in ai_results
                             if r.get('es_potencial')
                         }
+                        ai_rejected = {
+                            r['index'] for r in ai_results
+                            if not r.get('es_potencial')
+                        }
                         rescued = []
                         for i, r in enumerate(evaluate):
+                            r['_ai_reason'] = ai_reasons.get(i, '')
                             if i in ai_confirmed:
                                 r['_preprocess_score'] = max(
                                     r['_preprocess_score'], self.threshold
@@ -267,12 +262,24 @@ class PreprocessingPipeline:
                                 r['_preprocess_priority'] = 'baja'
                                 r['score_info']['score'] = r['_preprocess_score']
                                 rescued.append(r)
+                            elif i in ai_rejected:
+                                r['_preprocess_score'] = 0
+                                r['_preprocess_priority'] = 'descartado'
+                                r['_sector_note'] = 'ia_rechazado'
+                                r['score_info']['score'] = 0
+                                r['score_info']['priority'] = 'descartado'
+                                r['score_info']['is_excluded'] = True
                         if rescued:
                             relevant.extend(rescued)
                             for r in rescued:
                                 discarded.remove(r)
                             logger.info(
                                 f'AI fallback rescued {len(rescued)} records'
+                            )
+                        if ai_rejected:
+                            logger.info(
+                                f'AI fallback definitively rejected '
+                                f'{len(ai_rejected)} records (IA dijo no potencial)'
                             )
                     except Exception as e:
                         logger.error(f'AI fallback error: {e}')
@@ -293,6 +300,7 @@ class PreprocessingPipeline:
                     '_preprocess_industry', ''
                 )
                 export_row['sector_note'] = rec.get('_sector_note', '')
+                export_row['justificacion_ia'] = rec.get('_ai_reason', '')
                 export_row['fleet_score'] = rec.get(
                     'score_info', {}
                 ).get('fleet_score', 0)

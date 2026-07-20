@@ -51,6 +51,15 @@ export interface Company {
   is_client: boolean
   source: string
   created_at: string
+  website: string
+  contacts_count: number
+  google_rating: number | null
+  google_reviews_count: number | null
+  maps_categories: string[]
+  main_photo_url: string | null
+  latitude: number | null
+  longitude: number | null
+  opening_hours: Record<string, unknown> | null
 }
 
 export interface CompanyDetail extends Company {
@@ -115,6 +124,40 @@ export interface Report {
   created_at: string
 }
 
+export interface ScrapingJobSummary {
+  id: string
+  search_query: string
+  location: string
+  status: string
+  companies_count: number
+  created_at: string
+}
+
+export interface SearchCompany {
+  id: string
+  name: string
+  score: number
+  sector: string | null
+  sector_name: string
+  detected_sector: string
+  status: string
+  city: string
+  state: string
+  is_lead: boolean
+  is_client: boolean
+  source: string
+  created_at: string
+  website: string
+  contacts_count: number
+  google_rating: number | null
+  google_reviews_count: number | null
+  maps_categories: string[]
+  main_photo_url: string | null
+  latitude: number | null
+  longitude: number | null
+  opening_hours: Record<string, unknown> | null
+}
+
 export interface DashboardSummary {
   total_companies: number
   total_analyzed: number
@@ -128,6 +171,17 @@ export interface DashboardSummary {
   by_priority: { priority: string; count: number }[]
 }
 
+export interface JobStats {
+  total: number
+  relevant: number
+  discarded: number
+  threshold: number
+  avg_score: number
+  by_priority: Record<string, number>
+  credits_consumed?: number
+  enriched_count?: number
+}
+
 export interface PreprocessingJob {
   id: string
   original_filename: string
@@ -137,18 +191,21 @@ export interface PreprocessingJob {
   filtered_records: number
   scoring_threshold: number
   cleaned_file: string | null
-  stats_json: {
-    total: number
-    relevant: number
-    discarded: number
-    threshold: number
-    avg_score: number
-    by_priority: Record<string, number>
-  }
+  stats_json: JobStats | null
   processing_time: number | null
   error_message: string
+  auto_enrich_sql: boolean
+  credits_consumed: number
   created_at: string
   updated_at: string
+}
+
+export interface PreprocessResponse {
+  task_id: string
+  job_id: string
+  status: string
+  filename: string
+  threshold: number
 }
 
 export interface PaginatedResponse<T> {
@@ -156,4 +213,105 @@ export interface PaginatedResponse<T> {
   next: string | null
   previous: string | null
   results: T[]
+}
+
+// === Email Marketing ===
+
+export interface EmailTemplate {
+  id: string
+  organization: string | null
+  name: string
+  template_type: string
+  subject: string
+  body_html: string
+  variables: string[]
+  description: string
+  is_active: boolean
+  use_count: number
+  created_at: string
+  updated_at: string
+}
+
+export interface EmailRecipient {
+  id: string
+  organization: string | null
+  company: string | null
+  lead: string | null
+  email: string
+  first_name: string
+  last_name: string
+  company_name: string
+  sector: string
+  is_active: boolean
+  unsubscribed_at: string | null
+  source: string
+  metadata: Record<string, unknown>
+  created_at: string
+  updated_at: string
+}
+
+export interface EmailCampaign {
+  id: string
+  organization: string | null
+  name: string
+  template: string | null
+  template_name: string
+  subject: string
+  body_html: string
+  source_filter: string
+  status: string
+  scheduled_at: string | null
+  sent_at: string | null
+  total_recipients: number
+  sent_count: number
+  open_count: number
+  click_count: number
+  bounce_count: number
+  unsubscribe_count: number
+  created_at: string
+  updated_at: string
+}
+
+export interface CampaignSend {
+  id: string
+  campaign: string
+  recipient: string
+  recipient_email: string
+  recipient_name: string
+  tracking_id: string
+  status: string
+  sent_at: string | null
+  opened_at: string | null
+  clicked_at: string | null
+  error_message: string
+  events: EmailEvent[]
+  created_at: string
+}
+
+export interface EmailEvent {
+  id: string
+  campaign_send: string
+  event_type: string
+  user_agent: string
+  ip_address: string | null
+  url: string
+  metadata: Record<string, unknown>
+  created_at: string
+}
+
+export interface CampaignStats {
+  sent: number
+  opens: number
+  clicks: number
+  bounces: number
+  unsubscribes: number
+  by_status: Record<string, number>
+}
+
+export interface MailerDashboard {
+  total_campaigns: number
+  total_sent: number
+  open_rate: number
+  click_rate: number
+  recent_campaigns: EmailCampaign[]
 }

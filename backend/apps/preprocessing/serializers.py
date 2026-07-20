@@ -15,7 +15,8 @@ class PreprocessingJobListSerializer(serializers.ModelSerializer):
             'id', 'original_filename', 'status',
             'total_records', 'relevant_records', 'filtered_records',
             'scoring_threshold', 'processing_time',
-            'error_message', 'created_at',
+            'error_message', 'auto_enrich_sql', 'credits_consumed',
+            'created_at',
         ]
         read_only_fields = fields
 
@@ -28,13 +29,15 @@ class PreprocessingJobDetailSerializer(serializers.ModelSerializer):
             'total_records', 'relevant_records', 'filtered_records',
             'scoring_threshold', 'cleaned_file', 'stats_json',
             'processing_time', 'error_message',
+            'auto_enrich_sql', 'credits_consumed',
             'created_at', 'updated_at',
         ]
         read_only_fields = [
             'id', 'organization', 'status',
             'total_records', 'relevant_records', 'filtered_records',
             'cleaned_file', 'stats_json', 'processing_time',
-            'error_message', 'created_at', 'updated_at',
+            'error_message', 'credits_consumed',
+            'created_at', 'updated_at',
         ]
 
 
@@ -57,6 +60,9 @@ class PreprocessingFileSerializer(serializers.Serializer):
         default=30, min_value=0, max_value=100, required=False,
     )
     use_ai_fallback = serializers.BooleanField(
+        default=False, required=False,
+    )
+    auto_enrich_sql = serializers.BooleanField(
         default=False, required=False,
     )
 

@@ -333,6 +333,26 @@ INDUSTRY_KEYWORDS = {
         ],
         'weight': 8,
     },
+    'muebles_carpinteria': {
+        'name': 'Muebles y Carpintería',
+        'keywords_high': [
+            'muebles', 'carpinteria', 'ebanisteria', 'madera',
+            'fabrica de muebles', 'muebleria', 'taller de madera',
+            'fabricacion de muebles', 'muebles de madera',
+            'muebles para oficina', 'muebles para hogar',
+            'cocina integral', 'closet', 'closets',
+            'tapiceria', 'colchones', 'sillones',
+            'diseno de interiores', 'muebles sobre diseno',
+        ],
+        'keywords_medium': [
+            'restauracion de muebles', 'barniz', 'laca',
+            'acabados en madera', 'madera fina',
+            'tablero aglomerado', 'tablero mdf', 'triplay',
+            'plegable', 'cortinas', 'persianas',
+            'decoracion', 'muebles tapizados',
+        ],
+        'weight': 9,
+    },
     'manufactura_industrial': {
         'name': 'Manufactura industrial',
         'keywords_high': [

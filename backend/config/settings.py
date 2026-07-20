@@ -34,13 +34,14 @@ X_FRAME_OPTIONS = 'DENY'
 LOCAL_APPS = [
     'apps.core',
     'apps.users',
-    'apps.companies',
+    'apps.companies',  # stub — models re-exported from core
     'apps.leads',
     'apps.ai_engine',
     'apps.scraping',
     'apps.analytics',
     'apps.reports',
     'apps.preprocessing',
+    'apps.mailer',
 ]
 
 THIRD_PARTY_APPS = [
@@ -193,11 +194,37 @@ CELERY_RESULT_BACKEND = CELERY_BROKER_URL
 CELERY_ACCEPT_CONTENT = ['json']
 CELERY_TASK_SERIALIZER = 'json'
 CELERY_RESULT_SERIALIZER = 'json'
+CELERY_RESULT_EXPIRES = int(os.getenv('CELERY_RESULT_EXPIRES', '86400'))
 CELERY_TIMEZONE = TIME_ZONE
+
+# CELERY_BEAT_SCHEDULE deshabilitado temporalmente hasta django-celery-beat>=2.7
+# CELERY_BEAT_SCHEDULE = {
+#     'retry-failed-campaigns': {
+#         'task': 'apps.mailer.tasks.send_campaign.retry_failed_sends',
+#         'schedule': 300,
+#     },
+# }
+
+# Email
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = os.getenv('EMAIL_HOST', 'mailhog')
+EMAIL_PORT = int(os.getenv('EMAIL_PORT', '1025'))
+EMAIL_USE_TLS = os.getenv('EMAIL_USE_TLS', 'false').lower() == 'true'
+DEFAULT_FROM_EMAIL = os.getenv('DEFAULT_FROM_EMAIL', 'prospeccion@industrialprospecting.com')
+EMAIL_RATE_LIMIT = int(os.getenv('EMAIL_RATE_LIMIT', '50'))
+EMAIL_BATCH_PAUSE = int(os.getenv('EMAIL_BATCH_PAUSE', '1'))
 
 CEREBRAS_API_KEY = os.getenv('CEREBRAS_API_KEY', '')
 CEREBRAS_BASE_URL = os.getenv('CEREBRAS_BASE_URL', 'https://api.cerebras.ai/v1')
 CEREBRAS_MODEL = os.getenv('CEREBRAS_MODEL', 'cerebras/Llama-3.3-70B')
+
+APIFY_API_KEY = os.getenv('APIFY_API_KEY', '')
+APIFY_ACTOR_ID = os.getenv('APIFY_ACTOR_ID', 'compass~crawler-google-places')
+
+SNOV_CLIENT_ID = os.getenv('SNOV_CLIENT_ID', '')
+SNOV_CLIENT_SECRET = os.getenv('SNOV_CLIENT_SECRET', '')
+
+BASE_URL = os.getenv('BASE_URL', 'http://localhost:8000')
 
 DATA_UPLOAD_MAX_MEMORY_SIZE = 10 * 1024 * 1024  # 10MB
 FILE_UPLOAD_MAX_MEMORY_SIZE = 10 * 1024 * 1024  # 10MB

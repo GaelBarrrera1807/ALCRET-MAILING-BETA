@@ -1,101 +1,66 @@
 PRODUCT_KEYWORDS = {
-    'dolly': {
-        'name': 'Dolly',
+    'arrendamiento_puro': {
+        'name': 'Arrendamiento Puro',
         'keywords': [
-            'dolly', 'remolque dolly', 'dolly camion',
-            'conversor dolly', 'dolly arrastre',
+            'arrendamiento puro', 'arrendamiento', 'renta mensual',
+            'contrato arrendamiento', 'renta tractocamion',
+            'arrendamiento tracto',
+        ],
+        'weight': 5,
+    },
+    'leasing_financiero': {
+        'name': 'Leasing Financiero',
+        'keywords': [
+            'leasing', 'leasing financiero', 'arrendamiento financiero',
+            'leasing tractocamion', 'financiero leasing',
+        ],
+        'weight': 5,
+    },
+    'credito_directo': {
+        'name': 'Credito Directo',
+        'keywords': [
+            'credito directo', 'credito', 'financiamiento directo',
+            'prestamo', 'credito tractocamion', 'financiamiento',
         ],
         'weight': 5,
     },
     'cajas_secas': {
-        'name': 'Cajas secas',
+        'name': 'Cajas Secas',
         'keywords': [
-            'caja seca', 'cajas secas', 'remolque caja',
-            'camion caja', 'caja cerrada', 'furgon',
-            'caja frigorifica', 'carga seca',
+            'caja seca', 'cajas secas', 'caja cerrada', 'furgon',
+            'carga seca', 'caja frigorifica', 'caja seca tracto',
         ],
         'weight': 5,
     },
-    'plataformas': {
-        'name': 'Plataformas',
+    'remolques': {
+        'name': 'Remolques',
         'keywords': [
-            'plataforma', 'plataformas', 'remolque plataforma',
-            'cama baja', 'carga sobredimensionada',
-            'plataforma carga', 'plataforma remolque',
+            'remolque', 'remolques', 'semirremolque', 'semirremolques',
+            'remolque tracto', 'remolque camion',
         ],
         'weight': 5,
     },
-    'plataforma_multimodal': {
-        'name': 'Plataforma multimodal',
+    'tractocamiones': {
+        'name': 'Tractocamiones 6x4',
         'keywords': [
-            'plataforma multimodal', 'multimodal',
-            'transporte multimodal', 'intermodal',
+            'tractocamion', 'tractocamiones', 'tracto', 'tracto 6x4',
+            'camion 6x4', 'tractor camion', 'cabezal', 'camion de carga',
+            'vehiculo pesado', 'unidad tracto', 'tracto camion',
         ],
         'weight': 5,
     },
-    'portacontenedores': {
-        'name': 'Portacontenedores',
+    'flotas_logisticas': {
+        'name': 'Flotas Logisticas',
         'keywords': [
-            'portacontenedor', 'portacontenedores',
-            'chasis contenedor', 'remolque contenedor',
-            'transporte contenedor',
-        ],
-        'weight': 5,
-    },
-    'portacontenedor_extensible': {
-        'name': 'Portacontenedor extensible',
-        'keywords': [
-            'portacontenedor extensible', 'chasis extensible',
-            'contenedor extensible', 'remolque extensible',
-        ],
-        'weight': 5,
-    },
-    'volteos': {
-        'name': 'Volteos',
-        'keywords': [
-            'volteo', 'volteos', 'remolque volteo',
-            'camion volteo', 'tolva volteo', 'vagon volteo',
-            'descarga volteo',
-        ],
-        'weight': 5,
-    },
-    'tolvas': {
-        'name': 'Tolvas',
-        'keywords': [
-            'tolva', 'tolvas', 'remolque tolva',
-            'tolva grano', 'tolva cemento', 'tolva carga',
-            'tolva agricola',
-        ],
-        'weight': 5,
-    },
-    'tanques': {
-        'name': 'Tanques',
-        'keywords': [
-            'tanque', 'tanques', 'remolque tanque',
-            'tanque combustible', 'tanque quimico',
-            'cisterna', 'pipas', 'camion tanque',
-        ],
-        'weight': 5,
-    },
-    'sobre_chasis': {
-        'name': 'Sobre chasis',
-        'keywords': [
-            'sobre chasis', 'chasis', 'remolque chasis',
-            'chasis portacontenedor',
-        ],
-        'weight': 5,
-    },
-    'equipos_especiales': {
-        'name': 'Equipos especiales',
-        'keywords': [
-            'equipo especial', 'equipos especiales',
-            'remolque especial', 'equipo pesado',
-            'transporte especializado', 'carga especial',
-            'compactador', 'compactadores', 'compactador basura',
-            'grua', 'gruas', 'contenedor',
-            'plataforma piso movil', 'gondola',
-            'pipa', 'pipas',
+            'flota logistica', 'flotas logisticas', 'logistica flota',
+            'administracion flota', 'gestion flota', 'flotilla',
+            'parque vehicular', 'unidades de transporte',
         ],
         'weight': 5,
     },
 }
+
+FINANCIAL_KEYWORDS = [
+    'arrendamiento', 'leasing', 'financiamiento', 'credito',
+    'prestamo', 'arrendar', 'rentar', 'financiar',
+]

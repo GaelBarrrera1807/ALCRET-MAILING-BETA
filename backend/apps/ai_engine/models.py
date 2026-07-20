@@ -5,7 +5,7 @@ from apps.core.models import BaseModel
 
 class AnalysisRequest(BaseModel):
     company = models.ForeignKey(
-        'companies.Company', on_delete=models.CASCADE,
+        'core.Company', on_delete=models.CASCADE,
         related_name='analysis_requests'
     )
     organization = models.ForeignKey(
@@ -42,7 +42,7 @@ class AnalysisResult(BaseModel):
         related_name='result'
     )
     company = models.ForeignKey(
-        'companies.Company', on_delete=models.CASCADE,
+        'core.Company', on_delete=models.CASCADE,
         related_name='analysis_results'
     )
     score = models.IntegerField(default=0)

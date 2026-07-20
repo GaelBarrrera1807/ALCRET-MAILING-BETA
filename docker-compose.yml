@@ -22,7 +22,7 @@ services:
     volumes:
       - pgdata:/var/lib/postgresql/data
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U ${DB_USER:-postgres} -d ${DB_NAME:-industrial_prospecting}"]
+      test: [ "CMD-SHELL", "pg_isready -U ${DB_USER:-postgres} -d ${DB_NAME:-industrial_prospecting}" ]
       interval: 5s
       timeout: 5s
       retries: 5
@@ -41,7 +41,7 @@ services:
     ports:
       - '127.0.0.1:6379:6379'
     healthcheck:
-      test: ["CMD", "redis-cli", "-a", "${REDIS_PASSWORD:-redis}", "ping"]
+      test: [ "CMD", "redis-cli", "-a", "${REDIS_PASSWORD:-redis}", "ping" ]
       interval: 5s
       timeout: 5s
       retries: 5
@@ -60,26 +60,34 @@ services:
       dockerfile: Dockerfile
     command: sh entrypoint.sh
     volumes:
+      - ./backend:/app
       - static_volume:/app/staticfiles
       - media_volume:/app/media
     env_file:
       - .env
     ports:
-      - '127.0.0.1:8000:8000'
+      - '127.0.0.1:8000:8000' 
     depends_on:
       db:
         condition: service_healthy
       redis:
         condition: service_healthy
     networks:
+      - frontend_net
       - backend_net
       - db_net
+    healthcheck:
+      test: python -c "import urllib.request; urllib.request.urlopen('http://localhost:8000/api/health/')"
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 15s
     restart: unless-stopped
     deploy:
       resources:
         limits:
-          memory: 512M
-          cpus: '1'
+          memory: 1G
+          cpus: '2'
 
   worker:
     build:
@@ -87,6 +95,7 @@ services:
       dockerfile: Dockerfile
     command: celery -A config worker -l info --concurrency=4
     volumes:
+      - ./backend:/app # ← CÓDIGO EN VIVO
       - media_volume:/app/media
     env_file:
       - .env
@@ -98,6 +107,7 @@ services:
       backend:
         condition: service_started
     networks:
+      - frontend_net
       - backend_net
       - db_net
     restart: unless-stopped
@@ -114,13 +124,14 @@ services:
       target: runner
     environment:
       - NODE_ENV=production
-      - NEXT_PUBLIC_API_BASE_URL=http://backend:8000/api
+      - API_PROXY_URL=http://backend:8000
     env_file:
       - .env
     ports:
-      - '127.0.0.1:3000:3000'
+      - '127.0.0.1:3000:3000' # ← Igual, solo acceso local
     depends_on:
-      - backend
+      backend:
+        condition: service_healthy
     networks:
       - frontend_net
       - backend_net
@@ -130,6 +141,23 @@ services:
         limits:
           memory: 512M
           cpus: '1'
+
+  # ← NUEVO SERVICIO
+  mailhog:
+    image: mailhog/mailhog:latest
+    container_name: mailhog
+    ports:
+      - '0.0.0.0:1025:1025'
+      - '0.0.0.0:8025:8025'
+    networks:
+      - frontend_net
+      - backend_net
+    restart: unless-stopped
+    deploy:
+      resources:
+        limits:
+          memory: 128M
+          cpus: '0.25'
 
 volumes:
   pgdata:

@@ -8,10 +8,6 @@ class ScrapingJob(BaseModel):
         'users.Organization', on_delete=models.CASCADE,
         related_name='scraping_jobs', null=True, blank=True
     )
-    company = models.ForeignKey(
-        'companies.Company', on_delete=models.CASCADE,
-        related_name='scraping_jobs', null=True, blank=True
-    )
     url = models.URLField(blank=True, default='')
     job_type = models.CharField(
         max_length=50,
@@ -20,6 +16,7 @@ class ScrapingJob(BaseModel):
             ('phone', 'Teléfono'),
             ('social', 'Redes sociales'),
             ('enrichment', 'Enriquecimiento'),
+            ('MAPS_DISCOVERY', 'Descubrimiento Google Maps'),
         ],
         default='website',
     )
@@ -35,6 +32,7 @@ class ScrapingJob(BaseModel):
     )
     result = models.JSONField(null=True, blank=True)
     error_message = models.TextField(blank=True, default='')
+    credits_consumed = models.IntegerField(default=0)
 
     class Meta:
         verbose_name = 'Trabajo de Scraping'
@@ -42,13 +40,14 @@ class ScrapingJob(BaseModel):
         ordering = ['-created_at']
 
     def __str__(self):
-        return f'{self.job_type}: {self.url or self.company}'
+        return f'{self.job_type}: {self.url}'
 
 
 class ScrapedData(BaseModel):
     company = models.ForeignKey(
-        'companies.Company', on_delete=models.CASCADE,
-        related_name='scraped_data'
+        'core.Company', on_delete=models.CASCADE,
+        related_name='scraped_data',
+        null=True, blank=True,
     )
     source = models.CharField(max_length=255, blank=True, default='')
     data_type = models.CharField(max_length=100, blank=True, default='')

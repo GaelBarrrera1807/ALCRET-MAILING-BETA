@@ -11,8 +11,8 @@ class LeadNoteInline(admin.TabularInline):
 
 @admin.register(Lead)
 class LeadAdmin(admin.ModelAdmin):
-    list_display = ['company', 'score', 'priority', 'status', 'assigned_to', 'created_at']
-    list_filter = ['status', 'priority', 'is_potential_client']
+    list_display = ['company', 'score', 'priority', 'status', 'assigned_to', 'auto_created', 'created_at']
+    list_filter = ['status', 'priority', 'auto_created', 'is_potential_client']
     search_fields = ['company__name', 'detected_sector']
     readonly_fields = ['created_at', 'updated_at']
     inlines = [LeadNoteInline]

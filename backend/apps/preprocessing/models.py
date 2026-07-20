@@ -30,6 +30,8 @@ class PreprocessingJob(BaseModel):
     stats_json = models.JSONField(default=dict, blank=True)
     processing_time = models.FloatField(null=True, blank=True)
     error_message = models.TextField(blank=True, default='')
+    auto_enrich_sql = models.BooleanField(default=False)
+    credits_consumed = models.IntegerField(default=0)
 
     class Meta:
         verbose_name = 'Trabajo de preprocesamiento'
@@ -55,7 +57,7 @@ class PreprocessingRule(BaseModel):
     keywords = models.JSONField(default=list, blank=True)
     weight = models.IntegerField(default=5)
     sector = models.ForeignKey(
-        'companies.Sector', on_delete=models.SET_NULL,
+        'core.Sector', on_delete=models.SET_NULL,
         null=True, blank=True,
     )
     recommended_products = models.JSONField(default=list, blank=True)

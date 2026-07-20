@@ -1,0 +1,1547 @@
+{
+  "communities": {
+    "0": [
+      "backend_apps_ai_engine_admin",
+      "backend_apps_ai_engine_admin_analysisrequestadmin",
+      "backend_apps_ai_engine_admin_analysisresultadmin",
+      "backend_apps_ai_engine_admin_prompttemplateadmin",
+      "backend_apps_ai_engine_models",
+      "backend_apps_ai_engine_models_analysisrequest",
+      "backend_apps_ai_engine_models_analysisrequest_str",
+      "backend_apps_ai_engine_models_analysisresult",
+      "backend_apps_ai_engine_models_analysisresult_str",
+      "backend_apps_ai_engine_models_meta",
+      "backend_apps_ai_engine_models_prompttemplate",
+      "backend_apps_ai_engine_models_prompttemplate_str",
+      "backend_apps_ai_engine_serializers",
+      "backend_apps_ai_engine_serializers_analysisrequestserializer",
+      "backend_apps_ai_engine_serializers_analysisresultserializer",
+      "backend_apps_ai_engine_serializers_meta",
+      "backend_apps_ai_engine_serializers_prompttemplateserializer",
+      "backend_apps_ai_engine_services_cerebrasclient",
+      "backend_apps_ai_engine_services_cerebrasclient_analyze_company",
+      "backend_apps_ai_engine_services_cerebrasclient_init",
+      "backend_apps_ai_engine_services_cerebrasclient_is_available",
+      "backend_apps_ai_engine_services_cerebrasclient_mock_analysis",
+      "backend_apps_ai_engine_tests",
+      "backend_apps_ai_engine_tests_analysisrequesttests",
+      "backend_apps_ai_engine_tests_analysisrequesttests_setup",
+      "backend_apps_ai_engine_tests_analysisrequesttests_test_filter_by_company",
+      "backend_apps_ai_engine_tests_analysisrequesttests_test_list_requests",
+      "backend_apps_ai_engine_tests_analysisrequesttests_test_retrieve_request",
+      "backend_apps_ai_engine_tests_analysisresulttests",
+      "backend_apps_ai_engine_tests_analysisresulttests_setup",
+      "backend_apps_ai_engine_tests_analysisresulttests_test_filter_by_company",
+      "backend_apps_ai_engine_tests_analysisresulttests_test_list_results",
+      "backend_apps_ai_engine_tests_analysisresulttests_test_retrieve_result",
+      "backend_apps_ai_engine_tests_analyzecompanytasktests",
+      "backend_apps_ai_engine_tests_analyzecompanytasktests_test_analyze_company_task_creates_lead",
+      "backend_apps_ai_engine_tests_analyzecompanytasktests_test_analyze_company_task_handles_error",
+      "backend_apps_ai_engine_tests_basetest",
+      "backend_apps_ai_engine_tests_basetest_auth",
+      "backend_apps_ai_engine_tests_basetest_setup",
+      "backend_apps_ai_engine_tests_cerebrasclienttests",
+      "backend_apps_ai_engine_tests_cerebrasclienttests_test_analyze_company_without_api_key",
+      "backend_apps_ai_engine_tests_cerebrasclienttests_test_is_available_false_without_key",
+      "backend_apps_ai_engine_tests_cerebrasclienttests_test_mock_analysis_high_score",
+      "backend_apps_ai_engine_tests_cerebrasclienttests_test_mock_analysis_low_score",
+      "backend_apps_ai_engine_tests_cerebrasclienttests_test_mock_analysis_returns_structured_data",
+      "backend_apps_ai_engine_tests_prompttemplatetests",
+      "backend_apps_ai_engine_tests_prompttemplatetests_test_create_template",
+      "backend_apps_ai_engine_tests_prompttemplatetests_test_delete_template",
+      "backend_apps_ai_engine_tests_prompttemplatetests_test_list_templates",
+      "backend_apps_ai_engine_tests_prompttemplatetests_test_only_active_templates_listed",
+      "backend_apps_ai_engine_tests_prompttemplatetests_test_retrieve_template",
+      "backend_apps_ai_engine_tests_prompttemplatetests_test_update_template",
+      "backend_apps_ai_engine_views",
+      "backend_apps_ai_engine_views_analysisrequestviewset",
+      "backend_apps_ai_engine_views_analysisrequestviewset_get_queryset",
+      "backend_apps_ai_engine_views_analysisresultviewset",
+      "backend_apps_ai_engine_views_analysisresultviewset_get_queryset",
+      "backend_apps_ai_engine_views_prompttemplateviewset"
+    ],
+    "1": [
+      "backend_apps_mailer_services_mail_service",
+      "backend_apps_mailer_services_mail_service_send_single_email",
+      "backend_apps_mailer_services_template_service",
+      "backend_apps_mailer_services_template_service_detect_variables",
+      "backend_apps_mailer_services_template_service_render_template",
+      "backend_apps_mailer_services_template_service_validate_variables",
+      "backend_apps_mailer_tasks_init",
+      "backend_apps_mailer_tasks_send_campaign",
+      "backend_apps_mailer_tasks_send_campaign_retry_failed_sends",
+      "backend_apps_mailer_tasks_send_campaign_send_campaign_task",
+      "backend_apps_mailer_tests_test_mailer",
+      "backend_apps_mailer_tests_test_mailer_basetest",
+      "backend_apps_mailer_tests_test_mailer_basetest_auth",
+      "backend_apps_mailer_tests_test_mailer_basetest_create_campaign",
+      "backend_apps_mailer_tests_test_mailer_basetest_create_recipient",
+      "backend_apps_mailer_tests_test_mailer_basetest_create_template",
+      "backend_apps_mailer_tests_test_mailer_basetest_setup",
+      "backend_apps_mailer_tests_test_mailer_celerytasktests",
+      "backend_apps_mailer_tests_test_mailer_celerytasktests_test_retry_failed_sends",
+      "backend_apps_mailer_tests_test_mailer_celerytasktests_test_send_campaign_handles_errors",
+      "backend_apps_mailer_tests_test_mailer_celerytasktests_test_send_campaign_task_executes",
+      "backend_apps_mailer_tests_test_mailer_emailcampaigntests",
+      "backend_apps_mailer_tests_test_mailer_emailcampaigntests_test_campaign_stats",
+      "backend_apps_mailer_tests_test_mailer_emailcampaigntests_test_create_campaign",
+      "backend_apps_mailer_tests_test_mailer_emailcampaigntests_test_list_campaigns",
+      "backend_apps_mailer_tests_test_mailer_emailcampaigntests_test_send_campaign_creates_sends",
+      "backend_apps_mailer_tests_test_mailer_emailcampaigntests_test_send_campaign_filter_all",
+      "backend_apps_mailer_tests_test_mailer_emailcampaigntests_test_send_campaign_no_recipients",
+      "backend_apps_mailer_tests_test_mailer_emailcampaigntests_test_send_campaign_rejects_no_template",
+      "backend_apps_mailer_tests_test_mailer_emailcampaigntests_test_send_campaign_rejects_non_draft",
+      "backend_apps_mailer_tests_test_mailer_emaildeliverytests",
+      "backend_apps_mailer_tests_test_mailer_emaildeliverytests_test_campaign_counts_updated",
+      "backend_apps_mailer_tests_test_mailer_emaildeliverytests_test_email_is_sent_via_celery",
+      "backend_apps_mailer_tests_test_mailer_emailrecipienttests",
+      "backend_apps_mailer_tests_test_mailer_emailrecipienttests_test_bulk_create",
+      "backend_apps_mailer_tests_test_mailer_emailrecipienttests_test_bulk_skips_duplicates",
+      "backend_apps_mailer_tests_test_mailer_emailrecipienttests_test_create_recipient",
+      "backend_apps_mailer_tests_test_mailer_emailrecipienttests_test_duplicate_email_rejected",
+      "backend_apps_mailer_tests_test_mailer_emailrecipienttests_test_filter_by_is_active",
+      "backend_apps_mailer_tests_test_mailer_emailrecipienttests_test_filter_by_source",
+      "backend_apps_mailer_tests_test_mailer_emailrecipienttests_test_list_recipients",
+      "backend_apps_mailer_tests_test_mailer_emailrecipienttests_test_unsubscribe_sets_inactive",
+      "backend_apps_mailer_tests_test_mailer_emailtemplatetests",
+      "backend_apps_mailer_tests_test_mailer_emailtemplatetests_test_create_template",
+      "backend_apps_mailer_tests_test_mailer_emailtemplatetests_test_list_templates",
+      "backend_apps_mailer_tests_test_mailer_emailtemplatetests_test_preview_template",
+      "backend_apps_mailer_tests_test_mailer_emailtemplatetests_test_render_template",
+      "backend_apps_mailer_tests_test_mailer_emailtemplatetests_test_template_sanitizes_html",
+      "backend_apps_mailer_tests_test_mailer_emailtemplatetests_test_update_template",
+      "backend_apps_mailer_tests_test_mailer_trackingtests",
+      "backend_apps_mailer_tests_test_mailer_trackingtests_test_tracking_click_redirects",
+      "backend_apps_mailer_tests_test_mailer_trackingtests_test_tracking_creates_email_event",
+      "backend_apps_mailer_tests_test_mailer_trackingtests_test_tracking_pixel_returns_gif",
+      "backend_apps_mailer_tests_test_mailer_trackingtests_test_tracking_unknown_id_returns_200"
+    ],
+    "2": [
+      "backend_apps_mailer_serializers",
+      "backend_apps_mailer_serializers_campaignsendserializer",
+      "backend_apps_mailer_serializers_campaignsendserializer_get_recipient_email",
+      "backend_apps_mailer_serializers_campaignsendserializer_get_recipient_name",
+      "backend_apps_mailer_serializers_emailcampaigncreateserializer",
+      "backend_apps_mailer_serializers_emailcampaignserializer",
+      "backend_apps_mailer_serializers_emailcampaignserializer_get_sends_count",
+      "backend_apps_mailer_serializers_emaileventserializer",
+      "backend_apps_mailer_serializers_emailrecipientbulkserializer",
+      "backend_apps_mailer_serializers_emailrecipientserializer",
+      "backend_apps_mailer_serializers_emailrecipientserializer_validate_email",
+      "backend_apps_mailer_serializers_emailtemplatepreviewserializer",
+      "backend_apps_mailer_serializers_emailtemplateserializer",
+      "backend_apps_mailer_serializers_meta",
+      "backend_apps_mailer_serializers_templateimageserializer",
+      "backend_apps_mailer_serializers_templateimageserializer_get_url",
+      "backend_apps_mailer_services_tracking_service",
+      "backend_apps_mailer_services_tracking_service_generate_tracking_pixel",
+      "backend_apps_mailer_services_tracking_service_parse_tracking_id",
+      "backend_apps_mailer_services_tracking_service_process_bounce",
+      "backend_apps_mailer_services_tracking_service_process_click",
+      "backend_apps_mailer_services_tracking_service_process_open",
+      "backend_apps_mailer_services_tracking_service_process_unsubscribe",
+      "backend_apps_mailer_views",
+      "backend_apps_mailer_views_emailcampaignviewset",
+      "backend_apps_mailer_views_emailcampaignviewset_get_queryset",
+      "backend_apps_mailer_views_emailcampaignviewset_get_serializer_class",
+      "backend_apps_mailer_views_emailcampaignviewset_perform_create",
+      "backend_apps_mailer_views_emailcampaignviewset_preview",
+      "backend_apps_mailer_views_emailcampaignviewset_send",
+      "backend_apps_mailer_views_emailcampaignviewset_stats",
+      "backend_apps_mailer_views_emailrecipientviewset",
+      "backend_apps_mailer_views_emailrecipientviewset_bulk",
+      "backend_apps_mailer_views_emailrecipientviewset_get_queryset",
+      "backend_apps_mailer_views_emailrecipientviewset_get_serializer_class",
+      "backend_apps_mailer_views_emailrecipientviewset_perform_create",
+      "backend_apps_mailer_views_emailrecipientviewset_perform_destroy",
+      "backend_apps_mailer_views_emailtemplateviewset",
+      "backend_apps_mailer_views_emailtemplateviewset_get_queryset",
+      "backend_apps_mailer_views_emailtemplateviewset_get_serializer_class",
+      "backend_apps_mailer_views_emailtemplateviewset_perform_create",
+      "backend_apps_mailer_views_emailtemplateviewset_preview",
+      "backend_apps_mailer_views_templateimageviewset",
+      "backend_apps_mailer_views_templateimageviewset_get_queryset",
+      "backend_apps_mailer_views_templateimageviewset_perform_create",
+      "backend_apps_mailer_views_tracking_click",
+      "backend_apps_mailer_views_tracking_pixel"
+    ],
+    "3": [
+      "backend_apps_companies_tests",
+      "backend_apps_companies_tests_basetest",
+      "backend_apps_companies_tests_basetest_auth",
+      "backend_apps_companies_tests_basetest_setup",
+      "backend_apps_companies_tests_companycontacttests",
+      "backend_apps_companies_tests_companycontacttests_setup",
+      "backend_apps_companies_tests_companycontacttests_test_create_contact",
+      "backend_apps_companies_tests_companycontacttests_test_delete_contact",
+      "backend_apps_companies_tests_companycontacttests_test_list_contacts_by_company",
+      "backend_apps_companies_tests_companycontacttests_test_update_contact",
+      "backend_apps_companies_tests_companytests",
+      "backend_apps_companies_tests_companytests_setup",
+      "backend_apps_companies_tests_companytests_test_analyze_batch",
+      "backend_apps_companies_tests_companytests_test_analyze_batch_no_ids",
+      "backend_apps_companies_tests_companytests_test_analyze_company",
+      "backend_apps_companies_tests_companytests_test_create_company",
+      "backend_apps_companies_tests_companytests_test_delete_company",
+      "backend_apps_companies_tests_companytests_test_filter_by_is_lead",
+      "backend_apps_companies_tests_companytests_test_filter_by_min_score",
+      "backend_apps_companies_tests_companytests_test_filter_by_sector",
+      "backend_apps_companies_tests_companytests_test_filter_by_status",
+      "backend_apps_companies_tests_companytests_test_list_companies",
+      "backend_apps_companies_tests_companytests_test_multi_tenant_isolation",
+      "backend_apps_companies_tests_companytests_test_retrieve_company",
+      "backend_apps_companies_tests_companytests_test_search_companies",
+      "backend_apps_companies_tests_companytests_test_update_company",
+      "backend_apps_companies_tests_companytests_test_upload_csv",
+      "backend_apps_companies_tests_producttests",
+      "backend_apps_companies_tests_producttests_setup",
+      "backend_apps_companies_tests_producttests_test_create_product",
+      "backend_apps_companies_tests_producttests_test_delete_product",
+      "backend_apps_companies_tests_producttests_test_list_products",
+      "backend_apps_companies_tests_producttests_test_retrieve_product",
+      "backend_apps_companies_tests_producttests_test_update_product",
+      "backend_apps_companies_tests_sectortests",
+      "backend_apps_companies_tests_sectortests_test_create_sector",
+      "backend_apps_companies_tests_sectortests_test_delete_sector",
+      "backend_apps_companies_tests_sectortests_test_list_sectors",
+      "backend_apps_companies_tests_sectortests_test_retrieve_sector",
+      "backend_apps_companies_tests_sectortests_test_search_sector",
+      "backend_apps_companies_tests_sectortests_test_update_sector"
+    ],
+    "4": [
+      "frontend_package",
+      "frontend_package_dependencies",
+      "frontend_package_dependencies_next",
+      "frontend_package_dependencies_react",
+      "frontend_package_dependencies_react_dom",
+      "frontend_package_dependencies_tiptap_core",
+      "frontend_package_dependencies_tiptap_extension_code_block_lowlight",
+      "frontend_package_dependencies_tiptap_extension_color",
+      "frontend_package_dependencies_tiptap_extension_history",
+      "frontend_package_dependencies_tiptap_extension_horizontal_rule",
+      "frontend_package_dependencies_tiptap_extension_image",
+      "frontend_package_dependencies_tiptap_extension_link",
+      "frontend_package_dependencies_tiptap_extension_list",
+      "frontend_package_dependencies_tiptap_extension_placeholder",
+      "frontend_package_dependencies_tiptap_extension_table",
+      "frontend_package_dependencies_tiptap_extension_table_cell",
+      "frontend_package_dependencies_tiptap_extension_table_header",
+      "frontend_package_dependencies_tiptap_extension_table_row",
+      "frontend_package_dependencies_tiptap_extension_text_align",
+      "frontend_package_dependencies_tiptap_extension_text_style",
+      "frontend_package_dependencies_tiptap_extension_underline",
+      "frontend_package_dependencies_tiptap_react",
+      "frontend_package_dependencies_tiptap_starter_kit",
+      "frontend_package_devdependencies",
+      "frontend_package_devdependencies_eslint",
+      "frontend_package_devdependencies_eslint_config_next",
+      "frontend_package_devdependencies_tailwindcss",
+      "frontend_package_devdependencies_tailwindcss_postcss",
+      "frontend_package_devdependencies_types_node",
+      "frontend_package_devdependencies_types_react",
+      "frontend_package_devdependencies_types_react_dom",
+      "frontend_package_devdependencies_typescript",
+      "frontend_package_name",
+      "frontend_package_private",
+      "frontend_package_scripts",
+      "frontend_package_scripts_build",
+      "frontend_package_scripts_dev",
+      "frontend_package_scripts_lint",
+      "frontend_package_scripts_start",
+      "frontend_package_version"
+    ],
+    "5": [
+      "apitestcase",
+      "backend_apps_core_tests",
+      "backend_apps_core_tests_healthchecktests",
+      "backend_apps_core_tests_healthchecktests_test_health_check_allows_anonymous",
+      "backend_apps_core_tests_healthchecktests_test_health_check_returns_ok",
+      "backend_apps_users_tests",
+      "backend_apps_users_tests_organizationtests",
+      "backend_apps_users_tests_organizationtests_auth",
+      "backend_apps_users_tests_organizationtests_setup",
+      "backend_apps_users_tests_organizationtests_test_create_organization",
+      "backend_apps_users_tests_organizationtests_test_delete_organization",
+      "backend_apps_users_tests_organizationtests_test_list_organizations",
+      "backend_apps_users_tests_organizationtests_test_retrieve_organization",
+      "backend_apps_users_tests_organizationtests_test_update_organization",
+      "backend_apps_users_tests_usertests",
+      "backend_apps_users_tests_usertests_auth",
+      "backend_apps_users_tests_usertests_setup",
+      "backend_apps_users_tests_usertests_test_change_password_short_new",
+      "backend_apps_users_tests_usertests_test_change_password_success",
+      "backend_apps_users_tests_usertests_test_change_password_wrong_old",
+      "backend_apps_users_tests_usertests_test_create_user",
+      "backend_apps_users_tests_usertests_test_delete_user",
+      "backend_apps_users_tests_usertests_test_list_users",
+      "backend_apps_users_tests_usertests_test_login_invalid_credentials",
+      "backend_apps_users_tests_usertests_test_login_returns_tokens",
+      "backend_apps_users_tests_usertests_test_me_endpoint",
+      "backend_apps_users_tests_usertests_test_me_requires_auth",
+      "backend_apps_users_tests_usertests_test_refresh_token",
+      "backend_apps_users_tests_usertests_test_register_user",
+      "backend_apps_users_tests_usertests_test_register_user_with_organization",
+      "backend_apps_users_tests_usertests_test_update_user"
+    ],
+    "6": [
+      "backend_apps_leads_tests",
+      "backend_apps_leads_tests_basetest",
+      "backend_apps_leads_tests_basetest_auth",
+      "backend_apps_leads_tests_basetest_setup",
+      "backend_apps_leads_tests_leadnotetests",
+      "backend_apps_leads_tests_leadnotetests_setup",
+      "backend_apps_leads_tests_leadnotetests_test_create_note",
+      "backend_apps_leads_tests_leadnotetests_test_delete_note",
+      "backend_apps_leads_tests_leadnotetests_test_list_notes_by_lead",
+      "backend_apps_leads_tests_leadnotetests_test_note_has_author",
+      "backend_apps_leads_tests_leadnotetests_test_update_note",
+      "backend_apps_leads_tests_leadtests",
+      "backend_apps_leads_tests_leadtests_test_batch_update_no_ids",
+      "backend_apps_leads_tests_leadtests_test_batch_update_priority",
+      "backend_apps_leads_tests_leadtests_test_batch_update_status",
+      "backend_apps_leads_tests_leadtests_test_create_lead",
+      "backend_apps_leads_tests_leadtests_test_delete_lead",
+      "backend_apps_leads_tests_leadtests_test_filter_by_assigned",
+      "backend_apps_leads_tests_leadtests_test_filter_by_min_score",
+      "backend_apps_leads_tests_leadtests_test_filter_by_priority",
+      "backend_apps_leads_tests_leadtests_test_filter_by_status",
+      "backend_apps_leads_tests_leadtests_test_lead_has_company_name",
+      "backend_apps_leads_tests_leadtests_test_list_leads",
+      "backend_apps_leads_tests_leadtests_test_multi_tenant_isolation",
+      "backend_apps_leads_tests_leadtests_test_retrieve_lead",
+      "backend_apps_leads_tests_leadtests_test_search_lead",
+      "backend_apps_leads_tests_leadtests_test_update_lead"
+    ],
+    "7": [
+      "backend_apps_ai_engine_tasks",
+      "backend_apps_ai_engine_tasks_analyze_company",
+      "backend_apps_companies_tasks",
+      "backend_apps_companies_tasks_build_contact_name",
+      "backend_apps_companies_tasks_find_value_in_columns",
+      "backend_apps_companies_tasks_match_column",
+      "backend_apps_companies_tasks_process_company_upload",
+      "backend_apps_preprocessing_tasks",
+      "backend_apps_preprocessing_tasks_process_with_preprocessing",
+      "backend_apps_preprocessing_tasks_run_preprocessing",
+      "backend_apps_reports_services",
+      "backend_apps_reports_services_reportservice",
+      "backend_apps_reports_services_reportservice_generate_leads_csv",
+      "backend_apps_reports_services_reportservice_generate_leads_report",
+      "backend_apps_reports_services_reportservice_generate_scoring_csv",
+      "backend_apps_reports_services_reportservice_generate_scoring_report",
+      "backend_apps_reports_services_reportservice_sanitize_csv_value",
+      "backend_apps_reports_services_reportservice_write_csv",
+      "backend_apps_reports_tasks",
+      "backend_apps_reports_tasks_generate_report",
+      "backend_config_celery",
+      "backend_config_celery_debug_task",
+      "backend_config_init"
+    ],
+    "8": [
+      "backend_apps_companies_serializers",
+      "backend_apps_companies_serializers_companycontactserializer",
+      "backend_apps_companies_serializers_companydetailserializer",
+      "backend_apps_companies_serializers_companydetailserializer_to_representation",
+      "backend_apps_companies_serializers_companylistserializer",
+      "backend_apps_companies_serializers_companyuploadserializer",
+      "backend_apps_companies_serializers_companyuploadserializer_validate_file",
+      "backend_apps_companies_serializers_meta",
+      "backend_apps_companies_serializers_productserializer",
+      "backend_apps_companies_serializers_sectorserializer",
+      "backend_apps_companies_views",
+      "backend_apps_companies_views_companycontactviewset",
+      "backend_apps_companies_views_companycontactviewset_get_queryset",
+      "backend_apps_companies_views_companyviewset",
+      "backend_apps_companies_views_companyviewset_analyze",
+      "backend_apps_companies_views_companyviewset_analyze_batch",
+      "backend_apps_companies_views_companyviewset_get_queryset",
+      "backend_apps_companies_views_companyviewset_get_serializer_class",
+      "backend_apps_companies_views_companyviewset_perform_create",
+      "backend_apps_companies_views_companyviewset_upload",
+      "backend_apps_companies_views_productviewset",
+      "backend_apps_companies_views_sectorviewset"
+    ],
+    "9": [
+      "appconfig",
+      "backend_apps_ai_engine_apps",
+      "backend_apps_ai_engine_apps_aiengineconfig",
+      "backend_apps_analytics_apps",
+      "backend_apps_analytics_apps_analyticsconfig",
+      "backend_apps_companies_apps",
+      "backend_apps_companies_apps_companiesconfig",
+      "backend_apps_core_apps",
+      "backend_apps_core_apps_coreconfig",
+      "backend_apps_leads_apps",
+      "backend_apps_leads_apps_leadsconfig",
+      "backend_apps_mailer_apps",
+      "backend_apps_mailer_apps_mailerconfig",
+      "backend_apps_preprocessing_apps",
+      "backend_apps_preprocessing_apps_preprocessingconfig",
+      "backend_apps_reports_apps",
+      "backend_apps_reports_apps_reportsconfig",
+      "backend_apps_scraping_apps",
+      "backend_apps_scraping_apps_scrapingconfig",
+      "backend_apps_users_apps",
+      "backend_apps_users_apps_usersconfig"
+    ],
+    "10": [
+      "backend_apps_reports_tests",
+      "backend_apps_reports_tests_basetest",
+      "backend_apps_reports_tests_basetest_auth",
+      "backend_apps_reports_tests_basetest_setup",
+      "backend_apps_reports_tests_reporttemplatetests",
+      "backend_apps_reports_tests_reporttemplatetests_test_create_template",
+      "backend_apps_reports_tests_reporttemplatetests_test_delete_template",
+      "backend_apps_reports_tests_reporttemplatetests_test_list_templates",
+      "backend_apps_reports_tests_reporttemplatetests_test_only_active_templates_listed",
+      "backend_apps_reports_tests_reporttemplatetests_test_retrieve_template",
+      "backend_apps_reports_tests_reporttemplatetests_test_update_template",
+      "backend_apps_reports_tests_reporttests",
+      "backend_apps_reports_tests_reporttests_test_create_report",
+      "backend_apps_reports_tests_reporttests_test_create_report_with_filters",
+      "backend_apps_reports_tests_reporttests_test_delete_report",
+      "backend_apps_reports_tests_reporttests_test_filter_by_report_type",
+      "backend_apps_reports_tests_reporttests_test_list_reports",
+      "backend_apps_reports_tests_reporttests_test_multi_tenant_isolation",
+      "backend_apps_reports_tests_reporttests_test_regenerate_report",
+      "backend_apps_reports_tests_reporttests_test_retrieve_report"
+    ],
+    "11": [
+      "frontend_tsconfig",
+      "frontend_tsconfig_compileroptions",
+      "frontend_tsconfig_compileroptions_allowjs",
+      "frontend_tsconfig_compileroptions_esmoduleinterop",
+      "frontend_tsconfig_compileroptions_incremental",
+      "frontend_tsconfig_compileroptions_isolatedmodules",
+      "frontend_tsconfig_compileroptions_jsx",
+      "frontend_tsconfig_compileroptions_lib",
+      "frontend_tsconfig_compileroptions_module",
+      "frontend_tsconfig_compileroptions_moduleresolution",
+      "frontend_tsconfig_compileroptions_noemit",
+      "frontend_tsconfig_compileroptions_paths",
+      "frontend_tsconfig_compileroptions_plugins",
+      "frontend_tsconfig_compileroptions_resolvejsonmodule",
+      "frontend_tsconfig_compileroptions_skiplibcheck",
+      "frontend_tsconfig_compileroptions_strict",
+      "frontend_tsconfig_compileroptions_target",
+      "frontend_tsconfig_exclude",
+      "frontend_tsconfig_include",
+      "frontend_tsconfig_paths"
+    ],
+    "12": [
+      "backend_apps_ai_engine_services",
+      "backend_apps_ai_engine_services_batch_classify_borderline",
+      "backend_apps_ai_engine_services_call_cerebras_batch",
+      "backend_apps_ai_engine_services_classify_batch_with_retry",
+      "backend_apps_ai_engine_services_mock_batch_borderline",
+      "backend_apps_ai_engine_services_mock_for_batch",
+      "backend_apps_ai_engine_services_rationale_333",
+      "backend_apps_ai_engine_services_rationale_380",
+      "backend_apps_ai_engine_services_rationale_417",
+      "backend_apps_ai_engine_services_rationale_459",
+      "backend_apps_ai_engine_services_rationale_520",
+      "backend_apps_preprocessing_services_pipeline",
+      "backend_apps_preprocessing_services_pipeline_find_value_in_columns",
+      "backend_apps_preprocessing_services_pipeline_is_related_industry",
+      "backend_apps_preprocessing_services_pipeline_is_target_industry",
+      "backend_apps_preprocessing_services_pipeline_match_column",
+      "backend_apps_preprocessing_services_pipeline_preprocessingpipeline_process"
+    ],
+    "13": [
+      "backend_apps_preprocessing_tests",
+      "backend_apps_preprocessing_tests_rationale_237",
+      "backend_apps_preprocessing_tests_rationale_241",
+      "backend_apps_preprocessing_tests_rationale_350",
+      "backend_apps_preprocessing_tests_testexportservice",
+      "backend_apps_preprocessing_tests_testexportservice_setup",
+      "backend_apps_preprocessing_tests_testexportservice_test_export_csv",
+      "backend_apps_preprocessing_tests_testexportservice_test_export_empty",
+      "backend_apps_preprocessing_tests_testfase3scenarios",
+      "backend_apps_preprocessing_tests_testfase3scenarios_test_exclusion_directa_jardin_ninos",
+      "backend_apps_preprocessing_tests_testfase3scenarios_test_sql_alta_prioridad_arrendamiento_flotas",
+      "backend_apps_preprocessing_tests_testleadfilter",
+      "backend_apps_preprocessing_tests_testleadfilter_setup",
+      "backend_apps_preprocessing_tests_testleadfilter_test_filter_by_threshold",
+      "backend_apps_preprocessing_tests_testleadfilter_test_prioritize_order",
+      "backend_apps_preprocessing_tests_testleadfilter_test_summary_stats",
+      "testcase"
+    ],
+    "14": [
+      "backend_apps_scraping_tests_test_views",
+      "backend_apps_scraping_tests_test_views_basetest",
+      "backend_apps_scraping_tests_test_views_basetest_auth",
+      "backend_apps_scraping_tests_test_views_basetest_setup",
+      "backend_apps_scraping_tests_test_views_scrapeddatatests",
+      "backend_apps_scraping_tests_test_views_scrapeddatatests_setup",
+      "backend_apps_scraping_tests_test_views_scrapeddatatests_test_filter_by_company",
+      "backend_apps_scraping_tests_test_views_scrapeddatatests_test_list_scraped_data",
+      "backend_apps_scraping_tests_test_views_scrapeddatatests_test_retrieve_scraped_data",
+      "backend_apps_scraping_tests_test_views_scrapingjobtests",
+      "backend_apps_scraping_tests_test_views_scrapingjobtests_test_create_job_with_company",
+      "backend_apps_scraping_tests_test_views_scrapingjobtests_test_create_job_with_url",
+      "backend_apps_scraping_tests_test_views_scrapingjobtests_test_delete_job",
+      "backend_apps_scraping_tests_test_views_scrapingjobtests_test_list_jobs",
+      "backend_apps_scraping_tests_test_views_scrapingjobtests_test_multi_tenant_isolation",
+      "backend_apps_scraping_tests_test_views_scrapingjobtests_test_retrieve_job",
+      "backend_apps_scraping_tests_test_views_scrapingjobtests_test_retry_job"
+    ],
+    "15": [
+      "backend_apps_analytics_tests",
+      "backend_apps_analytics_tests_analyticssummarytests",
+      "backend_apps_analytics_tests_analyticssummarytests_test_summary_counts",
+      "backend_apps_analytics_tests_analyticssummarytests_test_summary_empty",
+      "backend_apps_analytics_tests_analyticssummarytests_test_summary_returns_all_keys",
+      "backend_apps_analytics_tests_basetest",
+      "backend_apps_analytics_tests_basetest_auth",
+      "backend_apps_analytics_tests_basetest_setup",
+      "backend_apps_analytics_tests_dashboardmetrictests",
+      "backend_apps_analytics_tests_dashboardmetrictests_test_filter_by_days",
+      "backend_apps_analytics_tests_dashboardmetrictests_test_filter_by_metric_type",
+      "backend_apps_analytics_tests_dashboardmetrictests_test_list_metrics",
+      "backend_apps_analytics_tests_dashboardmetrictests_test_multi_tenant_isolation",
+      "backend_apps_analytics_tests_processingstatstests",
+      "backend_apps_analytics_tests_processingstatstests_test_list_stats",
+      "backend_apps_analytics_tests_processingstatstests_test_multi_tenant_isolation"
+    ],
+    "16": [
+      "backend_apps_users_serializers",
+      "backend_apps_users_serializers_changepasswordserializer",
+      "backend_apps_users_serializers_meta",
+      "backend_apps_users_serializers_organizationserializer",
+      "backend_apps_users_serializers_registerserializer",
+      "backend_apps_users_serializers_registerserializer_create",
+      "backend_apps_users_serializers_userserializer",
+      "backend_apps_users_views",
+      "backend_apps_users_views_organizationviewset",
+      "backend_apps_users_views_organizationviewset_get_queryset",
+      "backend_apps_users_views_organizationviewset_perform_create",
+      "backend_apps_users_views_registerview",
+      "backend_apps_users_views_userviewset",
+      "backend_apps_users_views_userviewset_change_password",
+      "backend_apps_users_views_userviewset_get_queryset",
+      "backend_apps_users_views_userviewset_me"
+    ],
+    "17": [
+      "any",
+      "backend_apps_scraping_tests_test_services",
+      "backend_apps_scraping_tests_test_services_enrichcompanycontactstests",
+      "backend_apps_scraping_tests_test_services_enrichcompanycontactstests_setup",
+      "backend_apps_scraping_tests_test_services_enrichcompanycontactstests_test_enrich_company_contacts_avoid_duplicate_primary",
+      "backend_apps_scraping_tests_test_services_enrichcompanycontactstests_test_enrich_company_contacts_no_existing_primary_sets_first",
+      "backend_apps_scraping_tests_test_services_enrichcompanycontactstests_test_enrich_company_contacts_skip_empty_name",
+      "backend_apps_scraping_tests_test_services_enrichcompanycontactstests_test_enrich_company_contacts_update_existing_by_email",
+      "backend_apps_scraping_tests_test_services_enrichcompanycontactstests_test_enrich_company_contacts_update_existing_by_name",
+      "backend_apps_scraping_tests_test_services_mock_response",
+      "backend_apps_scraping_tests_test_services_runexternalscrapingtests",
+      "backend_apps_scraping_tests_test_services_runexternalscrapingtests_setup",
+      "backend_apps_scraping_tests_test_services_runexternalscrapingtests_test_run_external_scraping_apify_timeout",
+      "backend_apps_scraping_tests_test_services_runexternalscrapingtests_test_run_external_scraping_missing_api_keys",
+      "backend_apps_scraping_tests_test_services_runexternalscrapingtests_test_run_external_scraping_success"
+    ],
+    "18": [
+      "backend_apps_mailer_models",
+      "backend_apps_mailer_models_campaignsend",
+      "backend_apps_mailer_models_campaignsend_str",
+      "backend_apps_mailer_models_emailcampaign",
+      "backend_apps_mailer_models_emailcampaign_str",
+      "backend_apps_mailer_models_emailevent",
+      "backend_apps_mailer_models_emailevent_str",
+      "backend_apps_mailer_models_emailrecipient",
+      "backend_apps_mailer_models_emailrecipient_str",
+      "backend_apps_mailer_models_emailtemplate",
+      "backend_apps_mailer_models_emailtemplate_str",
+      "backend_apps_mailer_models_meta",
+      "backend_apps_mailer_models_templateimage",
+      "backend_apps_mailer_models_templateimage_save",
+      "backend_apps_mailer_models_templateimage_str"
+    ],
+    "19": [
+      "backend_apps_preprocessing_services_cleaner_keyword_match",
+      "backend_apps_preprocessing_services_cleaner_rationale_13",
+      "backend_apps_preprocessing_services_scorer_relevancescorer",
+      "backend_apps_preprocessing_services_scorer_relevancescorer_calc_bonus",
+      "backend_apps_preprocessing_services_scorer_relevancescorer_calc_commercial_intent",
+      "backend_apps_preprocessing_services_scorer_relevancescorer_calc_company_size_score",
+      "backend_apps_preprocessing_services_scorer_relevancescorer_calc_description_bonus",
+      "backend_apps_preprocessing_services_scorer_relevancescorer_calc_fleet_score",
+      "backend_apps_preprocessing_services_scorer_relevancescorer_calc_industry_score",
+      "backend_apps_preprocessing_services_scorer_relevancescorer_determine_priority",
+      "backend_apps_preprocessing_services_scorer_relevancescorer_init",
+      "backend_apps_preprocessing_services_scorer_relevancescorer_is_excluded",
+      "backend_apps_preprocessing_services_scorer_relevancescorer_score",
+      "backend_apps_preprocessing_tests_rationale_327",
+      "backend_apps_preprocessing_tests_testfase3scenarios_test_exclusion_directa_cafeteria"
+    ],
+    "20": [
+      "backend_apps_leads_serializers",
+      "backend_apps_leads_serializers_leadbatchupdateserializer",
+      "backend_apps_leads_serializers_leadnoteserializer",
+      "backend_apps_leads_serializers_leadserializer",
+      "backend_apps_leads_serializers_meta",
+      "backend_apps_leads_views",
+      "backend_apps_leads_views_leadnoteviewset",
+      "backend_apps_leads_views_leadnoteviewset_get_queryset",
+      "backend_apps_leads_views_leadnoteviewset_perform_create",
+      "backend_apps_leads_views_leadviewset",
+      "backend_apps_leads_views_leadviewset_batch_update",
+      "backend_apps_leads_views_leadviewset_get_queryset",
+      "backend_apps_leads_views_leadviewset_get_serializer_class",
+      "backend_apps_leads_views_leadviewset_perform_create"
+    ],
+    "21": [
+      "backend_apps_preprocessing_serializers",
+      "backend_apps_preprocessing_serializers_meta",
+      "backend_apps_preprocessing_serializers_preprocessingfileserializer",
+      "backend_apps_preprocessing_serializers_preprocessingfileserializer_validate_file",
+      "backend_apps_preprocessing_serializers_preprocessingjobdetailserializer",
+      "backend_apps_preprocessing_serializers_preprocessingjoblistserializer",
+      "backend_apps_preprocessing_serializers_preprocessingruleserializer",
+      "backend_apps_preprocessing_views",
+      "backend_apps_preprocessing_views_preprocessingjobviewset",
+      "backend_apps_preprocessing_views_preprocessingjobviewset_download",
+      "backend_apps_preprocessing_views_preprocessingjobviewset_get_queryset",
+      "backend_apps_preprocessing_views_preprocessingjobviewset_get_serializer_class",
+      "backend_apps_preprocessing_views_preprocessingjobviewset_preprocess",
+      "backend_apps_preprocessing_views_preprocessingruleviewset"
+    ],
+    "22": [
+      "backend_apps_preprocessing_services_cleaner_datacleaner",
+      "backend_apps_preprocessing_services_cleaner_datacleaner_clean",
+      "backend_apps_preprocessing_services_cleaner_datacleaner_dedup_key",
+      "backend_apps_preprocessing_services_cleaner_datacleaner_extract_field",
+      "backend_apps_preprocessing_services_cleaner_datacleaner_fix_encoding",
+      "backend_apps_preprocessing_services_cleaner_datacleaner_normalize_company_text",
+      "backend_apps_preprocessing_services_cleaner_datacleaner_normalize_row",
+      "backend_apps_preprocessing_services_cleaner_datacleaner_normalize_text",
+      "backend_apps_preprocessing_tests_testdatacleaner",
+      "backend_apps_preprocessing_tests_testdatacleaner_setup",
+      "backend_apps_preprocessing_tests_testdatacleaner_test_normalize_text",
+      "backend_apps_preprocessing_tests_testdatacleaner_test_null_values",
+      "backend_apps_preprocessing_tests_testdatacleaner_test_remove_duplicates",
+      "backend_apps_preprocessing_tests_testdatacleaner_test_remove_empty_rows"
+    ],
+    "23": [
+      "backend_apps_mailer_admin",
+      "backend_apps_mailer_admin_campaignsendadmin",
+      "backend_apps_mailer_admin_campaignsendadmin_has_add_permission",
+      "backend_apps_mailer_admin_campaignsendadmin_has_change_permission",
+      "backend_apps_mailer_admin_campaignsendinline",
+      "backend_apps_mailer_admin_campaignsendinline_has_add_permission",
+      "backend_apps_mailer_admin_emailcampaignadmin",
+      "backend_apps_mailer_admin_emaileventadmin",
+      "backend_apps_mailer_admin_emaileventadmin_has_add_permission",
+      "backend_apps_mailer_admin_emaileventadmin_has_change_permission",
+      "backend_apps_mailer_admin_emailrecipientadmin",
+      "backend_apps_mailer_admin_emailtemplateadmin"
+    ],
+    "24": [
+      "backend_apps_preprocessing_services_classifier",
+      "backend_apps_preprocessing_services_classifier_fuzzy_match_keyword",
+      "backend_apps_preprocessing_services_classifier_industryclassifier",
+      "backend_apps_preprocessing_services_classifier_industryclassifier_classify",
+      "backend_apps_preprocessing_services_classifier_industryclassifier_get_all_industries_summary",
+      "backend_apps_preprocessing_services_classifier_industryclassifier_get_best_industry",
+      "backend_apps_preprocessing_services_classifier_industryclassifier_init",
+      "backend_apps_preprocessing_services_classifier_industryclassifier_score_from_keywords",
+      "backend_apps_preprocessing_services_classifier_industryclassifier_score_industry",
+      "backend_apps_preprocessing_services_classifier_word_similarity",
+      "backend_apps_preprocessing_tests_rationale_272",
+      "backend_apps_preprocessing_tests_testfase3scenarios_test_borderline_fuzzy_classifier_rescue_typos"
+    ],
+    "25": [
+      "backend_apps_preprocessing_services_cleaner",
+      "backend_apps_preprocessing_services_exporter",
+      "backend_apps_preprocessing_services_filter",
+      "backend_apps_preprocessing_services_filter_leadfilter",
+      "backend_apps_preprocessing_services_filter_leadfilter_filter_records",
+      "backend_apps_preprocessing_services_filter_leadfilter_init",
+      "backend_apps_preprocessing_services_filter_leadfilter_prioritize",
+      "backend_apps_preprocessing_services_filter_leadfilter_summary_stats",
+      "backend_apps_preprocessing_services_init",
+      "backend_apps_preprocessing_services_pipeline_preprocessingpipeline_init",
+      "backend_apps_preprocessing_services_reader",
+      "backend_apps_preprocessing_services_scorer"
+    ],
+    "26": [
+      "backend_apps_reports_serializers",
+      "backend_apps_reports_serializers_meta",
+      "backend_apps_reports_serializers_reportgenerateserializer",
+      "backend_apps_reports_serializers_reportserializer",
+      "backend_apps_reports_serializers_reporttemplateserializer",
+      "backend_apps_reports_views",
+      "backend_apps_reports_views_reporttemplateviewset",
+      "backend_apps_reports_views_reportviewset",
+      "backend_apps_reports_views_reportviewset_create",
+      "backend_apps_reports_views_reportviewset_get_queryset",
+      "backend_apps_reports_views_reportviewset_get_serializer_class",
+      "backend_apps_reports_views_reportviewset_regenerate"
+    ],
+    "27": [
+      "backend_apps_preprocessing_services_reader_filereader",
+      "backend_apps_preprocessing_services_reader_filereader_get_extension",
+      "backend_apps_preprocessing_services_reader_filereader_read",
+      "backend_apps_preprocessing_services_reader_filereader_read_csv",
+      "backend_apps_preprocessing_services_reader_filereader_read_excel",
+      "backend_apps_preprocessing_tests_testfilereader",
+      "backend_apps_preprocessing_tests_testfilereader_setup",
+      "backend_apps_preprocessing_tests_testfilereader_test_empty_csv",
+      "backend_apps_preprocessing_tests_testfilereader_test_read_csv",
+      "backend_apps_preprocessing_tests_testfilereader_test_read_csv_latin1",
+      "backend_apps_preprocessing_tests_testfilereader_test_read_xlsx_simulated_as_csv"
+    ],
+    "28": [
+      "backend_apps_companies_models",
+      "backend_apps_companies_models_company",
+      "backend_apps_companies_models_company_str",
+      "backend_apps_companies_models_companycontact",
+      "backend_apps_companies_models_companycontact_str",
+      "backend_apps_companies_models_meta",
+      "backend_apps_companies_models_product",
+      "backend_apps_companies_models_product_str",
+      "backend_apps_companies_models_sector",
+      "backend_apps_companies_models_sector_str"
+    ],
+    "29": [
+      "backend_apps_analytics_views",
+      "backend_apps_analytics_views_analyticsviewset",
+      "backend_apps_analytics_views_analyticsviewset_get_org_filter",
+      "backend_apps_analytics_views_analyticsviewset_summary",
+      "backend_apps_analytics_views_dashboardmetricviewset",
+      "backend_apps_analytics_views_dashboardmetricviewset_get_queryset",
+      "backend_apps_analytics_views_processingstatsviewset",
+      "backend_apps_analytics_views_processingstatsviewset_get_queryset"
+    ],
+    "30": [
+      "backend_apps_preprocessing_models",
+      "backend_apps_preprocessing_models_meta",
+      "backend_apps_preprocessing_models_preprocessingjob",
+      "backend_apps_preprocessing_models_preprocessingjob_str",
+      "backend_apps_preprocessing_models_preprocessingrule",
+      "backend_apps_preprocessing_models_preprocessingrule_str",
+      "backend_apps_preprocessing_models_ruletype",
+      "backend_apps_preprocessing_models_status"
+    ],
+    "31": [
+      "backend_apps_preprocessing_services_exporter_exportservice",
+      "backend_apps_preprocessing_services_exporter_exportservice_export_csv",
+      "backend_apps_preprocessing_services_exporter_exportservice_export_excel",
+      "backend_apps_preprocessing_services_exporter_exportservice_export_with_metadata",
+      "backend_apps_preprocessing_services_exporter_exportservice_generate_cleaned_file",
+      "backend_apps_preprocessing_services_exporter_exportservice_sanitize_csv_value",
+      "backend_apps_preprocessing_services_pipeline_preprocessingresult",
+      "backend_apps_preprocessing_services_pipeline_preprocessingresult_init"
+    ],
+    "32": [
+      "abstractuser",
+      "backend_apps_users_models",
+      "backend_apps_users_models_meta",
+      "backend_apps_users_models_organization",
+      "backend_apps_users_models_organization_str",
+      "backend_apps_users_models_user",
+      "backend_apps_users_models_user_str"
+    ],
+    "33": [
+      "backend_apps_preprocessing_services_pipeline_preprocessingpipeline",
+      "backend_apps_preprocessing_tests_rationale_290",
+      "backend_apps_preprocessing_tests_testfase3scenarios_test_borderline_fuzzy_pipeline_rescue_typos",
+      "backend_apps_preprocessing_tests_testpipeline",
+      "backend_apps_preprocessing_tests_testpipeline_test_full_pipeline_with_csv",
+      "backend_apps_preprocessing_tests_testpipeline_test_pipeline_empty_file",
+      "backend_apps_preprocessing_tests_testpipeline_test_pipeline_stats_structure"
+    ],
+    "34": [
+      "backend_apps_analytics_models",
+      "backend_apps_analytics_models_dashboardmetric",
+      "backend_apps_analytics_models_dashboardmetric_str",
+      "backend_apps_analytics_models_meta",
+      "backend_apps_analytics_models_processingstats",
+      "backend_apps_analytics_models_processingstats_str"
+    ],
+    "35": [
+      "backend_apps_leads_models",
+      "backend_apps_leads_models_lead",
+      "backend_apps_leads_models_lead_str",
+      "backend_apps_leads_models_leadnote",
+      "backend_apps_leads_models_leadnote_str",
+      "backend_apps_leads_models_meta"
+    ],
+    "36": [
+      "backend_apps_preprocessing_tests_testindustryclassifier",
+      "backend_apps_preprocessing_tests_testindustryclassifier_setup",
+      "backend_apps_preprocessing_tests_testindustryclassifier_test_best_industry",
+      "backend_apps_preprocessing_tests_testindustryclassifier_test_detect_construccion",
+      "backend_apps_preprocessing_tests_testindustryclassifier_test_detect_transporte",
+      "backend_apps_preprocessing_tests_testindustryclassifier_test_no_match"
+    ],
+    "37": [
+      "backend_apps_preprocessing_tests_testrelevancescorer",
+      "backend_apps_preprocessing_tests_testrelevancescorer_setup",
+      "backend_apps_preprocessing_tests_testrelevancescorer_test_excluded",
+      "backend_apps_preprocessing_tests_testrelevancescorer_test_high_score_transporte",
+      "backend_apps_preprocessing_tests_testrelevancescorer_test_low_score",
+      "backend_apps_preprocessing_tests_testrelevancescorer_test_product_bonus"
+    ],
+    "38": [
+      "backend_apps_reports_models",
+      "backend_apps_reports_models_meta",
+      "backend_apps_reports_models_report",
+      "backend_apps_reports_models_report_str",
+      "backend_apps_reports_models_reporttemplate",
+      "backend_apps_reports_models_reporttemplate_str"
+    ],
+    "39": [
+      "backend_apps_companies_admin",
+      "backend_apps_companies_admin_companyadmin",
+      "backend_apps_companies_admin_companycontactadmin",
+      "backend_apps_companies_admin_productadmin",
+      "backend_apps_companies_admin_sectoradmin"
+    ],
+    "40": [
+      "backend_apps_core_models",
+      "backend_apps_core_models_basemodel",
+      "backend_apps_core_models_meta",
+      "backend_apps_core_models_timestampedmodel",
+      "backend_apps_core_models_uuidmodel"
+    ],
+    "41": [
+      "backend_apps_analytics_serializers",
+      "backend_apps_analytics_serializers_dashboardmetricserializer",
+      "backend_apps_analytics_serializers_meta",
+      "backend_apps_analytics_serializers_processingstatsserializer"
+    ],
+    "42": [
+      "backend_apps_core_init",
+      "backend_apps_core_urls",
+      "backend_apps_core_views",
+      "backend_apps_core_views_health_check"
+    ],
+    "43": [
+      "backend_apps_leads_admin",
+      "backend_apps_leads_admin_leadadmin",
+      "backend_apps_leads_admin_leadnoteadmin",
+      "backend_apps_leads_admin_leadnoteinline"
+    ],
+    "44": [
+      "backend_apps_preprocessing_data_exclusions",
+      "backend_apps_preprocessing_data_init",
+      "backend_apps_preprocessing_data_products",
+      "backend_apps_preprocessing_data_weights"
+    ],
+    "45": [
+      "backend_apps_users_admin",
+      "backend_apps_users_admin_organizationadmin",
+      "backend_apps_users_admin_useradmin",
+      "baseuseradmin"
+    ],
+    "46": [
+      "backend_apps_analytics_admin",
+      "backend_apps_analytics_admin_dashboardmetricadmin",
+      "backend_apps_analytics_admin_processingstatsadmin"
+    ],
+    "47": [
+      "backend_apps_preprocessing_admin",
+      "backend_apps_preprocessing_admin_preprocessingjobadmin",
+      "backend_apps_preprocessing_admin_preprocessingruleadmin"
+    ],
+    "48": [
+      "backend_apps_reports_admin",
+      "backend_apps_reports_admin_reportadmin",
+      "backend_apps_reports_admin_reporttemplateadmin"
+    ],
+    "49": [
+      "backend_apps_scraping_admin",
+      "backend_apps_scraping_admin_scrapeddataadmin",
+      "backend_apps_scraping_admin_scrapingjobadmin"
+    ],
+    "50": [
+      "backend_manage",
+      "backend_manage_main",
+      "backend_manage_rationale_8"
+    ],
+    "51": [
+      "backend_apps_ai_engine_migrations_0001_initial",
+      "backend_apps_ai_engine_migrations_0001_initial_migration"
+    ],
+    "52": [
+      "backend_apps_ai_engine_migrations_0002_initial",
+      "backend_apps_ai_engine_migrations_0002_initial_migration"
+    ],
+    "53": [
+      "backend_apps_ai_engine_migrations_0003_initial",
+      "backend_apps_ai_engine_migrations_0003_initial_migration"
+    ],
+    "54": [
+      "backend_apps_analytics_migrations_0001_initial",
+      "backend_apps_analytics_migrations_0001_initial_migration"
+    ],
+    "55": [
+      "backend_apps_analytics_migrations_0002_initial",
+      "backend_apps_analytics_migrations_0002_initial_migration"
+    ],
+    "56": [
+      "backend_apps_companies_migrations_0001_initial",
+      "backend_apps_companies_migrations_0001_initial_migration"
+    ],
+    "57": [
+      "backend_apps_companies_migrations_0002_initial",
+      "backend_apps_companies_migrations_0002_initial_migration"
+    ],
+    "58": [
+      "backend_apps_core_exceptions",
+      "backend_apps_core_exceptions_custom_exception_handler"
+    ],
+    "59": [
+      "backend_apps_leads_migrations_0001_initial",
+      "backend_apps_leads_migrations_0001_initial_migration"
+    ],
+    "60": [
+      "backend_apps_leads_migrations_0002_initial",
+      "backend_apps_leads_migrations_0002_initial_migration"
+    ],
+    "61": [
+      "backend_apps_mailer_migrations_0001_initial",
+      "backend_apps_mailer_migrations_0001_initial_migration"
+    ],
+    "62": [
+      "backend_apps_mailer_migrations_0002_alter_emailtemplate_template_type",
+      "backend_apps_mailer_migrations_0002_alter_emailtemplate_template_type_migration"
+    ],
+    "63": [
+      "backend_apps_mailer_migrations_0003_templateimage",
+      "backend_apps_mailer_migrations_0003_templateimage_migration"
+    ],
+    "64": [
+      "backend_apps_preprocessing_migrations_0001_initial",
+      "backend_apps_preprocessing_migrations_0001_initial_migration"
+    ],
+    "65": [
+      "backend_apps_preprocessing_migrations_0002_preprocessingjob_auto_enrich_sql_and_more",
+      "backend_apps_preprocessing_migrations_0002_preprocessingjob_auto_enrich_sql_and_more_migration"
+    ],
+    "66": [
+      "backend_apps_reports_migrations_0001_initial",
+      "backend_apps_reports_migrations_0001_initial_migration"
+    ],
+    "67": [
+      "backend_apps_reports_migrations_0002_initial",
+      "backend_apps_reports_migrations_0002_initial_migration"
+    ],
+    "68": [
+      "backend_apps_scraping_migrations_0001_initial",
+      "backend_apps_scraping_migrations_0001_initial_migration"
+    ],
+    "69": [
+      "backend_apps_scraping_migrations_0002_initial",
+      "backend_apps_scraping_migrations_0002_initial_migration"
+    ],
+    "70": [
+      "backend_apps_users_migrations_0001_initial",
+      "backend_apps_users_migrations_0001_initial_migration"
+    ],
+    "71": [
+      "backend_config_asgi",
+      "backend_config_asgi_rationale_1"
+    ],
+    "72": [
+      "backend_config_urls",
+      "backend_config_urls_safe_rc"
+    ],
+    "73": [
+      "backend_config_wsgi",
+      "backend_config_wsgi_rationale_1"
+    ],
+    "74": [
+      "backend_entrypoint",
+      "backend_entrypoint_sh__entry"
+    ],
+    "75": [
+      "frontend_src_lib_types_company",
+      "frontend_src_lib_types_companydetail"
+    ],
+    "76": [
+      "test_upload",
+      "test_upload_make_png"
+    ],
+    "77": [
+      "backend_apps_ai_engine_init"
+    ],
+    "78": [
+      "backend_apps_ai_engine_migrations_init"
+    ],
+    "79": [
+      "backend_apps_ai_engine_urls"
+    ],
+    "80": [
+      "backend_apps_analytics_init"
+    ],
+    "81": [
+      "backend_apps_analytics_migrations_init"
+    ],
+    "82": [
+      "backend_apps_analytics_urls"
+    ],
+    "83": [
+      "backend_apps_companies_init"
+    ],
+    "84": [
+      "backend_apps_companies_migrations_init"
+    ],
+    "85": [
+      "backend_apps_companies_urls"
+    ],
+    "86": [
+      "backend_apps_core_admin"
+    ],
+    "87": [
+      "backend_apps_core_migrations_init"
+    ],
+    "88": [
+      "backend_apps_init"
+    ],
+    "89": [
+      "backend_apps_leads_init"
+    ],
+    "90": [
+      "backend_apps_leads_migrations_init"
+    ],
+    "91": [
+      "backend_apps_leads_urls"
+    ],
+    "92": [
+      "backend_apps_mailer_init"
+    ],
+    "93": [
+      "backend_apps_mailer_migrations_init"
+    ],
+    "94": [
+      "backend_apps_mailer_services_init"
+    ],
+    "95": [
+      "backend_apps_mailer_tests_init"
+    ],
+    "96": [
+      "backend_apps_mailer_urls"
+    ],
+    "97": [
+      "backend_apps_preprocessing_init"
+    ],
+    "98": [
+      "backend_apps_preprocessing_migrations_init"
+    ],
+    "99": [
+      "backend_apps_preprocessing_urls"
+    ],
+    "100": [
+      "backend_apps_reports_init"
+    ],
+    "101": [
+      "backend_apps_reports_migrations_init"
+    ],
+    "102": [
+      "backend_apps_reports_urls"
+    ],
+    "103": [
+      "backend_apps_scraping_init"
+    ],
+    "104": [
+      "backend_apps_scraping_migrations_init"
+    ],
+    "105": [
+      "backend_apps_scraping_tests_init"
+    ],
+    "106": [
+      "backend_apps_scraping_urls"
+    ],
+    "107": [
+      "backend_apps_users_init"
+    ],
+    "108": [
+      "backend_apps_users_migrations_init"
+    ],
+    "109": [
+      "backend_apps_users_urls"
+    ],
+    "110": [
+      "frontend_src_app_companies_page_companiespage"
+    ],
+    "111": [
+      "frontend_src_app_layout_rootlayout"
+    ],
+    "112": [
+      "frontend_src_app_leads_id_page_leaddetailpage"
+    ],
+    "113": [
+      "frontend_src_app_leads_page_leadspage"
+    ],
+    "114": [
+      "frontend_src_app_mailer_page_mailerdashboardpage"
+    ],
+    "115": [
+      "frontend_src_app_page_home"
+    ],
+    "116": [
+      "frontend_src_app_reports_page_reportspage"
+    ],
+    "117": [
+      "frontend_src_components_layout_dashboardlayout_dashboardlayout"
+    ],
+    "118": [
+      "frontend_src_components_mailer_campaignstatscards_campaignstatscards"
+    ],
+    "119": [
+      "frontend_src_components_mailer_campaignstatusbadge_campaignstatusbadge"
+    ],
+    "120": [
+      "frontend_src_components_mailer_imageselector_imageselector"
+    ],
+    "121": [
+      "frontend_src_components_mailer_insertmenu_insertmenu"
+    ],
+    "122": [
+      "frontend_src_components_mailer_templatepreview_templatepreview"
+    ],
+    "123": [
+      "frontend_src_components_mailer_variableselector_variableselector"
+    ],
+    "124": [
+      "frontend_src_contexts_authcontext_authprovider"
+    ],
+    "125": [
+      "frontend_src_contexts_authcontext_useauth"
+    ],
+    "126": [
+      "frontend_src_extensions_variable_cleanupvariableoutput"
+    ],
+    "127": [
+      "frontend_src_extensions_variable_preprocesslegacyvariables"
+    ],
+    "128": [
+      "frontend_src_lib_api_gettokens"
+    ],
+    "129": [
+      "frontend_src_lib_mailer_api_bulkcreaterecipients"
+    ],
+    "130": [
+      "frontend_src_lib_mailer_api_createcampaign"
+    ],
+    "131": [
+      "frontend_src_lib_mailer_api_createrecipient"
+    ],
+    "132": [
+      "frontend_src_lib_mailer_api_createtemplate"
+    ],
+    "133": [
+      "frontend_src_lib_mailer_api_deletecampaign"
+    ],
+    "134": [
+      "frontend_src_lib_mailer_api_deletetemplate"
+    ],
+    "135": [
+      "frontend_src_lib_mailer_api_getcampaign"
+    ],
+    "136": [
+      "frontend_src_lib_mailer_api_getcampaigns"
+    ],
+    "137": [
+      "frontend_src_lib_mailer_api_getcampaignstats"
+    ],
+    "138": [
+      "frontend_src_lib_mailer_api_getrecipients"
+    ],
+    "139": [
+      "frontend_src_lib_mailer_api_gettemplate"
+    ],
+    "140": [
+      "frontend_src_lib_mailer_api_gettemplates"
+    ],
+    "141": [
+      "frontend_src_lib_mailer_api_previewtemplate"
+    ],
+    "142": [
+      "frontend_src_lib_mailer_api_sendcampaign"
+    ],
+    "143": [
+      "frontend_src_lib_mailer_api_unsubscriberecipient"
+    ],
+    "144": [
+      "frontend_src_lib_mailer_api_updatecampaign"
+    ],
+    "145": [
+      "frontend_src_lib_mailer_api_updatetemplate"
+    ],
+    "146": [
+      "frontend_src_lib_mailer_api_uploadtemplateimage"
+    ],
+    "147": [
+      "frontend_src_lib_types_campaignsend"
+    ],
+    "148": [
+      "frontend_src_lib_types_campaignstats"
+    ],
+    "149": [
+      "frontend_src_lib_types_companycontact"
+    ],
+    "150": [
+      "frontend_src_lib_types_dashboardsummary"
+    ],
+    "151": [
+      "frontend_src_lib_types_emailcampaign"
+    ],
+    "152": [
+      "frontend_src_lib_types_emailevent"
+    ],
+    "153": [
+      "frontend_src_lib_types_emailrecipient"
+    ],
+    "154": [
+      "frontend_src_lib_types_emailtemplate"
+    ],
+    "155": [
+      "frontend_src_lib_types_jobstats"
+    ],
+    "156": [
+      "frontend_src_lib_types_lead"
+    ],
+    "157": [
+      "frontend_src_lib_types_mailerdashboard"
+    ],
+    "158": [
+      "frontend_src_lib_types_organization"
+    ],
+    "159": [
+      "frontend_src_lib_types_paginatedresponse"
+    ],
+    "160": [
+      "frontend_src_lib_types_preprocessingjob"
+    ],
+    "161": [
+      "frontend_src_lib_types_preprocessresponse"
+    ],
+    "162": [
+      "frontend_src_lib_types_product"
+    ],
+    "163": [
+      "frontend_src_lib_types_report"
+    ],
+    "164": [
+      "frontend_src_lib_types_sector"
+    ],
+    "165": [
+      "frontend_src_lib_types_user"
+    ]
+  },
+  "cohesion": {
+    "0": 0.07743496672716274,
+    "1": 0.07686932215234102,
+    "2": 0.04902867715078631,
+    "3": 0.05731707317073171,
+    "4": 0.05,
+    "5": 0.08602150537634409,
+    "6": 0.08262108262108261,
+    "7": 0.11857707509881422,
+    "8": 0.09090909090909091,
+    "9": 0.09523809523809523,
+    "10": 0.11578947368421053,
+    "11": 0.1,
+    "12": 0.17647058823529413,
+    "13": 0.1323529411764706,
+    "14": 0.13970588235294118,
+    "15": 0.15833333333333333,
+    "16": 0.125,
+    "17": 0.1523809523809524,
+    "18": 0.13333333333333333,
+    "19": 0.23809523809523808,
+    "20": 0.14285714285714285,
+    "21": 0.14285714285714285,
+    "22": 0.2087912087912088,
+    "23": 0.16666666666666666,
+    "24": 0.2727272727272727,
+    "25": 0.18181818181818182,
+    "26": 0.18181818181818182,
+    "27": 0.2545454545454545,
+    "28": 0.2,
+    "29": 0.2857142857142857,
+    "30": 0.25,
+    "31": 0.42857142857142855,
+    "32": 0.2857142857142857,
+    "33": 0.42857142857142855,
+    "34": 0.3333333333333333,
+    "35": 0.3333333333333333,
+    "36": 0.3333333333333333,
+    "37": 0.3333333333333333,
+    "38": 0.3333333333333333,
+    "39": 0.4,
+    "40": 0.6,
+    "41": 0.5,
+    "42": 0.5,
+    "43": 0.5,
+    "44": 0.5,
+    "45": 0.5,
+    "46": 0.6666666666666666,
+    "47": 0.6666666666666666,
+    "48": 0.6666666666666666,
+    "49": 0.6666666666666666,
+    "50": 0.6666666666666666,
+    "51": 1.0,
+    "52": 1.0,
+    "53": 1.0,
+    "54": 1.0,
+    "55": 1.0,
+    "56": 1.0,
+    "57": 1.0,
+    "58": 1.0,
+    "59": 1.0,
+    "60": 1.0,
+    "61": 1.0,
+    "62": 1.0,
+    "63": 1.0,
+    "64": 1.0,
+    "65": 1.0,
+    "66": 1.0,
+    "67": 1.0,
+    "68": 1.0,
+    "69": 1.0,
+    "70": 1.0,
+    "71": 1.0,
+    "72": 1.0,
+    "73": 1.0,
+    "74": 1.0,
+    "75": 1.0,
+    "76": 1.0,
+    "77": 1.0,
+    "78": 1.0,
+    "79": 1.0,
+    "80": 1.0,
+    "81": 1.0,
+    "82": 1.0,
+    "83": 1.0,
+    "84": 1.0,
+    "85": 1.0,
+    "86": 1.0,
+    "87": 1.0,
+    "88": 1.0,
+    "89": 1.0,
+    "90": 1.0,
+    "91": 1.0,
+    "92": 1.0,
+    "93": 1.0,
+    "94": 1.0,
+    "95": 1.0,
+    "96": 1.0,
+    "97": 1.0,
+    "98": 1.0,
+    "99": 1.0,
+    "100": 1.0,
+    "101": 1.0,
+    "102": 1.0,
+    "103": 1.0,
+    "104": 1.0,
+    "105": 1.0,
+    "106": 1.0,
+    "107": 1.0,
+    "108": 1.0,
+    "109": 1.0,
+    "110": 1.0,
+    "111": 1.0,
+    "112": 1.0,
+    "113": 1.0,
+    "114": 1.0,
+    "115": 1.0,
+    "116": 1.0,
+    "117": 1.0,
+    "118": 1.0,
+    "119": 1.0,
+    "120": 1.0,
+    "121": 1.0,
+    "122": 1.0,
+    "123": 1.0,
+    "124": 1.0,
+    "125": 1.0,
+    "126": 1.0,
+    "127": 1.0,
+    "128": 1.0,
+    "129": 1.0,
+    "130": 1.0,
+    "131": 1.0,
+    "132": 1.0,
+    "133": 1.0,
+    "134": 1.0,
+    "135": 1.0,
+    "136": 1.0,
+    "137": 1.0,
+    "138": 1.0,
+    "139": 1.0,
+    "140": 1.0,
+    "141": 1.0,
+    "142": 1.0,
+    "143": 1.0,
+    "144": 1.0,
+    "145": 1.0,
+    "146": 1.0,
+    "147": 1.0,
+    "148": 1.0,
+    "149": 1.0,
+    "150": 1.0,
+    "151": 1.0,
+    "152": 1.0,
+    "153": 1.0,
+    "154": 1.0,
+    "155": 1.0,
+    "156": 1.0,
+    "157": 1.0,
+    "158": 1.0,
+    "159": 1.0,
+    "160": 1.0,
+    "161": 1.0,
+    "162": 1.0,
+    "163": 1.0,
+    "164": 1.0,
+    "165": 1.0
+  },
+  "gods": [
+    {
+      "id": "backend_apps_preprocessing_services_scorer_relevancescorer",
+      "label": "RelevanceScorer",
+      "degree": 31
+    },
+    {
+      "id": "backend_apps_preprocessing_services_classifier_industryclassifier",
+      "label": "IndustryClassifier",
+      "degree": 26
+    },
+    {
+      "id": "backend_apps_core_models_basemodel",
+      "label": "BaseModel",
+      "degree": 25
+    },
+    {
+      "id": "backend_apps_preprocessing_services_pipeline_preprocessingpipeline",
+      "label": "PreprocessingPipeline",
+      "degree": 24
+    },
+    {
+      "id": "backend_apps_preprocessing_services_cleaner_datacleaner",
+      "label": "DataCleaner",
+      "degree": 23
+    },
+    {
+      "id": "backend_apps_ai_engine_models_analysisrequest",
+      "label": "AnalysisRequest",
+      "degree": 19
+    },
+    {
+      "id": "backend_apps_ai_engine_models_analysisresult",
+      "label": "AnalysisResult",
+      "degree": 19
+    },
+    {
+      "id": "backend_apps_ai_engine_models_prompttemplate",
+      "label": "PromptTemplate",
+      "degree": 19
+    },
+    {
+      "id": "backend_apps_ai_engine_services_cerebrasclient",
+      "label": "CerebrasClient",
+      "degree": 19
+    },
+    {
+      "id": "backend_apps_preprocessing_services_exporter_exportservice",
+      "label": "ExportService",
+      "degree": 19
+    }
+  ],
+  "surprises": [
+    {
+      "source": "analyze_company()",
+      "target": "CerebrasClient",
+      "source_files": [
+        "backend/apps/ai_engine/tasks.py",
+        "backend/apps/ai_engine/services.py"
+      ],
+      "confidence": "INFERRED",
+      "relation": "calls",
+      "why": "inferred connection - not explicitly stated in source; bridges separate communities; peripheral node `analyze_company()` unexpectedly reaches hub `CerebrasClient`"
+    },
+    {
+      "source": "run_preprocessing()",
+      "target": "PreprocessingPipeline",
+      "source_files": [
+        "backend/apps/preprocessing/tasks.py",
+        "backend/apps/preprocessing/services/pipeline.py"
+      ],
+      "confidence": "INFERRED",
+      "relation": "calls",
+      "why": "inferred connection - not explicitly stated in source; bridges separate communities; peripheral node `run_preprocessing()` unexpectedly reaches hub `PreprocessingPipeline`"
+    },
+    {
+      "source": "CerebrasClient",
+      "target": "IndustryClassifier",
+      "source_files": [
+        "backend/apps/ai_engine/services.py",
+        "backend/apps/preprocessing/services/classifier.py"
+      ],
+      "confidence": "INFERRED",
+      "relation": "uses",
+      "why": "inferred connection - not explicitly stated in source; bridges separate communities"
+    },
+    {
+      "source": "CerebrasClient",
+      "target": "RelevanceScorer",
+      "source_files": [
+        "backend/apps/ai_engine/services.py",
+        "backend/apps/preprocessing/services/scorer.py"
+      ],
+      "confidence": "INFERRED",
+      "relation": "uses",
+      "why": "inferred connection - not explicitly stated in source; bridges separate communities"
+    },
+    {
+      "source": "IndustryClassifier",
+      "target": "DataCleaner",
+      "source_files": [
+        "backend/apps/preprocessing/services/classifier.py",
+        "backend/apps/preprocessing/services/cleaner.py"
+      ],
+      "confidence": "INFERRED",
+      "relation": "uses",
+      "why": "inferred connection - not explicitly stated in source; bridges separate communities"
+    }
+  ],
+  "questions": [
+    {
+      "type": "bridge_node",
+      "question": "Why does `CerebrasClient` connect `Community 0` to `Community 24`, `Community 19`, `Community 12`, `Community 7`?",
+      "why": "High betweenness centrality (0.146) - this node is a cross-community bridge."
+    },
+    {
+      "type": "bridge_node",
+      "question": "Why does `BaseTest` connect `Community 1` to `Community 5`?",
+      "why": "High betweenness centrality (0.097) - this node is a cross-community bridge."
+    },
+    {
+      "type": "bridge_node",
+      "question": "Why does `BaseTest` connect `Community 0` to `Community 5`?",
+      "why": "High betweenness centrality (0.095) - this node is a cross-community bridge."
+    },
+    {
+      "type": "verify_inferred",
+      "question": "Are the 19 inferred relationships involving `RelevanceScorer` (e.g. with `CerebrasClient` and `._mock_analysis()`) actually correct?",
+      "why": "`RelevanceScorer` has 19 INFERRED edges - model-reasoned connections that need verification."
+    },
+    {
+      "type": "verify_inferred",
+      "question": "Are the 18 inferred relationships involving `IndustryClassifier` (e.g. with `CerebrasClient` and `._mock_analysis()`) actually correct?",
+      "why": "`IndustryClassifier` has 18 INFERRED edges - model-reasoned connections that need verification."
+    },
+    {
+      "type": "verify_inferred",
+      "question": "Are the 20 inferred relationships involving `PreprocessingPipeline` (e.g. with `IndustryClassifier` and `DataCleaner`) actually correct?",
+      "why": "`PreprocessingPipeline` has 20 INFERRED edges - model-reasoned connections that need verification."
+    },
+    {
+      "type": "verify_inferred",
+      "question": "Are the 14 inferred relationships involving `DataCleaner` (e.g. with `IndustryClassifier` and `PreprocessingPipeline`) actually correct?",
+      "why": "`DataCleaner` has 14 INFERRED edges - model-reasoned connections that need verification."
+    }
+  ]
+}

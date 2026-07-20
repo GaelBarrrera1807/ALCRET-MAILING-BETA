@@ -4,6 +4,8 @@ import unicodedata
 
 from unidecode import unidecode
 
+from apps.preprocessing.data.weights import FIELD_KEYWORDS
+
 logger = logging.getLogger(__name__)
 
 
@@ -27,50 +29,6 @@ def keyword_match(text, keyword):
     for i in range(1, len(pattern_parts)):
         pattern += r'\s+(?:\w+\s+)?' + pattern_parts[i]
     return bool(re.search(pattern, text))
-
-
-FIELD_KEYWORDS = {
-    'name': [
-        'nombre', 'razón social', 'razon social', 'denominación',
-        'denominacion', 'empresa', 'compañía', 'compania',
-        'titular', 'cliente', 'proveedor', 'prospecto',
-        'name', 'company', 'business',
-    ],
-    'description': [
-        'descripcion', 'descripción', 'giro', 'actividad',
-        'description', 'detalle', 'rubro', 'giro comercial',
-    ],
-    'website': [
-        'sitio', 'web', 'website', 'url', 'página', 'pagina', 'portal',
-    ],
-    'email': [
-        'correo', 'email', 'mail', 'e-mail', 'electrónico', 'electronico',
-    ],
-    'phone': [
-        'teléfono', 'telefono', 'phone', 'tel', 'celular',
-        'movil', 'móvil', 'contacto',
-    ],
-    'address': [
-        'direccion', 'dirección', 'domicilio', 'calle', 'colonia',
-        'address', 'ubicación', 'ubicacion',
-    ],
-    'city': [
-        'ciudad', 'municipio', 'poblacion', 'población',
-        'localidad', 'city', 'delegación', 'delegacion',
-    ],
-    'state': [
-        'estado', 'entidad federativa', 'provincia',
-        'departamento', 'region', 'región', 'state',
-    ],
-    'country': ['país', 'pais', 'country', 'nación', 'nacion'],
-    'rfc': ['rfc', 'registro federal', 'contribuyentes', 'tax_id', 'cif', 'nit'],
-    'contact_name': [
-        'nombre', 'representante', 'contacto', 'apellido', 'nombre completo',
-    ],
-    'contact_position': ['cargo', 'puesto', 'posición', 'position', 'rol'],
-    'contact_phone': ['teléfono', 'telefono', 'celular', 'contacto'],
-    'contact_email': ['correo', 'email', 'mail'],
-}
 
 
 class DataCleaner:

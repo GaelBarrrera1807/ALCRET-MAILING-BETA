@@ -217,14 +217,16 @@ Se generan reportes PDF
 ```text
 apps/
 │
-├── users/
-├── companies/
-├── leads/
-├── ai_engine/
-├── scraping/
-├── analytics/
-├── reports/
-└── core/
+├── users/          → Organización multiempresa + usuarios
+├── core/           → Company, CompanyContact, Sector, Product (tablas históricas `companies_*`)
+├── leads/          → Lead + LeadNote (scoring, prioridad, estado comercial)
+├── ai_engine/      → Análisis con IA (Cerebras), AnalysisRequest/Result, PromptTemplate
+├── scraping/       → ScrapingJob + ScrapedData (web, phone, social, Google Maps)
+├── preprocessing/  → PreprocessingJob + PreprocessingRule (limpieza, filtrado, scoring)
+├── mailer/         → EmailTemplate, EmailRecipient, EmailCampaign, CampaignSend, EmailEvent (Amazon SES)
+├── analytics/      → DashboardMetric + ProcessingStats
+├── companies/      → ⚠️ Stub de compatibilidad (re-exporta modelos desde core)
+└── reports/        → Reportes PDF (módulo aislado)
 ```
 
 ---
@@ -235,51 +237,381 @@ apps/
 
 - Autenticación
 - Roles
-- Multiempresa
+- Multiempresa (Organization como tenant raíz)
 - Permisos
 
 ---
 
-## companies
+## core
 
-- Empresas
-- Sectores
-- Información comercial
+- Company: empresa con datos de contacto, scoring, geolocalización, índices compuestos
+- CompanyContact: contactos de empresa
+- Sector: sectores industriales (relacionado con Company vía FK)
+- Product: productos con relación M2M a Sector
+- Nota: tablas físicas `companies_*` por compatibilidad histórica
 
 ---
 
 ## leads
 
-- Leads
-- Scoring
-- Prioridades
-- Estado comercial
+- Lead: lead con scoring, prioridad, estado comercial, O2O opcional con Company
+- LeadNote: notas de seguimiento por lead
+- Scoring y clasificación por prioridad (baja/media/alta/urgente)
 
 ---
 
 ## ai_engine
 
-- Integración Cerebras
-- Prompts
-- Clasificación IA
-- Recomendación de productos
+- Análisis con IA (Cerebras / LLMs compatibles OpenAI SDK)
+- AnalysisRequest → solicitud, AnalysisResult → resultado (O2O)
+- PromptTemplate: plantillas configurables (system prompt, temperature, model)
 
 ---
 
 ## scraping
 
-- Extracción de información
-- Sitios web
-- Teléfonos
-- Redes sociales
+- ScrapingJob: registro de trabajo (website, phone, social, enrichment, MAPS_DISCOVERY)
+- ScrapedData: datos scrapeados vinculados a Company
+- Company.scraping_job (FK) como única relación directa
 
 ---
 
-## reports
+## preprocessing
 
-- PDFs
-- Exportaciones
-- Reportes comerciales
+- PreprocessingJob: procesamiento de archivos CSV/Excel con pipeline configurable
+- PreprocessingRule: reglas de industria/producto/exclusión con keywords y peso
+- Pipeline: limpieza → clasificación → scoring → filtrado
+
+---
+
+## mailer
+
+- EmailTemplate: plantillas con variables {{ }}, tipos (cold_outreach, marketing, etc.)
+- EmailRecipient: destinatarios, vinculados a Lead (sin FK directa a Company)
+- EmailCampaign: campañas con programación y tracking de métricas
+- CampaignSend: envío individual con ses_message_id para SES webhooks
+- EmailEvent: eventos de tracking (open, click, bounce, complaint, unsubscribe)
+
+---
+
+## analytics
+
+- DashboardMetric: métricas del dashboard por organización y fecha
+- ProcessingStats: estadísticas resumidas de procesamiento
+
+---
+
+# Arquitectura de Base de Datos (ERD)
+
+Diagrama Entidad-Relación de los modelos activos (excluye stubs `companies` y `reports`):
+
+```mermaid
+erDiagram
+    %% ═══════════════════════════════════════════════════════════════
+    %% NOTA: Todos los modelos concretos heredan de BaseModel
+    %% (abstracto), que hereda de TimeStampedModel + UUIDModel:
+    %%   TimeStampedModel -> created_at, updated_at
+    %%   UUIDModel        -> id UUID (PK autogenerado)
+    %% ═══════════════════════════════════════════════════════════════
+
+    %% ── App: users ────────────────────────────────────────────────
+    Organization {
+        string    name
+        string    tax_id        "RFC"
+        string    phone
+        string    email
+        boolean   is_active
+    }
+
+    User {
+        string    username
+        string    password
+        string    first_name
+        string    last_name
+        string    email
+        boolean   is_active
+        boolean   is_staff
+        boolean   is_superuser
+        string    phone
+        boolean   is_organization_admin
+    }
+
+    %% ── App: core (db_table='companies_*') ────────────────────────
+    Sector {
+        string    name            @unique
+        text      description
+    }
+
+    Product {
+        string    name            @unique
+        text      description
+    }
+
+    Company {
+        string    name
+        string    business_name   "Razon social"
+        string    rfc
+        text      description
+        url       website
+        email     email
+        string    phone
+        text      address
+        string    city
+        string    state
+        string    country
+        string    postal_code
+        float     latitude        nullable
+        float     longitude       nullable
+        string    detected_sector
+        int       score
+        boolean   is_client
+        boolean   is_lead
+        enum      status          "pending | analyzing | analyzed | error"
+        text      notes
+        string    source
+        string    source_file
+        float     google_rating   nullable
+        int       google_reviews_count nullable
+        json      maps_categories
+        json      opening_hours
+        url       main_photo_url  nullable
+    }
+
+    CompanyContact {
+        string    name
+        string    position
+        email     email
+        string    phone
+        boolean   is_primary
+    }
+
+    %% ── App: leads ────────────────────────────────────────────────
+    Lead {
+        int       score
+        boolean   is_potential_client
+        enum      priority        "baja | media | alta | urgente"
+        string    detected_sector
+        text      recommended_products
+        text      analysis_summary
+        text      reason
+        enum      status          "new | contacted | qualified | proposal | negotiation | won | lost"
+        datetime  contacted_at    nullable
+        datetime  last_contact    nullable
+        datetime  next_follow_up  nullable
+        text      notes
+        boolean   auto_created
+    }
+
+    LeadNote {
+        text      content
+    }
+
+    %% ── App: ai_engine ────────────────────────────────────────────
+    AnalysisRequest {
+        enum      status          "pending | processing | completed | error"
+        text      prompt_used
+        json      raw_response    nullable
+        text      error_message
+        float     processing_time "segundos, nullable"
+    }
+
+    AnalysisResult {
+        int       score
+        boolean   is_potential_client
+        string    detected_sector
+        json      recommended_products
+        text      reason
+        enum      priority        "baja | media | alta | urgente"
+        text      summary
+        json      raw_json        nullable
+    }
+
+    PromptTemplate {
+        string    name            @unique
+        text      description
+        text      system_prompt
+        text      user_prompt_template
+        string    model
+        float     temperature
+        int       max_tokens
+        boolean   is_active
+        int       version
+    }
+
+    %% ── App: scraping ─────────────────────────────────────────────
+    ScrapingJob {
+        url       url
+        enum      job_type        "website | phone | social | enrichment | MAPS_DISCOVERY"
+        enum      status          "pending | processing | completed | error"
+        json      result          nullable
+        text      error_message
+        int       credits_consumed
+    }
+
+    ScrapedData {
+        string    source
+        string    data_type
+        json      raw_data        nullable
+        json      processed_data  nullable
+    }
+
+    %% ── App: preprocessing ────────────────────────────────────────
+    PreprocessingJob {
+        string    original_filename
+        enum      status          "pending | processing | completed | error"
+        int       total_records
+        int       relevant_records
+        int       filtered_records
+        int       scoring_threshold
+        file      cleaned_file    nullable
+        json      stats_json
+        float     processing_time nullable
+        text      error_message
+        boolean   auto_enrich_sql
+        int       credits_consumed
+    }
+
+    PreprocessingRule {
+        string    name
+        enum      rule_type       "industry | product | exclusion | custom"
+        json      keywords
+        int       weight
+        json      recommended_products
+        boolean   is_active
+        text      description
+    }
+
+    %% ── App: mailer (Amazon SES) ──────────────────────────────────
+    EmailTemplate {
+        string    name
+        enum      template_type   "cold_outreach | marketing | follow_up | newsletter | welcome | custom"
+        string    subject
+        text      body_html
+        json      variables
+        text      description
+        boolean   is_active
+        int       use_count
+    }
+
+    EmailRecipient {
+        email     email
+        string    first_name
+        string    last_name
+        string    company_name
+        string    sector
+        boolean   is_active
+        datetime  unsubscribed_at nullable
+        string    source
+        json      metadata
+    }
+
+    EmailCampaign {
+        string    name
+        string    subject
+        text      body_html
+        enum      source_filter   "all | internal | external | manual"
+        enum      status          "draft | scheduled | sending | sent | paused | cancelled"
+        datetime  scheduled_at    nullable
+        datetime  sent_at         nullable
+        int       total_recipients
+        int       sent_count
+        int       open_count
+        int       click_count
+        int       bounce_count
+        int       unsubscribe_count
+    }
+
+    CampaignSend {
+        uuid      tracking_id     @unique
+        string    ses_message_id  "SES message ID, db_index, nullable"
+        enum      status          "pending | sent | delivered | opened | clicked | bounced | complained | unsubscribed"
+        datetime  sent_at         nullable
+        datetime  opened_at       nullable
+        datetime  clicked_at      nullable
+        text      error_message
+    }
+
+    TemplateImage {
+        file      image
+        string    alt_text
+        int       file_size
+    }
+
+    EmailEvent {
+        enum      event_type      "open | click | bounce | complaint | unsubscribe"
+        text      user_agent
+        ip        ip_address      nullable
+        url       url
+        json      metadata
+    }
+
+    %% ── App: analytics ────────────────────────────────────────────
+    DashboardMetric {
+        string    metric_type     "enum: total_companies, total_leads, avg_score, ..."
+        json      value
+        date      date
+    }
+
+    ProcessingStats {
+        int       total_companies
+        int       total_analyzed
+        int       total_pending
+        int       total_errors
+        int       total_leads
+        int       total_potential_clients
+        float     avg_score
+        date      date
+    }
+
+    %% ═══════════════════════════════════════════════════════════════
+    %%  RELACIONES
+    %% ═══════════════════════════════════════════════════════════════
+
+    %% users
+    Organization  ||--o{ User                : "users"
+    Organization  ||--o{ Company             : "companies"
+    Organization  ||--o{ Lead                : "leads"
+    Organization  ||--o{ AnalysisRequest     : "analysis_requests"
+    Organization  ||--o{ ScrapingJob         : "scraping_jobs"
+    Organization  ||--o{ PreprocessingJob    : ""
+    Organization  ||--o{ EmailTemplate       : "email_templates"
+    Organization  ||--o{ EmailRecipient      : "email_recipients"
+    Organization  ||--o{ EmailCampaign       : "email_campaigns"
+    Organization  ||--o{ TemplateImage       : "template_images"
+    Organization  ||--o{ DashboardMetric     : "metrics"
+    Organization  ||--o{ ProcessingStats     : "processing_stats"
+
+    User          ||--o{ LeadNote            : ""
+    User          ||--o{ Lead                : "assigned_leads"
+
+    %% core
+    Sector        ||--o{ Company             : "companies"
+    Sector        ||--o{ PreprocessingRule   : ""
+    Product       }o--o{ Sector              : "sectors"  [M2M]
+
+    ScrapingJob   ||--o{ Company             : "companies"
+
+    Company       ||--o{ CompanyContact      : "contacts"
+    Company       ||--o| Lead                : "lead"     [O2O, nullable]
+    Company       ||--o{ AnalysisRequest     : "analysis_requests"
+    Company       ||--o{ AnalysisResult      : "analysis_results"
+    Company       ||--o{ ScrapedData         : "scraped_data"
+
+    CompanyContact ||--o{ Lead               : "leads"
+
+    %% leads
+    Lead          ||--o{ LeadNote            : "notes_list"
+    Lead          ||--o{ EmailRecipient      : "email_recipients"
+
+    %% ai_engine
+    AnalysisRequest ||--|| AnalysisResult    : "result"  [O2O]
+
+    %% mailer
+    EmailTemplate ||--o{ EmailCampaign       : "campaigns"
+    EmailCampaign ||--o{ CampaignSend        : "sends"
+    EmailRecipient ||--o{ CampaignSend       : "campaign_sends"
+    CampaignSend  ||--o{ EmailEvent          : "events"
+```
 
 ---
 

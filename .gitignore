@@ -12,6 +12,7 @@ dist/
 
 # Env
 .env
+.env.staging
 *.env.local
 
 # OS

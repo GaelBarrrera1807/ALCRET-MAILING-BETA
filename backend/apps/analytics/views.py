@@ -5,7 +5,7 @@ from rest_framework.response import Response
 
 from apps.analytics.models import DashboardMetric, ProcessingStats
 from apps.analytics.serializers import DashboardMetricSerializer, ProcessingStatsSerializer
-from apps.companies.models import Company
+from apps.core.models import Company
 from apps.leads.models import Lead
 
 

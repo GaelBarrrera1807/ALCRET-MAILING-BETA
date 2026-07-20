@@ -299,6 +299,12 @@ SENALES DE QUE NO ES PROSPECTO (descartar):
 - Tecnologia de informacion o software
 - Papeleria, articulos de oficina, capacitacion
 
+IMPORTANTE: Para CADA empresa evaluada debes incluir SIEMPRE el campo "justificacion_ia" con una frase corta, profesional y directa en español que explique POR QUÉ la consideras potencial o no potencial.
+Ejemplos:
+- "Rescatado: Empresa constructora que utiliza remolques tipo góndola para mover agregados a sus obras"
+- "Descartado: Comercio al menudeo de abarrotes sin flota propia ni operaciones de carga"
+- "Rescatado: Cuenta con flotilla de tractocamiones para distribución regional de materiales de construcción"
+
 Responde UNICAMENTE con JSON valido, sin explicaciones adicionales.""".strip()
 
 BATCH_SIZE = 5
@@ -319,7 +325,7 @@ Empresas a evaluar:
 {companies_text}
 
 Responde SOLO con este JSON (sin texto adicional, sin markdown):
-{{"resultados": [{{"index": 0, "es_potencial": true/false, "confianza": "alta/media/baja", "motivo": "max 10 palabras"}}]}}
+{{"resultados": [{{"index": 0, "es_potencial": true/false, "confianza": "alta/media/baja", "motivo": "max 10 palabras", "justificacion_ia": "frase profesional en español explicando la decisión"}}]}}
 """.strip()
 
 
@@ -356,6 +362,12 @@ def _call_cerebras_batch(client, model, batch):
     try:
         parsed = json.loads(content)
         results = parsed.get('resultados', [])
+        for r in results:
+            if 'justificacion_ia' not in r:
+                if r.get('es_potencial'):
+                    r['justificacion_ia'] = 'Rescatado por IA tras evaluar su actividad comercial y potencial de uso de remolques'
+                else:
+                    r['justificacion_ia'] = 'Descartado por IA: no cumple criterios de prospección industrial B2B'
         rescued = sum(1 for r in results if r.get('es_potencial'))
         logger.info(f"Parse exitoso: {len(results)} registros, {rescued} como potencial")
         return results
@@ -427,12 +439,18 @@ def _mock_for_batch(batch):
         else:
             es_potencial = any(kw in texto for kw in KEYWORDS_RESCATE)
 
+        justificacion = (
+            'Coincide con sector industrial objetivo (transporte, construcción o logística)'
+            if es_potencial else
+            'No se detectaron señales de actividad con remolques, flota propia o logística de carga'
+        )
         results.append({
             'index': r['index'],
             'es_potencial': es_potencial,
             'sector': '' if not es_potencial else 'Industrial',
             'confianza': 'baja',
             'motivo': 'clasificacion offline' if es_potencial else 'Sin coincidencia',
+            'justificacion_ia': justificacion,
         })
     return results
 
@@ -493,6 +511,7 @@ def batch_classify_borderline(companies_batch):
                 'sector': '',
                 'confianza': 'baja',
                 'motivo': 'Sin clasificacion',
+                'justificacion_ia': 'No se recibió clasificación del motor de IA para este registro',
             })
     return all_results
 

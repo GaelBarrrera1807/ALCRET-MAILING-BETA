@@ -7,10 +7,19 @@ until python manage.py migrate --noinput; do
   sleep 3
 done
 
+python -c "
+import pathlib
+for d in ['/app/media/mailer', '/app/media/static', '/app/staticfiles']:
+    try:
+        pathlib.Path(d).mkdir(parents=True, exist_ok=True)
+    except PermissionError:
+        pass
+"
+
 python manage.py collectstatic --noinput || true
 
 if [ "$DJANGO_DEBUG" = "true" ]; then
-  exec python manage.py runserver 0.0.0.0:8000
+  exec python manage.py runserver 0.0.0.0:8000 --noreload
 else
   exec gunicorn config.wsgi:application \
     --bind 0.0.0.0:8000 \

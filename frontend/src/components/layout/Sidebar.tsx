@@ -3,13 +3,38 @@
 import Link from 'next/link'
 import { usePathname, useRouter } from 'next/navigation'
 import { useAuth } from '@/contexts/AuthContext'
+import {
+  LayoutDashboard,
+  Rocket,
+  Search,
+  Building2,
+  Target,
+  Mail,
+  FileText,
+  History,
+  LogOut,
+} from 'lucide-react'
+
+const iconMap: Record<string, React.ReactNode> = {
+  Dashboard: <LayoutDashboard size={18} />,
+  'Lead Finder': <Rocket size={18} />,
+  Preprocesamiento: <Search size={18} />,
+  Empresas: <Building2 size={18} />,
+  Leads: <Target size={18} />,
+  'Email Marketing': <Mail size={18} />,
+  Reportes: <FileText size={18} />,
+  'Historial de Búsquedas': <History size={18} />,
+}
 
 const navItems = [
-  { href: '/dashboard', label: 'Dashboard', icon: '📊' },
-  { href: '/preprocessing', label: 'Preprocesamiento', icon: '🔍' },
-  { href: '/companies', label: 'Empresas', icon: '🏢' },
-  { href: '/leads', label: 'Leads', icon: '🎯' },
-  { href: '/reports', label: 'Reportes', icon: '📄' },
+  { href: '/dashboard', label: 'Dashboard' },
+  { href: '/lead-finder', label: 'Lead Finder' },
+  { href: '/preprocessing', label: 'Preprocesamiento' },
+  { href: '/companies', label: 'Empresas' },
+  { href: '/leads', label: 'Leads' },
+  { href: '/mailer', label: 'Email Marketing' },
+  { href: '/reports', label: 'Reportes' },
+  { href: '/historial-busquedas', label: 'Historial de Búsquedas' },
 ]
 
 export default function Sidebar() {
@@ -41,7 +66,7 @@ export default function Sidebar() {
                   : 'text-slate-300 hover:bg-slate-800 hover:text-white'
               }`}
             >
-              <span>{item.icon}</span>
+              <span className="flex-shrink-0">{iconMap[item.label]}</span>
               <span>{item.label}</span>
             </Link>
           )
@@ -52,7 +77,7 @@ export default function Sidebar() {
           onClick={handleLogout}
           className="w-full flex items-center gap-3 px-4 py-3 rounded-lg text-sm text-slate-300 hover:bg-slate-800 hover:text-white transition-colors"
         >
-          <span>🚪</span>
+          <LogOut size={18} />
           <span>Cerrar sesión</span>
         </button>
       </div>

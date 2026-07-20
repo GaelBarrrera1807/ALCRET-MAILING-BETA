@@ -5,9 +5,9 @@ from apps.scraping.models import ScrapingJob, ScrapedData
 
 @admin.register(ScrapingJob)
 class ScrapingJobAdmin(admin.ModelAdmin):
-    list_display = ['company', 'job_type', 'status', 'url', 'created_at']
+    list_display = ['job_type', 'status', 'url', 'created_at']
     list_filter = ['job_type', 'status']
-    search_fields = ['company__name', 'url']
+    search_fields = ['url']
 
 
 @admin.register(ScrapedData)
