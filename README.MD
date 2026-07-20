@@ -360,8 +360,8 @@ erDiagram
         string    state
         string    country
         string    postal_code
-        float     latitude        nullable
-        float     longitude       nullable
+        float     latitude        "nullable"
+        float     longitude       "nullable"
         string    detected_sector
         int       score
         boolean   is_client
@@ -370,11 +370,11 @@ erDiagram
         text      notes
         string    source
         string    source_file
-        float     google_rating   nullable
-        int       google_reviews_count nullable
+        float     google_rating   "nullable"
+        int       google_reviews_count "nullable"
         json      maps_categories
         json      opening_hours
-        url       main_photo_url  nullable
+        url       main_photo_url  "nullable"
     }
 
     CompanyContact {
@@ -395,9 +395,9 @@ erDiagram
         text      analysis_summary
         text      reason
         enum      status          "new | contacted | qualified | proposal | negotiation | won | lost"
-        datetime  contacted_at    nullable
-        datetime  last_contact    nullable
-        datetime  next_follow_up  nullable
+        datetime  contacted_at    "nullable"
+        datetime  last_contact    "nullable"
+        datetime  next_follow_up  "nullable"
         text      notes
         boolean   auto_created
     }
@@ -410,9 +410,9 @@ erDiagram
     AnalysisRequest {
         enum      status          "pending | processing | completed | error"
         text      prompt_used
-        json      raw_response    nullable
+        json      raw_response    "nullable"
         text      error_message
-        float     processing_time "segundos, nullable"
+        float     processing_time "segundos (nullable)"
     }
 
     AnalysisResult {
@@ -423,7 +423,7 @@ erDiagram
         text      reason
         enum      priority        "baja | media | alta | urgente"
         text      summary
-        json      raw_json        nullable
+        json      raw_json        "nullable"
     }
 
     PromptTemplate {
@@ -443,7 +443,7 @@ erDiagram
         url       url
         enum      job_type        "website | phone | social | enrichment | MAPS_DISCOVERY"
         enum      status          "pending | processing | completed | error"
-        json      result          nullable
+        json      result          "nullable"
         text      error_message
         int       credits_consumed
     }
@@ -451,8 +451,8 @@ erDiagram
     ScrapedData {
         string    source
         string    data_type
-        json      raw_data        nullable
-        json      processed_data  nullable
+        json      raw_data        "nullable"
+        json      processed_data  "nullable"
     }
 
     %% ── App: preprocessing ────────────────────────────────────────
@@ -463,9 +463,9 @@ erDiagram
         int       relevant_records
         int       filtered_records
         int       scoring_threshold
-        file      cleaned_file    nullable
+        file      cleaned_file    "nullable"
         json      stats_json
-        float     processing_time nullable
+        float     processing_time "nullable"
         text      error_message
         boolean   auto_enrich_sql
         int       credits_consumed
@@ -500,7 +500,7 @@ erDiagram
         string    company_name
         string    sector
         boolean   is_active
-        datetime  unsubscribed_at nullable
+        datetime  unsubscribed_at "nullable"
         string    source
         json      metadata
     }
@@ -511,8 +511,8 @@ erDiagram
         text      body_html
         enum      source_filter   "all | internal | external | manual"
         enum      status          "draft | scheduled | sending | sent | paused | cancelled"
-        datetime  scheduled_at    nullable
-        datetime  sent_at         nullable
+        datetime  scheduled_at    "nullable"
+        datetime  sent_at         "nullable"
         int       total_recipients
         int       sent_count
         int       open_count
@@ -523,11 +523,11 @@ erDiagram
 
     CampaignSend {
         uuid      tracking_id     "UK"
-        string    ses_message_id  "SES message ID, db_index, nullable"
+        string    ses_message_id  "SES message ID (db_index, nullable)"
         enum      status          "pending | sent | delivered | opened | clicked | bounced | complained | unsubscribed"
-        datetime  sent_at         nullable
-        datetime  opened_at       nullable
-        datetime  clicked_at      nullable
+        datetime  sent_at         "nullable"
+        datetime  opened_at       "nullable"
+        datetime  clicked_at      "nullable"
         text      error_message
     }
 
@@ -540,7 +540,7 @@ erDiagram
     EmailEvent {
         enum      event_type      "open | click | bounce | complaint | unsubscribe"
         text      user_agent
-        ip        ip_address      nullable
+        ip        ip_address      "nullable"
         url       url
         json      metadata
     }
