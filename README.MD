@@ -338,12 +338,12 @@ erDiagram
 
     %% ── App: core (db_table='companies_*') ────────────────────────
     Sector {
-        string    name            @unique
+        string    name            "UK"
         text      description
     }
 
     Product {
-        string    name            @unique
+        string    name            "UK"
         text      description
     }
 
@@ -427,7 +427,7 @@ erDiagram
     }
 
     PromptTemplate {
-        string    name            @unique
+        string    name            "UK"
         text      description
         text      system_prompt
         text      user_prompt_template
@@ -522,7 +522,7 @@ erDiagram
     }
 
     CampaignSend {
-        uuid      tracking_id     @unique
+        uuid      tracking_id     "UK"
         string    ses_message_id  "SES message ID, db_index, nullable"
         enum      status          "pending | sent | delivered | opened | clicked | bounced | complained | unsubscribed"
         datetime  sent_at         nullable
@@ -587,12 +587,12 @@ erDiagram
     %% core
     Sector        ||--o{ Company             : "companies"
     Sector        ||--o{ PreprocessingRule   : ""
-    Product       }o--o{ Sector              : "sectors"  [M2M]
+    Product       }o--o{ Sector              : "sectors"
 
     ScrapingJob   ||--o{ Company             : "companies"
 
     Company       ||--o{ CompanyContact      : "contacts"
-    Company       ||--o| Lead                : "lead"     [O2O, nullable]
+    Company       ||--o| Lead                : "lead"
     Company       ||--o{ AnalysisRequest     : "analysis_requests"
     Company       ||--o{ AnalysisResult      : "analysis_results"
     Company       ||--o{ ScrapedData         : "scraped_data"
@@ -604,7 +604,7 @@ erDiagram
     Lead          ||--o{ EmailRecipient      : "email_recipients"
 
     %% ai_engine
-    AnalysisRequest ||--|| AnalysisResult    : "result"  [O2O]
+    AnalysisRequest ||--|| AnalysisResult    : "result"
 
     %% mailer
     EmailTemplate ||--o{ EmailCampaign       : "campaigns"
