@@ -7,8 +7,9 @@ __pycache__
 *.md
 **/tests/
 **/test_*.py
-**/migrations/*.py
-!**/migrations/__init__.py
+# NOTA: NO excluir migration files — son necesarios para que Django
+# construya el grafo de migraciones y ejecute migrate correctamente.
+# **/migrations/*.py
 staticfiles/
 media/
 .venv/
