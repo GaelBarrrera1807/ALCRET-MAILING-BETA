@@ -16,7 +16,11 @@ for d in ['/app/media/mailer', '/app/media/static', '/app/staticfiles']:
         pass
 "
 
-python manage.py collectstatic --noinput || true
+chown -R appuser:appgroup /app/staticfiles /app/media 2>/dev/null || true
+
+if [ "$USE_S3" != "true" ]; then
+  python manage.py collectstatic --noinput --skip-checks || true
+fi
 
 if [ "$DJANGO_DEBUG" = "true" ]; then
   exec python manage.py runserver 0.0.0.0:8000 --noreload
