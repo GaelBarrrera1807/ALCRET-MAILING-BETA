@@ -10,7 +10,7 @@ class Migration(migrations.Migration):
     initial = True
 
     dependencies = [
-        ('companies', '0001_initial'),
+        ('core', '0001_initial'),
     ]
 
     operations = [
@@ -24,7 +24,7 @@ class Migration(migrations.Migration):
                 ('data_type', models.CharField(blank=True, default='', max_length=100)),
                 ('raw_data', models.JSONField(blank=True, null=True)),
                 ('processed_data', models.JSONField(blank=True, null=True)),
-                ('company', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='scraped_data', to='companies.company')),
+                ('company', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='scraped_data', to='core.company')),
             ],
             options={
                 'verbose_name': 'Datos Scrapeados',
@@ -43,7 +43,7 @@ class Migration(migrations.Migration):
                 ('status', models.CharField(choices=[('pending', 'Pendiente'), ('processing', 'Procesando'), ('completed', 'Completado'), ('error', 'Error')], default='pending', max_length=50)),
                 ('result', models.JSONField(blank=True, null=True)),
                 ('error_message', models.TextField(blank=True, default='')),
-                ('company', models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.CASCADE, related_name='scraping_jobs', to='companies.company')),
+                ('company', models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.CASCADE, related_name='scraping_jobs', to='core.company')),
             ],
             options={
                 'verbose_name': 'Trabajo de Scraping',

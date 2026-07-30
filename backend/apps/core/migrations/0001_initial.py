@@ -71,7 +71,6 @@ def create_state_operations():
                 ('source_file', models.CharField(blank=True, default='', max_length=500)),
                 ('organization', models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.CASCADE, related_name='companies', to='users.organization')),
                 ('sector', models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.SET_NULL, related_name='companies', to='core.sector')),
-                ('scraping_job', models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.SET_NULL, related_name='companies', to='scraping.scrapingjob')),
                 ('google_rating', models.FloatField(blank=True, null=True)),
                 ('google_reviews_count', models.IntegerField(blank=True, null=True)),
                 ('maps_categories', models.JSONField(blank=True, default=list, null=True)),
@@ -121,7 +120,6 @@ class Migration(migrations.Migration):
 
     dependencies = [
         ('users', '0001_initial'),
-        ('scraping', '0004_alter_scrapeddata_company'),
     ]
 
     operations = [
