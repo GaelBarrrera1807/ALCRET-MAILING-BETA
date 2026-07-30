@@ -7,6 +7,7 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
+        ('companies', '0001_initial'),
         ('core', '0001_initial'),
         ('scraping', '0003_scrapingjob_credits_consumed_and_more'),
     ]

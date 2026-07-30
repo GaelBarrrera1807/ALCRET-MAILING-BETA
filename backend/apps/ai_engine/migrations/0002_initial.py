@@ -10,6 +10,7 @@ class Migration(migrations.Migration):
 
     dependencies = [
         ('ai_engine', '0001_initial'),
+        ('companies', '0001_initial'),
         ('core', '0001_initial'),
     ]
 

@@ -8,6 +8,7 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
+        ('companies', '0001_initial'),
         ('core', '0001_initial'),
         ('leads', '0001_initial'),
         ('users', '0001_initial'),

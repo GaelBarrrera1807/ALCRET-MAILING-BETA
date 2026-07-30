@@ -7,6 +7,7 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
+        ('companies', '0001_initial'),
         ('core', '0002_company_companies_c_city_6d9404_idx_and_more'),
         ('leads', '0004_alter_lead_company_alter_lead_contact'),
     ]
