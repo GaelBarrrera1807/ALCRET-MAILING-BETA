@@ -6,7 +6,7 @@ class Migration(migrations.Migration):
 
     dependencies = [
         ('core', '0002_company_companies_c_city_6d9404_idx_and_more'),
-        ('scraping', '0006_remove_scrapingjob_company'),
+        ('scraping', '0001_initial'),
     ]
 
     operations = [
