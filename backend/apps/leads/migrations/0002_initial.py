@@ -8,7 +8,7 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('companies', '0002_initial'),
+        ('core', '0001_initial'),
         ('leads', '0001_initial'),
         ('users', '0001_initial'),
         migrations.swappable_dependency(settings.AUTH_USER_MODEL),
@@ -23,7 +23,7 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='lead',
             name='company',
-            field=models.OneToOneField(on_delete=django.db.models.deletion.CASCADE, related_name='lead', to='companies.company'),
+            field=models.OneToOneField(on_delete=django.db.models.deletion.CASCADE, related_name='lead', to='core.company'),
         ),
         migrations.AddField(
             model_name='lead',

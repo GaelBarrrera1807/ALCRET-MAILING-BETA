@@ -35,7 +35,7 @@ X_FRAME_OPTIONS = 'DENY'
 LOCAL_APPS = [
     'apps.core',
     'apps.users',
-    'apps.companies',  # stub — models re-exported from core
+    'apps.companies',  # stub — models re-exported from core; needed for migration graph
     'apps.leads',
     'apps.ai_engine',
     'apps.scraping',
@@ -53,6 +53,7 @@ THIRD_PARTY_APPS = [
     'django_filters',
     'drf_spectacular',
     'storages',
+    'django_celery_beat',
 ]
 
 DJANGO_APPS = [
@@ -62,7 +63,6 @@ DJANGO_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'django_celery_beat',
 ]
 
 INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + LOCAL_APPS

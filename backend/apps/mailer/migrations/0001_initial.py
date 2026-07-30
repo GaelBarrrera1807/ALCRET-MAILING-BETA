@@ -10,7 +10,7 @@ class Migration(migrations.Migration):
     initial = True
 
     dependencies = [
-        ('companies', '0002_initial'),
+        ('core', '0001_initial'),
         ('leads', '0002_initial'),
         ('users', '0001_initial'),
     ]
@@ -58,7 +58,7 @@ class Migration(migrations.Migration):
                 ('unsubscribed_at', models.DateTimeField(blank=True, null=True)),
                 ('source', models.CharField(blank=True, default='', help_text='Origen del destinatario (ej: csv_upload, lead_generation, manual)', max_length=100)),
                 ('metadata', models.JSONField(blank=True, default=dict)),
-                ('company', models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.SET_NULL, related_name='email_recipients', to='companies.company')),
+                ('company', models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.SET_NULL, related_name='email_recipients', to='core.company')),
                 ('lead', models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.SET_NULL, related_name='email_recipients', to='leads.lead')),
                 ('organization', models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.CASCADE, related_name='email_recipients', to='users.organization')),
             ],

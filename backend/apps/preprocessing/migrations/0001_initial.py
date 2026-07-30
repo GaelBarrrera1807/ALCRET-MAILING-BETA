@@ -10,7 +10,7 @@ class Migration(migrations.Migration):
     initial = True
 
     dependencies = [
-        ('companies', '0002_initial'),
+        ('core', '0001_initial'),
         ('users', '0001_initial'),
     ]
 
@@ -52,7 +52,7 @@ class Migration(migrations.Migration):
                 ('recommended_products', models.JSONField(blank=True, default=list)),
                 ('is_active', models.BooleanField(default=True)),
                 ('description', models.TextField(blank=True, default='')),
-                ('sector', models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.SET_NULL, to='companies.sector')),
+                ('sector', models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.SET_NULL, to='core.sector')),
             ],
             options={
                 'verbose_name': 'Regla de preprocesamiento',

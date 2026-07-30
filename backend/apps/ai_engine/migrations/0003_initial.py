@@ -10,7 +10,7 @@ class Migration(migrations.Migration):
 
     dependencies = [
         ('ai_engine', '0002_initial'),
-        ('companies', '0001_initial'),
+        ('core', '0001_initial'),
         ('users', '0001_initial'),
     ]
 
@@ -28,6 +28,6 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='analysisresult',
             name='company',
-            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='analysis_results', to='companies.company'),
+            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='analysis_results', to='core.company'),
         ),
     ]
