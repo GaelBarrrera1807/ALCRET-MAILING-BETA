@@ -115,7 +115,7 @@ services:
     healthcheck:
       test: [ "CMD-SHELL", "python -c 'import urllib.request; urllib.request.urlopen(\"http://localhost:8000/api/health/\")' || exit 0" ]
       interval: 10s
-      timeout: 5s
+      timeout: 15s
       retries: 5
       start_period: 30s
     restart: unless-stopped
