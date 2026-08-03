@@ -1,13 +1,20 @@
-# Generated manually — register companies models in core app state
-# via SeparateDatabaseAndState (tables stay as companies_* via db_table)
+# Generated manually — creates companies_* tables in DB (owned by core app)
+# with db_table = 'companies_*' pointing to the same physical tables.
 
 import uuid
 import django.db.models.deletion
 from django.db import migrations, models
 
 
-def create_state_operations():
-    return [
+class Migration(migrations.Migration):
+
+    initial = True
+
+    dependencies = [
+        ('users', '0001_initial'),
+    ]
+
+    operations = [
         migrations.CreateModel(
             name='Sector',
             fields=[
@@ -110,21 +117,5 @@ def create_state_operations():
         migrations.AddIndex(
             model_name='company',
             index=models.Index(fields=['organization', 'score'], name='companies_c_organiz_f48d94_idx'),
-        ),
-    ]
-
-
-class Migration(migrations.Migration):
-
-    initial = True
-
-    dependencies = [
-        ('users', '0001_initial'),
-    ]
-
-    operations = [
-        migrations.SeparateDatabaseAndState(
-            state_operations=create_state_operations(),
-            database_operations=[],
         ),
     ]

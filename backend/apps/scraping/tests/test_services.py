@@ -28,11 +28,11 @@ class RunExternalScrapingTests(TestCase):
         )
         self.job = ScrapingJob.objects.create(
             organization=self.org,
-            company=self.company,
             url='https://testcorp.com',
             job_type='enrichment',
             status='pending',
         )
+        Company.objects.filter(id=self.company.id).update(scraping_job=self.job)
         self.service = ScrapingService()
 
     @mock.patch.object(settings, 'APIFY_API_KEY', 'test-apify-key', create=True)
@@ -136,7 +136,7 @@ class RunExternalScrapingTests(TestCase):
 
         self.assertIn('no completó', str(ctx.exception))
 
-        self.assertEqual(mock_sleep.call_count, 60)
+        self.assertEqual(mock_sleep.call_count, 30)
 
         self.job.refresh_from_db()
         self.assertEqual(self.job.status, 'processing')

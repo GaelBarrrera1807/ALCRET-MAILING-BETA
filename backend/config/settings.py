@@ -246,6 +246,7 @@ EMAIL_USE_TLS = os.getenv('EMAIL_USE_TLS', 'false').lower() == 'true'
 DEFAULT_FROM_EMAIL = os.getenv('DEFAULT_FROM_EMAIL', 'prospeccion@industrialprospecting.com')
 EMAIL_RATE_LIMIT = int(os.getenv('EMAIL_RATE_LIMIT', '50'))
 EMAIL_BATCH_PAUSE = int(os.getenv('EMAIL_BATCH_PAUSE', '1'))
+EMAIL_DISPATCH_INTERVAL = float(os.getenv('EMAIL_DISPATCH_INTERVAL', '0.0'))
 
 CEREBRAS_API_KEY = os.getenv('CEREBRAS_API_KEY', '')
 CEREBRAS_BASE_URL = os.getenv('CEREBRAS_BASE_URL', 'https://api.cerebras.ai/v1')

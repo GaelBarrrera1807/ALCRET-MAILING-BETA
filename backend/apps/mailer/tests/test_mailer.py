@@ -1,6 +1,8 @@
+import json
 import uuid
 from unittest.mock import patch
 
+from celery.exceptions import Retry
 from django.contrib.auth import get_user_model
 from django.core import mail
 from rest_framework import status
@@ -262,38 +264,66 @@ class EmailCampaignTests(BaseTest):
 
 
 class CeleryTaskTests(BaseTest):
-    @patch('apps.mailer.services.mail_service.send_single_email')
-    def test_send_campaign_task_executes(self, mock_send):
+    def test_send_campaign_task_executes(self):
         from apps.mailer.tasks.send_campaign import send_campaign_task
 
         campaign = self._create_campaign()
         r1 = self._create_recipient(email='a@test.com')
         r2 = self._create_recipient(email='b@test.com')
 
-        CampaignSend.objects.create(campaign=campaign, recipient=r1)
-        CampaignSend.objects.create(campaign=campaign, recipient=r2)
+        cs1 = CampaignSend.objects.create(campaign=campaign, recipient=r1)
+        cs2 = CampaignSend.objects.create(campaign=campaign, recipient=r2)
 
-        mock_send.return_value = True
-        result = send_campaign_task(str(campaign.id))
+        with patch('apps.mailer.tasks.send_campaign.chord') as mock_chord:
+            result = send_campaign_task(str(campaign.id))
 
-        self.assertEqual(result['sent'], 2)
-        self.assertEqual(result['total'], 2)
+        self.assertEqual(result['dispatched'], 2)
+        self.assertEqual(result['campaign_id'], str(campaign.id))
 
         campaign.refresh_from_db()
-        self.assertEqual(campaign.status, 'sent')
+        self.assertEqual(campaign.status, 'sending')
 
-    @patch('apps.mailer.services.mail_service.send_single_email')
-    def test_send_campaign_handles_errors(self, mock_send):
+        mock_chord.assert_called_once()
+        signatures = mock_chord.call_args.args[0]
+        self.assertEqual(len(signatures), 2)
+        self.assertTrue(all(
+            s.task == 'apps.mailer.tasks.send_campaign.send_single_email_task'
+            for s in signatures
+        ))
+        dispatched_ids = [s.args[0] for s in signatures]
+        self.assertEqual(sorted(dispatched_ids), sorted([cs1.id, cs2.id]))
+
+        callback = mock_chord.return_value.call_args.args[0]
+        self.assertEqual(callback.task, 'apps.mailer.tasks.send_campaign.finalize_campaign_task')
+        self.assertEqual(callback.args, (campaign.id,))
+
+    def test_send_campaign_task_skips_non_draft(self):
         from apps.mailer.tasks.send_campaign import send_campaign_task
 
         campaign = self._create_campaign()
-        r = self._create_recipient(email='error@test.com')
-        CampaignSend.objects.create(campaign=campaign, recipient=r)
+        campaign.status = 'sent'
+        campaign.save(update_fields=['status'])
+        self._create_recipient(email='a@test.com')
 
-        mock_send.side_effect = Exception('SMTP error')
         result = send_campaign_task(str(campaign.id))
+        self.assertEqual(result['status'], 'skipped')
 
-        self.assertEqual(result['errors'], 1)
+    def test_send_single_email_task_retries_on_failure(self):
+        from apps.mailer.tasks.send_campaign import send_single_email_task
+
+        campaign = self._create_campaign()
+        r = self._create_recipient(email='error@test.com')
+        cs = CampaignSend.objects.create(campaign=campaign, recipient=r)
+
+        with patch('apps.mailer.services.mail_service.send_single_email', return_value=False):
+            with patch('apps.mailer.tasks.send_campaign.send_single_email_task.retry') as mock_retry:
+                mock_retry.side_effect = Retry()
+                with self.assertRaises(Retry):
+                    send_single_email_task(str(cs.id))
+
+        mock_retry.assert_called_once()
+        cs.refresh_from_db()
+        self.assertEqual(cs.status, 'pending')
 
     def test_retry_failed_sends(self):
         from apps.mailer.tasks.send_campaign import retry_failed_sends
@@ -303,11 +333,15 @@ class CeleryTaskTests(BaseTest):
         campaign.save(update_fields=['status'])
 
         r = self._create_recipient(email='fail@test.com')
-        CampaignSend.objects.create(
+        cs = CampaignSend.objects.create(
             campaign=campaign, recipient=r, status='bounced',
         )
-        result = retry_failed_sends()
-        self.assertIn('retried', result)
+
+        with patch('apps.mailer.tasks.send_campaign.send_single_email_task.delay') as mock_delay:
+            result = retry_failed_sends()
+
+        self.assertEqual(result['retried'], 1)
+        mock_delay.assert_called_once_with(cs.id)
 
 
 class TrackingTests(BaseTest):
@@ -360,32 +394,186 @@ class TrackingTests(BaseTest):
 
 
 class EmailDeliveryTests(BaseTest):
-    @patch('apps.mailer.services.mail_service.send_single_email')
-    def test_email_is_sent_via_celery(self, mock_send):
-        from apps.mailer.tasks.send_campaign import send_campaign_task
+    def test_email_is_sent_via_celery(self):
+        from apps.mailer.tasks.send_campaign import send_single_email_task
 
         campaign = self._create_campaign()
         recipient = self._create_recipient()
         cs = CampaignSend.objects.create(campaign=campaign, recipient=recipient)
 
-        mock_send.return_value = True
-        send_campaign_task(str(campaign.id))
+        result = send_single_email_task(str(cs.id))
 
-        mock_send.assert_called_once_with(cs)
+        self.assertEqual(result, {'campaign_send_id': str(cs.id), 'sent': True})
+
         cs.refresh_from_db()
         self.assertEqual(cs.status, 'sent')
+        self.assertIsNotNone(cs.sent_at)
+        self.assertEqual(len(mail.outbox), 1)
+        self.assertEqual(mail.outbox[0].to, [recipient.email])
+        self.assertEqual(mail.outbox[0].subject, 'Hola Juan')
 
-    @patch('apps.mailer.services.mail_service.send_single_email')
-    def test_campaign_counts_updated(self, mock_send):
-        from apps.mailer.tasks.send_campaign import send_campaign_task
+    def test_campaign_counts_updated(self):
+        from apps.mailer.tasks.send_campaign import send_single_email_task
 
         campaign = self._create_campaign()
         r1 = self._create_recipient(email='r1@test.com')
         r2 = self._create_recipient(email='r2@test.com')
-        CampaignSend.objects.create(campaign=campaign, recipient=r1)
-        CampaignSend.objects.create(campaign=campaign, recipient=r2)
+        cs1 = CampaignSend.objects.create(campaign=campaign, recipient=r1)
+        cs2 = CampaignSend.objects.create(campaign=campaign, recipient=r2)
 
-        mock_send.return_value = True
-        send_campaign_task(str(campaign.id))
+        send_single_email_task(str(cs1.id))
+        send_single_email_task(str(cs2.id))
+
         campaign.refresh_from_db()
         self.assertEqual(campaign.sent_count, 2)
+        self.assertEqual(len(mail.outbox), 2)
+
+
+class SesWebhookTests(BaseTest):
+    def _post(self, payload):
+        return self.client.post(
+            '/api/mailer/webhooks/ses/',
+            data=json.dumps(payload),
+            content_type='application/json',
+        )
+
+    def _make_campaign_send(self, ses_message_id, **kwargs):
+        campaign = self._create_campaign()
+        recipient = self._create_recipient()
+        return CampaignSend.objects.create(
+            campaign=campaign, recipient=recipient,
+            ses_message_id=ses_message_id, **kwargs,
+        )
+
+    @patch('apps.mailer.views.requests.get')
+    def test_subscription_confirmation_auto_confirms(self, mock_get):
+        mock_get.return_value.status_code = 200
+        url = 'https://sns.us-east-1.amazonaws.com/?Action=ConfirmSubscription'
+        response = self._post({
+            'Type': 'SubscriptionConfirmation',
+            'TopicArn': 'arn:aws:sns:us-east-1:000000000000:ses-topic',
+            'SubscribeURL': url,
+        })
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(response.json()['status'], 'subscription_confirmed')
+        mock_get.assert_called_once_with(url, timeout=30)
+
+    @patch('apps.mailer.views.requests.get')
+    def test_subscription_confirmation_missing_url_returns_400(self, mock_get):
+        response = self._post({'Type': 'SubscriptionConfirmation'})
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+        mock_get.assert_not_called()
+
+    def test_bounce_notification_updates_send_and_deactivates_recipient(self):
+        cs = self._make_campaign_send('ses-bounce-123')
+
+        notification = {
+            'notificationType': 'Bounce',
+            'mail': {'messageId': 'ses-bounce-123'},
+            'bounce': {
+                'bounceType': 'Permanent',
+                'bounceSubType': 'General',
+            },
+        }
+        response = self._post({'Type': 'Notification', 'Message': json.dumps(notification)})
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(response.json()['result']['event'], 'bounce')
+
+        cs.refresh_from_db()
+        self.assertEqual(cs.status, 'bounced')
+
+        recipient = cs.recipient
+        recipient.refresh_from_db()
+        self.assertFalse(recipient.is_active)
+
+        self.assertTrue(EmailEvent.objects.filter(campaign_send=cs, event_type='bounce').exists())
+
+    def test_transient_bounce_keeps_recipient_active(self):
+        cs = self._make_campaign_send('ses-bounce-2')
+        response = self._post({
+            'Type': 'Notification',
+            'Message': json.dumps({
+                'notificationType': 'Bounce',
+                'mail': {'messageId': 'ses-bounce-2'},
+                'bounce': {'bounceType': 'Transient', 'bounceSubType': 'General'},
+            }),
+        })
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        cs.refresh_from_db()
+        self.assertEqual(cs.status, 'bounced')
+        recipient = cs.recipient
+        recipient.refresh_from_db()
+        self.assertTrue(recipient.is_active)
+
+    def test_complaint_notification_deactivates_recipient(self):
+        cs = self._make_campaign_send('ses-complaint-1')
+        response = self._post({
+            'Type': 'Notification',
+            'Message': json.dumps({
+                'notificationType': 'Complaint',
+                'mail': {'messageId': 'ses-complaint-1'},
+                'complaint': {'complainedRecipients': [{'emailAddress': 'test@example.com'}]},
+            }),
+        })
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(response.json()['result']['event'], 'complaint')
+        cs.refresh_from_db()
+        self.assertEqual(cs.status, 'complained')
+        recipient = cs.recipient
+        recipient.refresh_from_db()
+        self.assertFalse(recipient.is_active)
+        self.assertTrue(EmailEvent.objects.filter(campaign_send=cs, event_type='complaint').exists())
+
+    def test_delivery_notification_updates_status(self):
+        cs = self._make_campaign_send('ses-delivery-1', status='sent')
+        response = self._post({
+            'Type': 'Notification',
+            'Message': json.dumps({
+                'notificationType': 'Delivery',
+                'mail': {'messageId': 'ses-delivery-1'},
+                'delivery': {'timestamp': '2026-08-03T00:00:00Z'},
+            }),
+        })
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(response.json()['result']['event'], 'delivery')
+        cs.refresh_from_db()
+        self.assertEqual(cs.status, 'delivered')
+
+    def test_notification_unknown_message_id_ignored(self):
+        cs = self._make_campaign_send('ses-known-1')
+        response = self._post({
+            'Type': 'Notification',
+            'Message': json.dumps({
+                'notificationType': 'Bounce',
+                'mail': {'messageId': 'does-not-exist'},
+                'bounce': {'bounceType': 'Permanent'},
+            }),
+        })
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        cs.refresh_from_db()
+        self.assertEqual(cs.status, 'pending')
+
+    def test_invalid_message_json_returns_400(self):
+        response = self._post({'Type': 'Notification', 'Message': '{not json'})
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+
+
+class UnsubscribeTests(BaseTest):
+    def test_unsubscribe_route_deactivates_recipient(self):
+        campaign = self._create_campaign()
+        recipient = self._create_recipient()
+        cs = CampaignSend.objects.create(campaign=campaign, recipient=recipient, status='sent')
+
+        self.client.logout()
+        response = self.client.get(f'/mailer/unsubscribe/{cs.tracking_id}/')
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+        cs.refresh_from_db()
+        self.assertEqual(cs.status, 'unsubscribed')
+        recipient.refresh_from_db()
+        self.assertFalse(recipient.is_active)
+        self.assertIsNotNone(recipient.unsubscribed_at)
+        self.assertTrue(EmailEvent.objects.filter(campaign_send=cs, event_type='unsubscribe').exists())

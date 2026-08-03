@@ -16,6 +16,8 @@ import rest_framework.urlpatterns as _drf_urlpatterns
 _converters_mod.register_converter = _safe_rc
 _drf_urlpatterns.register_converter = _safe_rc
 
+from apps.mailer import views as apps_mailer_views
+
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/', include('apps.core.urls')),
@@ -28,6 +30,7 @@ urlpatterns = [
     path('api/', include('apps.reports.urls')),
     path('api/', include('apps.preprocessing.urls')),
     path('api/mailer/', include('apps.mailer.urls')),
+    path('mailer/unsubscribe/<uuid:tracking_id>/', apps_mailer_views.unsubscribe, name='mailer-unsubscribe'),
     path('api/schema/', SpectacularAPIView.as_view(), name='schema'),
     path('api/docs/', SpectacularSwaggerView.as_view(url_name='schema'), name='swagger-ui'),
 ]

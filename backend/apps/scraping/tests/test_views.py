@@ -31,7 +31,8 @@ class BaseTest(APITestCase):
 
 class ScrapingJobTests(BaseTest):
     def test_list_jobs(self):
-        ScrapingJob.objects.create(organization=self.org, company=self.company, url='https://example.com')
+        job = ScrapingJob.objects.create(organization=self.org, url='https://example.com')
+        Company.objects.filter(id=self.company.id).update(scraping_job=job)
         response = self.client.get('/api/scraping-jobs/')
         self.assertEqual(response.status_code, status.HTTP_200_OK)
 

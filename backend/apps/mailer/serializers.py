@@ -63,16 +63,15 @@ class EmailTemplatePreviewSerializer(serializers.Serializer):
 
 
 class EmailRecipientSerializer(serializers.ModelSerializer):
-    company_display_name = serializers.CharField(source='company.name', read_only=True, default='')
     lead_status = serializers.CharField(source='lead.status', read_only=True, default='')
 
     class Meta:
         model = EmailRecipient
         fields = [
-            'id', 'organization', 'company', 'lead',
-            'company_display_name', 'lead_status',
+            'id', 'organization', 'lead',
+            'lead_status',
             'email', 'first_name', 'last_name',
-            'sector',
+            'company_name', 'sector',
             'is_active', 'unsubscribed_at', 'source',
             'metadata', 'created_at', 'updated_at',
         ]

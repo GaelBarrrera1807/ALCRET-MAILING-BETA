@@ -1,4 +1,5 @@
 import logging
+import re
 from datetime import datetime, timezone
 
 from django.conf import settings
@@ -10,6 +11,26 @@ from apps.mailer.services.template_service import render_template
 from apps.mailer.services.tracking_service import TRACKING_URL
 
 logger = logging.getLogger(__name__)
+
+_TAG_RE = re.compile(r'<[^>]+>')
+_WS_RE = re.compile(r'\s+')
+
+
+def html_to_text(html):
+    if not html:
+        return ''
+    text = _TAG_RE.sub('', html)
+    text = _WS_RE.sub(' ', text)
+    return text.strip()
+
+
+def extract_ses_message_id(msg):
+    headers = getattr(msg, 'extra_headers', None) or {}
+    for key in ('status_code', 'MessageId', 'X-SES-Message-ID'):
+        value = headers.get(key)
+        if value:
+            return str(value)
+    return None
 
 
 def send_single_email(campaign_send):
@@ -47,13 +68,14 @@ def send_single_email(campaign_send):
 
         tracking_pixel_url = f'{settings.BASE_URL}{TRACKING_URL}/open/{campaign_send.tracking_id}/'
         body_html_with_pixel = f'{body_html}<img src="{tracking_pixel_url}" alt="" width="1" height="1" style="display:none;" />'
+        text_body = html_to_text(body_html_with_pixel)
 
         from_email = getattr(settings, 'DEFAULT_FROM_EMAIL', 'prospeccion@industrialprospecting.com')
         to_email = [recipient.email]
 
         msg = EmailMultiAlternatives(
             subject=subject,
-            body='',
+            body=text_body,
             from_email=from_email,
             to=to_email,
             headers={
@@ -66,15 +88,24 @@ def send_single_email(campaign_send):
 
         msg.send(fail_silently=False)
 
+        ses_message_id = extract_ses_message_id(msg)
+
         now = datetime.now(timezone.utc)
         campaign_send.status = 'sent'
         campaign_send.sent_at = now
-        campaign_send.save(update_fields=['status', 'sent_at'])
+        update_fields = ['status', 'sent_at']
+        if ses_message_id:
+            campaign_send.ses_message_id = ses_message_id
+            update_fields.append('ses_message_id')
+        campaign_send.save(update_fields=update_fields)
 
         EmailCampaign.objects.filter(id=campaign.id).update(sent_count=F('sent_count') + 1)
 
-        logger.info(f'Email enviado a {recipient.email} (tracking: {campaign_send.tracking_id})')
-        return True
+        logger.info(
+            f'Email enviado a {recipient.email} '
+            f'(tracking: {campaign_send.tracking_id}, ses_message_id: {ses_message_id or "n/a"})'
+        )
+        return ses_message_id or True
 
     except Exception as e:
         logger.error(f'Error enviando email a {campaign_send.recipient.email}: {e}', exc_info=True)

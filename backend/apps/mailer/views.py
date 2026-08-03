@@ -1,8 +1,11 @@
+import json
 import logging
 
+import requests
 from django.db.models import Count
-from django.http import HttpResponse, HttpResponseRedirect
+from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
 from django.utils import timezone
+from django.views.decorators.csrf import csrf_exempt
 from rest_framework import parsers, permissions, status, viewsets
 from rest_framework.decorators import action, api_view, permission_classes
 from rest_framework.response import Response
@@ -21,6 +24,7 @@ from apps.mailer.serializers import (
 from apps.mailer.services.template_service import render_template
 from apps.mailer.services.tracking_service import (
     generate_tracking_pixel, process_open, process_click,
+    process_unsubscribe, process_ses_notification,
 )
 
 logger = logging.getLogger(__name__)
@@ -90,14 +94,11 @@ class EmailRecipientViewSet(viewsets.ModelViewSet):
         qs = EmailRecipient.objects.filter(organization=user.organization)
         source = self.request.query_params.get('source')
         is_active = self.request.query_params.get('is_active')
-        company_id = self.request.query_params.get('company_id')
         lead_id = self.request.query_params.get('lead_id')
         if source:
             qs = qs.filter(source=source)
         if is_active is not None:
             qs = qs.filter(is_active=is_active.lower() == 'true')
-        if company_id:
-            qs = qs.filter(company_id=company_id)
         if lead_id:
             qs = qs.filter(lead_id=lead_id)
         return qs
@@ -335,3 +336,59 @@ def tracking_click(request, tracking_id):
         logger.warning(f'Click tracking falló para ID: {tracking_id}')
 
     return HttpResponseRedirect(redirect_to=target_url)
+
+
+@csrf_exempt
+@api_view(['POST'])
+@permission_classes([permissions.AllowAny])
+def ses_webhook(request):
+    try:
+        payload = json.loads(request.body or b'{}')
+    except json.JSONDecodeError:
+        return JsonResponse({'error': 'Invalid JSON body'}, status=400)
+
+    message_type = payload.get('Type')
+
+    if message_type == 'SubscriptionConfirmation':
+        subscribe_url = payload.get('SubscribeURL')
+        if not subscribe_url:
+            return JsonResponse({'error': 'Missing SubscribeURL'}, status=400)
+        try:
+            response = requests.get(subscribe_url, timeout=30)
+            response.raise_for_status()
+            logger.info(f'SNS SubscriptionConfirmation confirmada: HTTP {response.status_code}')
+            return JsonResponse({'status': 'subscription_confirmed'})
+        except Exception as e:
+            logger.error(f'Error confirmando suscripción SNS: {e}', exc_info=True)
+            return JsonResponse({'error': 'Fallo al confirmar suscripción'}, status=500)
+
+    if message_type == 'Notification':
+        raw_message = payload.get('Message')
+        try:
+            notification = json.loads(raw_message) if isinstance(raw_message, str) else raw_message
+        except json.JSONDecodeError:
+            return JsonResponse({'error': 'Invalid Message JSON'}, status=400)
+        result = process_ses_notification(notification)
+        return JsonResponse({'status': 'processed', 'result': result})
+
+    if message_type == 'UnsubscribeConfirmation':
+        logger.info('SNS UnsubscribeConfirmation recibido')
+        return JsonResponse({'status': 'unsubscribe_confirmation'})
+
+    return JsonResponse({'error': f'Tipo SNS no soportado: {message_type}'}, status=400)
+
+
+@api_view(['GET'])
+@permission_classes([permissions.AllowAny])
+def unsubscribe(request, tracking_id):
+    process_unsubscribe(str(tracking_id), {
+        'user_agent': request.META.get('HTTP_USER_AGENT', ''),
+        'ip_address': request.META.get('REMOTE_ADDR'),
+    })
+    html = (
+        '<html><body style="font-family:sans-serif;text-align:center;padding:40px;">'
+        '<h2>Has sido dado de baja correctamente</h2>'
+        '<p>Ya no recibirás correos de esta lista.</p>'
+        '</body></html>'
+    )
+    return HttpResponse(html, content_type='text/html; charset=utf-8')

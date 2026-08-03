@@ -4,7 +4,7 @@ from rest_framework.routers import DefaultRouter
 from apps.mailer.views import (
     EmailTemplateViewSet, EmailRecipientViewSet,
     EmailCampaignViewSet, TemplateImageViewSet,
-    tracking_pixel, tracking_click,
+    tracking_pixel, tracking_click, ses_webhook,
 )
 
 router = DefaultRouter()
@@ -16,6 +16,7 @@ router.register(r'images', TemplateImageViewSet, basename='template-images')
 urlpatterns = [
     path('track/open/<uuid:tracking_id>/', tracking_pixel, name='tracking-open'),
     path('track/click/<uuid:tracking_id>/', tracking_click, name='tracking-click'),
+    path('webhooks/ses/', ses_webhook, name='ses-webhook'),
 ]
 
 urlpatterns += router.urls

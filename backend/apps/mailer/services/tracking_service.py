@@ -155,3 +155,100 @@ def process_unsubscribe(tracking_id_str, metadata=None):
 
     logger.info(f'Unsubscribe registrado: {tracking_id_str}')
     return campaign_send
+
+
+@transaction.atomic
+def process_delivery(tracking_id_str, metadata=None):
+    tracking_id = _parse_tracking_id(tracking_id_str)
+    if not tracking_id:
+        return None
+
+    try:
+        campaign_send = CampaignSend.objects.select_for_update().get(tracking_id=tracking_id)
+    except CampaignSend.DoesNotExist:
+        logger.warning(f'Tracking ID no encontrado para delivery: {tracking_id_str}')
+        return None
+
+    if campaign_send.status in ('pending', 'sent'):
+        campaign_send.status = 'delivered'
+        campaign_send.save(update_fields=['status'])
+
+    logger.info(f'Delivery registrado: {tracking_id_str}')
+    return campaign_send
+
+
+@transaction.atomic
+def process_complaint(tracking_id_str, metadata=None):
+    tracking_id = _parse_tracking_id(tracking_id_str)
+    if not tracking_id:
+        return None
+
+    try:
+        campaign_send = CampaignSend.objects.select_for_update().get(tracking_id=tracking_id)
+    except CampaignSend.DoesNotExist:
+        logger.warning(f'Tracking ID no encontrado para complaint: {tracking_id_str}')
+        return None
+
+    recipient = campaign_send.recipient
+    recipient.is_active = False
+    recipient.unsubscribed_at = datetime.now(timezone.utc)
+    recipient.save(update_fields=['is_active', 'unsubscribed_at'])
+
+    campaign_send.status = 'complained'
+    campaign_send.save(update_fields=['status'])
+
+    EmailCampaign.objects.filter(id=campaign_send.campaign_id).update(unsubscribe_count=F('unsubscribe_count') + 1)
+
+    EmailEvent.objects.create(
+        campaign_send=campaign_send,
+        event_type='complaint',
+        metadata=metadata or {},
+    )
+
+    logger.info(f'Complaint registrado: {tracking_id_str}')
+    return campaign_send
+
+
+def find_campaign_send_by_ses_message_id(message_id):
+    if not message_id:
+        return None
+    return CampaignSend.objects.filter(ses_message_id=message_id).select_related('recipient').first()
+
+
+def process_ses_notification(notification):
+    notification_type = (notification or {}).get('notificationType')
+    mail = (notification or {}).get('mail', {}) or {}
+    message_id = mail.get('messageId')
+
+    if not message_id:
+        logger.warning('Notificación SES sin mail.messageId')
+        return None
+
+    campaign_send = find_campaign_send_by_ses_message_id(message_id)
+    if not campaign_send:
+        logger.warning(f'Notificación SES para messageId no registrado: {message_id}')
+        return None
+
+    tracking_id = str(campaign_send.tracking_id)
+
+    if notification_type == 'Bounce':
+        bounce = notification.get('bounce', {}) or {}
+        bounce_type = bounce.get('bounceType', '')
+        reason = bounce.get('bounceSubType', '')
+        process_bounce(tracking_id, reason=reason, metadata=notification)
+        if bounce_type == 'Permanent':
+            recipient = campaign_send.recipient
+            recipient.is_active = False
+            recipient.save(update_fields=['is_active'])
+        return {'event': 'bounce', 'bounce_type': bounce_type, 'campaign_send_id': str(campaign_send.id)}
+
+    if notification_type == 'Complaint':
+        process_complaint(tracking_id, metadata=notification)
+        return {'event': 'complaint', 'campaign_send_id': str(campaign_send.id)}
+
+    if notification_type == 'Delivery':
+        process_delivery(tracking_id, metadata=notification)
+        return {'event': 'delivery', 'campaign_send_id': str(campaign_send.id)}
+
+    logger.info(f'notificationType no manejado: {notification_type}')
+    return {'event': notification_type, 'ignored': True}
