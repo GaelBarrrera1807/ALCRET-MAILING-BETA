@@ -121,6 +121,35 @@ class EmailTemplateTests(BaseTest):
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(response.data['name'], 'Plantilla Actualizada')
 
+    def test_body_html_roundtrip(self):
+        body = '<p>Hola {{ first_name }}, bienvenido a {{ company }}.</p>'
+        create_resp = self.client.post('/api/mailer/templates/', {
+            'name': 'Roundtrip',
+            'template_type': 'cold_outreach',
+            'subject': 'Asunto {{ first_name }}',
+            'body_html': body,
+            'variables': ['first_name', 'company', 'sector'],
+        }, format='json')
+        self.assertEqual(create_resp.status_code, status.HTTP_201_CREATED)
+        self.assertEqual(create_resp.data['body_html'], body)
+
+        template_id = create_resp.data['id']
+        list_resp = self.client.get('/api/mailer/templates/')
+        self.assertEqual(list_resp.status_code, status.HTTP_200_OK)
+        listed = next(t for t in list_resp.data['results'] if str(t['id']) == str(template_id))
+        self.assertEqual(listed['body_html'], body)
+
+        detail_resp = self.client.get(f'/api/mailer/templates/{template_id}/')
+        self.assertEqual(detail_resp.status_code, status.HTTP_200_OK)
+        self.assertEqual(detail_resp.data['body_html'], body)
+
+        updated = body.replace('{{ company }}', '{{ company_name }}')
+        patch_resp = self.client.patch(f'/api/mailer/templates/{template_id}/', {
+            'body_html': updated,
+        })
+        self.assertEqual(patch_resp.status_code, status.HTTP_200_OK)
+        self.assertEqual(patch_resp.data['body_html'], updated)
+
 
 class EmailRecipientTests(BaseTest):
     def test_create_recipient(self):

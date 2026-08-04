@@ -129,6 +129,7 @@ export default function RichTemplateEditor({ value, onChange, variables }: RichT
       Placeholder.configure({ placeholder: 'Empieza a escribir tu correo aquí...' }),
       Variable,
     ],
+    content: preprocessLegacyVariables(value, variables),
     onUpdate: ({ editor }) => {
       const raw = editor.getHTML()
       const clean = cleanupVariableOutput(raw)
