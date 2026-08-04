@@ -148,6 +148,7 @@ class EmailCampaignViewSet(viewsets.ModelViewSet):
     permission_classes = [permissions.IsAuthenticated]
     search_fields = ['name']
     ordering_fields = ['name', 'status', 'created_at', 'sent_at']
+    ordering = ['-created_at']
 
     def get_serializer_class(self):
         if self.action == 'create':

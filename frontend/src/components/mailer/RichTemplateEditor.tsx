@@ -132,6 +132,7 @@ export default function RichTemplateEditor({ value, onChange, variables }: RichT
     onUpdate: ({ editor }) => {
       const raw = editor.getHTML()
       const clean = cleanupVariableOutput(raw)
+      processedValue.current = clean
       onChange(clean)
     },
     editorProps: {

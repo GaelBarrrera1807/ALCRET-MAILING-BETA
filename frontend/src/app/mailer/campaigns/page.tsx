@@ -22,14 +22,16 @@ export default function CampaignsPage() {
 
   const PAGE_SIZE = 25
 
-  const fetchCampaigns = useCallback(async () => {
+  const fetchCampaigns = useCallback(async (targetPage?: number) => {
     setLoading(true)
     try {
-      const params: Record<string, string> = { page: String(page) }
+      const pageNumber = targetPage ?? page
+      const params: Record<string, string> = { page: String(pageNumber) }
       if (statusFilter) params.status = statusFilter
       const data = await getCampaigns(params)
       setCampaigns(data.results)
       setTotal(data.count)
+      if (targetPage !== undefined && targetPage !== page) setPage(targetPage)
     } catch {
       addToast('Error al cargar campañas', 'error')
     } finally {
@@ -66,7 +68,7 @@ export default function CampaignsPage() {
       })
       addToast('Campaña creada', 'success')
       setShowCreate(false)
-      fetchCampaigns()
+      fetchCampaigns(1)
     } catch {
       addToast('Error al crear campaña', 'error')
     } finally {

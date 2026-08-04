@@ -203,6 +203,17 @@ class EmailCampaignTests(BaseTest):
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertGreaterEqual(len(response.data['results']), 1)
 
+    def test_new_campaign_appears_first_on_list(self):
+        self._create_campaign(name='Campaña Antigua')
+        new_campaign = self._create_campaign(name='Campaña Recién Creada')
+
+        response = self.client.get('/api/mailer/campaigns/')
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(response.data['results'][0]['id'], str(new_campaign.id))
+        self.assertEqual(response.data['results'][0]['name'], 'Campaña Recién Creada')
+        self.assertEqual(response.data['results'][0]['status'], 'draft')
+
     @patch('apps.mailer.tasks.send_campaign.send_campaign_task.delay')
     def test_send_campaign_creates_sends(self, mock_delay):
         campaign = self._create_campaign()
