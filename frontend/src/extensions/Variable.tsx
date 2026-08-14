@@ -17,6 +17,21 @@ export const VARIABLE_LABELS: Record<string, string> = {
   company_name: 'Empresa',
   sector: 'Sector',
   email: 'Email',
+// Inventario
+  sku_o_vin: 'VIN/SKU',
+  vin: 'VIN',
+  nombre_unidad: 'Unidad',
+  almacen_id: 'Almacén',
+  producto_id: 'Producto',
+  cantidad_disponible: 'Cantidad',
+  tipo_movimiento: 'Tipo de movimiento',
+  // Oportunidades / Pipeline
+  contact_name: 'Nombre de contacto',
+  contact_email: 'Email de contacto',
+  monto_total: 'Monto total',
+  esquema: 'Esquema',
+  unidad_interes: 'Unidad de interés',
+  last_email_interaction: 'Última interacción',
 }
 
 export const SUPPORTED_VARIABLES = Object.keys(VARIABLE_LABELS)

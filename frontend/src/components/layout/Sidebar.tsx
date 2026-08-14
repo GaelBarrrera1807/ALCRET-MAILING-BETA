@@ -12,6 +12,8 @@ import {
   Mail,
   FileText,
   History,
+  Package,
+  Kanban,
   LogOut,
 } from 'lucide-react'
 
@@ -24,6 +26,8 @@ const iconMap: Record<string, React.ReactNode> = {
   'Email Marketing': <Mail size={18} />,
   Reportes: <FileText size={18} />,
   'Historial de Búsquedas': <History size={18} />,
+  Inventario: <Package size={18} />,
+  'Pipeline / Ventas': <Kanban size={18} />,
 }
 
 const navItems = [
@@ -34,6 +38,8 @@ const navItems = [
   { href: '/leads', label: 'Leads' },
   { href: '/mailer', label: 'Email Marketing' },
   { href: '/reports', label: 'Reportes' },
+  { href: '/inventory', label: 'Inventario' },
+  { href: '/deals', label: 'Pipeline / Ventas' },
   { href: '/historial-busquedas', label: 'Historial de Búsquedas' },
 ]
 

@@ -158,7 +158,7 @@ class EmailCampaignViewSet(viewsets.ModelViewSet):
     def get_queryset(self):
         user = self.request.user
         if not user.organization:
-            return EmailCampaign.objects.none()
+            return EmailCampaign.objects.filter(organization__isnull=True).select_related('template')
         qs = EmailCampaign.objects.filter(organization=user.organization).select_related('template')
         status_filter = self.request.query_params.get('status')
         if status_filter:
@@ -167,6 +167,21 @@ class EmailCampaignViewSet(viewsets.ModelViewSet):
 
     def perform_create(self, serializer):
         serializer.save(organization=self.request.user.organization)
+
+    def create(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        self.perform_create(serializer)
+        headers = self.get_success_headers(serializer.data)
+        result_serializer = EmailCampaignSerializer(
+            serializer.instance,
+            context=self.get_serializer_context(),
+        )
+        return Response(
+            result_serializer.data,
+            status=status.HTTP_201_CREATED,
+            headers=headers,
+        )
 
     @action(detail=True, methods=['post'])
     def send(self, request, pk=None):

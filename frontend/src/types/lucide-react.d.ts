@@ -17,4 +17,7 @@ declare module 'lucide-react' {
   export const FileText: Icon
   export const History: Icon
   export const LogOut: Icon
+  export const Package: Icon
+  export const Kanban: Icon
+  export const User: Icon
 }

@@ -42,6 +42,8 @@ LOCAL_APPS = [
     'apps.reports',
     'apps.preprocessing',
     'apps.mailer',
+    'apps.integrations',
+    'apps.inventory',
 ]
 
 THIRD_PARTY_APPS = [
@@ -259,6 +261,10 @@ SNOV_CLIENT_ID = os.getenv('SNOV_CLIENT_ID', '')
 SNOV_CLIENT_SECRET = os.getenv('SNOV_CLIENT_SECRET', '')
 
 BASE_URL = os.getenv('BASE_URL', 'http://localhost:8000')
+
+# Integración inbound ERP ALCRET (webhook firmado con HMAC-SHA256)
+ALCRET_HMAC_SECRET = os.getenv('ALCRET_HMAC_SECRET', '')
+ALCRET_HMAC_TOLERANCE = int(os.getenv('ALCRET_HMAC_TOLERANCE', '900'))
 
 DATA_UPLOAD_MAX_MEMORY_SIZE = 10 * 1024 * 1024  # 10MB
 FILE_UPLOAD_MAX_MEMORY_SIZE = 10 * 1024 * 1024  # 10MB

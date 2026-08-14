@@ -22,11 +22,14 @@ class LeadViewSet(viewsets.ModelViewSet):
         if user.organization:
             qs = qs.filter(organization=user.organization)
         status_filter = self.request.query_params.get('status')
+        stage_filter = self.request.query_params.get('stage')
         priority = self.request.query_params.get('priority')
         min_score = self.request.query_params.get('min_score')
         assigned_to = self.request.query_params.get('assigned_to')
         if status_filter:
             qs = qs.filter(status=status_filter)
+        if stage_filter and stage_filter.lower() != 'all':
+            qs = qs.filter(stage=stage_filter)
         if priority:
             qs = qs.filter(priority=priority)
         if min_score:

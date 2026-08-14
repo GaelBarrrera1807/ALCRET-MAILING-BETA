@@ -17,7 +17,15 @@ class LeadSerializer(serializers.ModelSerializer):
     company_status = serializers.CharField(source='company.status', read_only=True)
     contact_name = serializers.CharField(source='contact.name', read_only=True, default='')
     contact_email = serializers.CharField(source='contact.email', read_only=True, default='')
+    assigned_to_name = serializers.SerializerMethodField()
+    esquema_display = serializers.CharField(source='get_esquema_display', read_only=True, default='')
+    stage_display = serializers.CharField(source='get_stage_display', read_only=True, default='')
     notes = LeadNoteSerializer(source='notes_list', many=True, read_only=True)
+
+    def get_assigned_to_name(self, obj):
+        if not obj.assigned_to:
+            return ''
+        return obj.assigned_to.get_full_name() or obj.assigned_to.username
 
     class Meta:
         model = Lead
@@ -26,8 +34,10 @@ class LeadSerializer(serializers.ModelSerializer):
             'contact', 'contact_name', 'contact_email',
             'organization', 'score', 'is_potential_client',
             'priority', 'detected_sector', 'recommended_products',
-            'analysis_summary', 'reason', 'status',
-            'assigned_to', 'auto_created',
+            'analysis_summary', 'reason', 'status', 'stage', 'stage_display',
+            'esquema', 'esquema_display', 'monto_total', 'unidad_interes',
+            'last_email_interaction',
+            'assigned_to', 'assigned_to_name', 'auto_created',
             'contacted_at', 'last_contact',
             'next_follow_up', 'notes', 'created_at', 'updated_at',
         ]

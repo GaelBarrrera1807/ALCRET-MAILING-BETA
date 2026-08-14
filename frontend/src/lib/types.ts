@@ -101,15 +101,27 @@ export interface Lead {
   company: string
   company_name: string
   company_status: string
+  contact: string | null
+  contact_name: string
+  contact_email: string
   score: number
   is_potential_client: boolean
   priority: string
   status: string
+  stage: string
+  stage_display: string
+  esquema: string
+  esquema_display: string
+  monto_total: string | null
+  unidad_interes: string
+  last_email_interaction: string | null
   detected_sector: string
   recommended_products: string
   analysis_summary: string
   reason: string
   assigned_to: string | null
+  assigned_to_name: string
+  auto_created: boolean
   created_at: string
   updated_at: string
 }
@@ -213,6 +225,20 @@ export interface PaginatedResponse<T> {
   next: string | null
   previous: string | null
   results: T[]
+}
+
+// === Inventario ===
+
+export interface InventoryItem {
+  id: string
+  organization: string | null
+  almacen_id: string
+  producto_id: string
+  sku_o_vin: string
+  nombre_unidad: string
+  cantidad_disponible: number
+  tipo_movimiento: string
+  updated_at: string
 }
 
 // === Email Marketing ===

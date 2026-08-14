@@ -45,6 +45,40 @@ class Lead(BaseModel):
         ],
         default='new',
     )
+    stage = models.CharField(
+        max_length=50,
+        choices=[
+            ('nuevo_lead', 'Nuevo Lead'),
+            ('cotizacion_enviada', 'Cotización Enviada'),
+            ('mesa_credito', 'Expediente / Mesa de Crédito'),
+            ('credito_aprobado', 'Crédito Aprobado'),
+            ('ganado', 'Venta / Entrega Completada'),
+            ('perdido', 'Perdido / Rechazado'),
+        ],
+        default='nuevo_lead',
+    )
+    esquema = models.CharField(
+        max_length=50,
+        choices=[
+            ('contado', 'Contado'),
+            ('arrendamiento_puro', 'Arrendamiento Puro'),
+            ('financiamiento', 'Financiamiento'),
+        ],
+        null=True, blank=True,
+    )
+    monto_total = models.DecimalField(
+        max_digits=12, decimal_places=2,
+        null=True, blank=True,
+        help_text='Monto total de la operación',
+    )
+    unidad_interes = models.CharField(
+        max_length=255, blank=True, default='',
+        help_text='Unidad de interés (tractocamión/remolque)',
+    )
+    last_email_interaction = models.DateTimeField(
+        null=True, blank=True,
+        help_text='Fecha de la última interacción por correo',
+    )
     assigned_to = models.ForeignKey(
         'users.User', on_delete=models.SET_NULL,
         null=True, blank=True, related_name='assigned_leads'
@@ -64,6 +98,7 @@ class Lead(BaseModel):
         ordering = ['-score', '-created_at']
         indexes = [
             models.Index(fields=['organization', 'status']),
+            models.Index(fields=['organization', 'stage']),
             models.Index(fields=['organization', 'priority']),
             models.Index(fields=['organization', 'score']),
         ]

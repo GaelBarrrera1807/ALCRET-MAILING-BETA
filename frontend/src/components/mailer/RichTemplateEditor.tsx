@@ -96,7 +96,7 @@ interface RichTemplateEditorProps {
 
 export default function RichTemplateEditor({ value, onChange, variables }: RichTemplateEditorProps) {
   const [showImageModal, setShowImageModal] = useState(false)
-  const processedValue = useRef('')
+  const processedValue = useRef<string | null>(cleanupVariableOutput(value))
 
   const editor = useEditor({
     extensions: [
@@ -147,7 +147,9 @@ export default function RichTemplateEditor({ value, onChange, variables }: RichT
   useEffect(() => {
     if (!editor) return
     if (!value) return
-    if (value === processedValue.current) return
+
+    const current = cleanupVariableOutput(editor.getHTML())
+    if (value === processedValue.current || value === current) return
 
     const content = preprocessLegacyVariables(value, variables)
     editor.commands.setContent(content)
