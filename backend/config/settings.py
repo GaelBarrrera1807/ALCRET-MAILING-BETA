@@ -232,6 +232,13 @@ CELERY_RESULT_SERIALIZER = 'json'
 CELERY_RESULT_EXPIRES = int(os.getenv('CELERY_RESULT_EXPIRES', '86400'))
 CELERY_TIMEZONE = TIME_ZONE
 
+# Robustez del worker (Celery >=5.4)
+CELERY_BROKER_CONNECTION_RETRY_ON_STARTUP = True
+CELERY_TASK_ACKS_LATE = True
+CELERY_TASK_REJECT_ON_WORKER_LOST = True
+CELERY_WORKER_MAX_TASKS_PER_CHILD = 200
+CELERY_WORKER_PREFETCH_MULTIPLIER = 1
+
 # CELERY_BEAT_SCHEDULE deshabilitado temporalmente hasta django-celery-beat>=2.7
 # CELERY_BEAT_SCHEDULE = {
 #     'retry-failed-campaigns': {
@@ -241,14 +248,23 @@ CELERY_TIMEZONE = TIME_ZONE
 # }
 
 # Email
-EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_BACKEND = os.getenv('EMAIL_BACKEND', 'django_ses.SESBackend')
 EMAIL_HOST = os.getenv('EMAIL_HOST', 'mailhog')
 EMAIL_PORT = int(os.getenv('EMAIL_PORT', '1025'))
+EMAIL_HOST_USER = os.getenv('EMAIL_HOST_USER', '')
+EMAIL_HOST_PASSWORD = os.getenv('EMAIL_HOST_PASSWORD', '')
 EMAIL_USE_TLS = os.getenv('EMAIL_USE_TLS', 'false').lower() == 'true'
 DEFAULT_FROM_EMAIL = os.getenv('DEFAULT_FROM_EMAIL', 'prospeccion@industrialprospecting.com')
 EMAIL_RATE_LIMIT = int(os.getenv('EMAIL_RATE_LIMIT', '50'))
 EMAIL_BATCH_PAUSE = int(os.getenv('EMAIL_BATCH_PAUSE', '1'))
 EMAIL_DISPATCH_INTERVAL = float(os.getenv('EMAIL_DISPATCH_INTERVAL', '0.0'))
+
+# django-ses (SES API). Credenciales comparten AWS_ACCESS_KEY_ID/AWS_SECRET_ACCESS_KEY
+# con S3; si no se definen, boto3 usa el rol IAM de la EC2.
+AWS_SES_REGION_NAME = os.getenv('AWS_SES_REGION_NAME', 'us-east-1')
+AWS_SES_REGION_ENDPOINT = os.getenv('AWS_SES_REGION_ENDPOINT', f'email.{AWS_SES_REGION_NAME}.amazonaws.com')
+AWS_SES_AUTO_THROTTLE = float(os.getenv('AWS_SES_AUTO_THROTTLE', '0.5'))
+AWS_SES_CONFIGURATION_SET = os.getenv('AWS_SES_CONFIGURATION_SET') or None
 
 CEREBRAS_API_KEY = os.getenv('CEREBRAS_API_KEY', '')
 CEREBRAS_BASE_URL = os.getenv('CEREBRAS_BASE_URL', 'https://api.cerebras.ai/v1')

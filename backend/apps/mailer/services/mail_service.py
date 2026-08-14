@@ -26,7 +26,7 @@ def html_to_text(html):
 
 def extract_ses_message_id(msg):
     headers = getattr(msg, 'extra_headers', None) or {}
-    for key in ('status_code', 'MessageId', 'X-SES-Message-ID'):
+    for key in ('message_id', 'MessageId', 'X-SES-Message-ID'):
         value = headers.get(key)
         if value:
             return str(value)
